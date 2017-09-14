@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.base.dao.OccupationMapper" >
+  <resultMap id="BaseResultMap" type="com.zhijian.ebook.base.entity.Occupation" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OCCUPATION_NAME" property="occupationName" jdbcType="VARCHAR" />
+    <result column="F_OCCUPATION_ID" property="fOccupationId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, OCCUPATION_NAME, F_OCCUPATION_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.OccupationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from BASE_OCCUPATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASE_OCCUPATION
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from BASE_OCCUPATION
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhijian.ebook.base.entity.OccupationExample" >
+    delete from BASE_OCCUPATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhijian.ebook.base.entity.Occupation" >
+    insert into BASE_OCCUPATION (ID, OCCUPATION_NAME, F_OCCUPATION_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{occupationName,jdbcType=VARCHAR}, #{fOccupationId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.Occupation" >
+    insert into BASE_OCCUPATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="occupationName != null" >
+        OCCUPATION_NAME,
+      </if>
+      <if test="fOccupationId != null" >
+        F_OCCUPATION_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="occupationName != null" >
+        #{occupationName,jdbcType=VARCHAR},
+      </if>
+      <if test="fOccupationId != null" >
+        #{fOccupationId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhijian.ebook.base.entity.OccupationExample" resultType="java.lang.Integer" >
+    select count(*) from BASE_OCCUPATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update BASE_OCCUPATION
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occupationName != null" >
+        OCCUPATION_NAME = #{record.occupationName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fOccupationId != null" >
+        F_OCCUPATION_ID = #{record.fOccupationId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update BASE_OCCUPATION
+    set ID = #{record.id,jdbcType=VARCHAR},
+      OCCUPATION_NAME = #{record.occupationName,jdbcType=VARCHAR},
+      F_OCCUPATION_ID = #{record.fOccupationId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.base.entity.Occupation" >
+    update BASE_OCCUPATION
+    <set >
+      <if test="occupationName != null" >
+        OCCUPATION_NAME = #{occupationName,jdbcType=VARCHAR},
+      </if>
+      <if test="fOccupationId != null" >
+        F_OCCUPATION_ID = #{fOccupationId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.base.entity.Occupation" >
+    update BASE_OCCUPATION
+    set OCCUPATION_NAME = #{occupationName,jdbcType=VARCHAR},
+      F_OCCUPATION_ID = #{fOccupationId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="selectByFId" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+   	from BASE_OCCUPATION
+   	<where>
+   		<if test="id !=null and id != ''" >
+            F_OCCUPATION_ID = #{id,jdbcType=VARCHAR}
+        </if>
+        <if test="id == null || id='' ">
+           F_OCCUPATION_ID ='0'
+        </if>
+   	</where>
+    	
+  </select>
+</mapper>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.base.dao.VersionMapper" >
+  <resultMap id="BaseResultMap" type="com.zhijian.ebook.base.entity.Version" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="DECIMAL" />
+    <result column="VERSION_NAME" property="versionName" jdbcType="VARCHAR" />
+    <result column="PLATFORM" property="platform" jdbcType="VARCHAR" />
+    <result column="PACKAGE_PATH" property="packagePath" jdbcType="VARCHAR" />
+    <result column="UPDRAGE_LOG" property="updrageLog" jdbcType="VARCHAR" />
+    <result column="CREATE_PERSON_ID" property="createPersonId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="MODIFY_PERSON_ID" property="modifyPersonId" jdbcType="VARCHAR" />
+    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, VERSION, VERSION_NAME, PLATFORM, PACKAGE_PATH, UPDRAGE_LOG, CREATE_PERSON_ID, 
+    CREATE_TIME, MODIFY_PERSON_ID, MODIFY_TIME, REMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.VersionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_VERSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_VERSION
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from T_VERSION
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhijian.ebook.base.entity.VersionExample" >
+    delete from T_VERSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhijian.ebook.base.entity.Version" >
+    insert into T_VERSION (ID, VERSION, VERSION_NAME, 
+      PLATFORM, PACKAGE_PATH, UPDRAGE_LOG, 
+      CREATE_PERSON_ID, CREATE_TIME, MODIFY_PERSON_ID, 
+      MODIFY_TIME, REMARK)
+    values (#{id,jdbcType=VARCHAR}, #{version,jdbcType=DECIMAL}, #{versionName,jdbcType=VARCHAR}, 
+      #{platform,jdbcType=VARCHAR}, #{packagePath,jdbcType=VARCHAR}, #{updrageLog,jdbcType=VARCHAR}, 
+      #{createPersonId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyPersonId,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.Version" >
+    insert into T_VERSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="versionName != null" >
+        VERSION_NAME,
+      </if>
+      <if test="platform != null" >
+        PLATFORM,
+      </if>
+      <if test="packagePath != null" >
+        PACKAGE_PATH,
+      </if>
+      <if test="updrageLog != null" >
+        UPDRAGE_LOG,
+      </if>
+      <if test="createPersonId != null" >
+        CREATE_PERSON_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="modifyPersonId != null" >
+        MODIFY_PERSON_ID,
+      </if>
+      <if test="modifyTime != null" >
+        MODIFY_TIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=DECIMAL},
+      </if>
+      <if test="versionName != null" >
+        #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="packagePath != null" >
+        #{packagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="updrageLog != null" >
+        #{updrageLog,jdbcType=VARCHAR},
+      </if>
+      <if test="createPersonId != null" >
+        #{createPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPersonId != null" >
+        #{modifyPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhijian.ebook.base.entity.VersionExample" resultType="java.lang.Integer" >
+    select count(*) from T_VERSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_VERSION
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version,jdbcType=DECIMAL},
+      </if>
+      <if test="record.versionName != null" >
+        VERSION_NAME = #{record.versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platform != null" >
+        PLATFORM = #{record.platform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.packagePath != null" >
+        PACKAGE_PATH = #{record.packagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updrageLog != null" >
+        UPDRAGE_LOG = #{record.updrageLog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createPersonId != null" >
+        CREATE_PERSON_ID = #{record.createPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyPersonId != null" >
+        MODIFY_PERSON_ID = #{record.modifyPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTime != null" >
+        MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_VERSION
+    set ID = #{record.id,jdbcType=VARCHAR},
+      VERSION = #{record.version,jdbcType=DECIMAL},
+      VERSION_NAME = #{record.versionName,jdbcType=VARCHAR},
+      PLATFORM = #{record.platform,jdbcType=VARCHAR},
+      PACKAGE_PATH = #{record.packagePath,jdbcType=VARCHAR},
+      UPDRAGE_LOG = #{record.updrageLog,jdbcType=VARCHAR},
+      CREATE_PERSON_ID = #{record.createPersonId,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      MODIFY_PERSON_ID = #{record.modifyPersonId,jdbcType=VARCHAR},
+      MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP},
+      REMARK = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.base.entity.Version" >
+    update T_VERSION
+    <set >
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=DECIMAL},
+      </if>
+      <if test="versionName != null" >
+        VERSION_NAME = #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        PLATFORM = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="packagePath != null" >
+        PACKAGE_PATH = #{packagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="updrageLog != null" >
+        UPDRAGE_LOG = #{updrageLog,jdbcType=VARCHAR},
+      </if>
+      <if test="createPersonId != null" >
+        CREATE_PERSON_ID = #{createPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPersonId != null" >
+        MODIFY_PERSON_ID = #{modifyPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.base.entity.Version" >
+    update T_VERSION
+    set VERSION = #{version,jdbcType=DECIMAL},
+      VERSION_NAME = #{versionName,jdbcType=VARCHAR},
+      PLATFORM = #{platform,jdbcType=VARCHAR},
+      PACKAGE_PATH = #{packagePath,jdbcType=VARCHAR},
+      UPDRAGE_LOG = #{updrageLog,jdbcType=VARCHAR},
+      CREATE_PERSON_ID = #{createPersonId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      MODIFY_PERSON_ID = #{modifyPersonId,jdbcType=VARCHAR},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定配置开始 -->
+  <select id="selectByPlatform" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" /> 
+    from  T_VERSION  where PLATFORM = #{platform} ORDER BY version DESC
+  </select>
+  <!-- 自定配置结束 -->
+  
+</mapper>

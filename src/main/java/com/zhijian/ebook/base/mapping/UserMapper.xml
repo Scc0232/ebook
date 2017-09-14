@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.base.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.zhijian.ebook.base.entity.User">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="USERNAME" property="username" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="ICON" property="icon" jdbcType="VARCHAR" />
+		<result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+		<result column="IS_VALID" property="isValid" jdbcType="BIT" />
+		<result column="CREATE_PERSON_ID" property="createPersonId" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="MODIFY_PERSON_ID" property="modifyPersonId" jdbcType="VARCHAR" />
+		<result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="ACCREDIT" property="accredit" jdbcType="INTEGER" />
+		<result column="SEX" property="sex" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="PET_NAME" property="petName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		ID, USERNAME, PASSWORD, NAME, PHONE, EMAIL, ICON, USER_TYPE, IS_VALID, CREATE_PERSON_ID,
+		CREATE_TIME, MODIFY_PERSON_ID, MODIFY_TIME, REMARK, ACCREDIT, SEX, ADDRESS, PET_NAME
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.UserExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from T_USER
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from T_USER
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.zhijian.ebook.base.entity.UserExample">
+		delete from T_USER
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.zhijian.ebook.base.entity.User">
+		insert into t_user (ID, USERNAME, PASSWORD,
+		NAME, PHONE, EMAIL,
+		ICON, USER_TYPE, IS_VALID,
+		CREATE_PERSON_ID, CREATE_TIME, MODIFY_PERSON_ID,
+		MODIFY_TIME, REMARK, ACCREDIT,
+		SEX, ADDRESS, PET_NAME
+		)
+		values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+		#{icon,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT},
+		#{createPersonId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyPersonId,jdbcType=VARCHAR},
+		#{modifyTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{accredit,jdbcType=INTEGER},
+		#{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.User">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="username != null">
+				USERNAME,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="email != null">
+				EMAIL,
+			</if>
+			<if test="icon != null">
+				ICON,
+			</if>
+			<if test="userType != null">
+				USER_TYPE,
+			</if>
+			<if test="isValid != null">
+				IS_VALID,
+			</if>
+			<if test="createPersonId != null">
+				CREATE_PERSON_ID,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="modifyPersonId != null">
+				MODIFY_PERSON_ID,
+			</if>
+			<if test="modifyTime != null">
+				MODIFY_TIME,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="accredit != null">
+				ACCREDIT,
+			</if>
+			<if test="sex != null">
+				SEX,
+			</if>
+			<if test="address != null">
+				ADDRESS,
+			</if>
+			<if test="petName != null">
+				PET_NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="icon != null">
+				#{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				#{isValid,jdbcType=BIT},
+			</if>
+			<if test="createPersonId != null">
+				#{createPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyPersonId != null">
+				#{modifyPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="accredit != null">
+				#{accredit,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="petName != null">
+				#{petName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.zhijian.ebook.base.entity.UserExample" resultType="java.lang.Integer">
+		select count(*) from T_USER
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_user
+		<set>
+			<if test="record.id != null">
+				ID = #{record.id,jdbcType=VARCHAR},
+			</if>
+			<if test="record.username != null">
+				USERNAME = #{record.username,jdbcType=VARCHAR},
+			</if>
+			<if test="record.password != null">
+				PASSWORD = #{record.password,jdbcType=VARCHAR},
+			</if>
+			<if test="record.name != null">
+				NAME = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.phone != null">
+				PHONE = #{record.phone,jdbcType=VARCHAR},
+			</if>
+			<if test="record.email != null">
+				EMAIL = #{record.email,jdbcType=VARCHAR},
+			</if>
+			<if test="record.icon != null">
+				ICON = #{record.icon,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userType != null">
+				USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isValid != null">
+				IS_VALID = #{record.isValid,jdbcType=BIT},
+			</if>
+			<if test="record.createPersonId != null">
+				CREATE_PERSON_ID = #{record.createPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.modifyPersonId != null">
+				MODIFY_PERSON_ID = #{record.modifyPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.modifyTime != null">
+				MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.remark != null">
+				REMARK = #{record.remark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.accredit != null">
+				ACCREDIT = #{record.accredit,jdbcType=INTEGER},
+			</if>
+			<if test="record.sex != null">
+				SEX = #{record.sex,jdbcType=VARCHAR},
+			</if>
+			<if test="record.address != null">
+				ADDRESS = #{record.address,jdbcType=VARCHAR},
+			</if>
+			<if test="record.petName != null">
+				PET_NAME = #{record.petName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_user
+		set ID = #{record.id,jdbcType=VARCHAR},
+		USERNAME = #{record.username,jdbcType=VARCHAR},
+		PASSWORD = #{record.password,jdbcType=VARCHAR},
+		NAME = #{record.name,jdbcType=VARCHAR},
+		PHONE = #{record.phone,jdbcType=VARCHAR},
+		EMAIL = #{record.email,jdbcType=VARCHAR},
+		ICON = #{record.icon,jdbcType=VARCHAR},
+		USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+		IS_VALID = #{record.isValid,jdbcType=BIT},
+		CREATE_PERSON_ID = #{record.createPersonId,jdbcType=VARCHAR},
+		CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+		MODIFY_PERSON_ID = #{record.modifyPersonId,jdbcType=VARCHAR},
+		MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP},
+		REMARK = #{record.remark,jdbcType=VARCHAR},
+		ACCREDIT = #{record.accredit,jdbcType=INTEGER},
+		SEX = #{record.sex,jdbcType=VARCHAR},
+		ADDRESS = #{record.address,jdbcType=VARCHAR},
+		PET_NAME = #{record.petName,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.base.entity.User">
+		update t_user
+		<set>
+			<if test="username != null">
+				USERNAME = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="icon != null">
+				ICON = #{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				USER_TYPE = #{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				IS_VALID = #{isValid,jdbcType=BIT},
+			</if>
+			<if test="createPersonId != null">
+				CREATE_PERSON_ID = #{createPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyPersonId != null">
+				MODIFY_PERSON_ID = #{modifyPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyTime != null">
+				MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="accredit != null">
+				ACCREDIT = #{accredit,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				SEX = #{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="petName != null">
+				PET_NAME = #{petName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.base.entity.User">
+		update t_user
+		set USERNAME = #{username,jdbcType=VARCHAR},
+		PASSWORD = #{password,jdbcType=VARCHAR},
+		NAME = #{name,jdbcType=VARCHAR},
+		PHONE = #{phone,jdbcType=VARCHAR},
+		EMAIL = #{email,jdbcType=VARCHAR},
+		ICON = #{icon,jdbcType=VARCHAR},
+		USER_TYPE = #{userType,jdbcType=VARCHAR},
+		IS_VALID = #{isValid,jdbcType=BIT},
+		CREATE_PERSON_ID = #{createPersonId,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+		MODIFY_PERSON_ID = #{modifyPersonId,jdbcType=VARCHAR},
+		MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		ACCREDIT = #{accredit,jdbcType=INTEGER},
+		SEX = #{sex,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR},
+		PET_NAME = #{petName,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 自定义配置开始 -->
+	<select id="findPaginationList" resultMap="BaseResultMap">
+		select
+		<if test="example.distinct">
+			#{example.distinct}
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from T_USER
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="example.orderByClause != null">
+			order by ${example.orderByClause}
+		</if>
+		<if test="page != null">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
+
+	<select id="findUserByUsername" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.User">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		where USERNAME = #{username,jdbcType=VARCHAR}
+	</select>
+	<select id="unSelectUserByRoleId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER user where user.ID not in
+		(select r.USER_ID from T_R_USER_ROLE r where r.ROLE_ID = #{roleId})
+		<if test="user.username != null and user.username != ''">
+			and user.username like '%${user.username}%'
+		</if>
+		<if test="page.startRow > 0 and page.endRow > 0">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
+	<select id="countByUnRoleId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*)from T_USER user where user.ID not in
+		(select r.USER_ID from T_R_USER_ROLE r where r.ROLE_ID = #{roleId})
+		<if test="user.username != null and user.username != ''">
+			and user.username like '%${user.username}%'
+		</if>
+	</select>
+
+	<select id="findUserByRoleId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_ROLE" />
+		from T_USER user,T_R_USER_ROLE r where user.ID = r.USER_ID
+		and r.ROLE_ID = #{roleId}
+		<if test="user.username != null and user.username != ''">
+			and user.username like '%${user.username}%'
+		</if>
+		<if test="page.startRow > 0 and page.endRow > 0">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
+	<sql id="Base_Column_List_ROLE">
+		user.ID,user.USERNAME
+	</sql>
+	<select id="countByRoleId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*)from T_USER user,T_R_USER_ROLE r where user.ID = r.USER_ID
+		and r.ROLE_ID = #{roleId}
+		<if test="user.username != null and user.username != ''">
+			and user.username like '%${user.username}%'
+		</if>
+	</select>
+
+
+	<select id="findCountByReferralCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(0)from T_USER where MY_REFERRAL_CODE = #{referralCode}
+	</select>
+
+	<!--add by lijian 20160421 根据用户名查询出用户信息 -->
+	<select id="selectUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		from T_USER
+		<if test="userName != null and userName != ''">
+			where USERNAME = '${userName}'
+		</if>
+	</select>
+
+	<!-- 自定义配置结束 -->
+</mapper>

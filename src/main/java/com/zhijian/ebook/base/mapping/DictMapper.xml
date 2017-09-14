@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.base.dao.DictMapper" >
+  <resultMap id="BaseResultMap" type="com.zhijian.ebook.base.entity.Dict" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DICT_CODE" property="dictCode" jdbcType="VARCHAR" />
+    <result column="DICT_NAME" property="dictName" jdbcType="VARCHAR" />
+    <result column="DICT_TYPE" property="dictType" jdbcType="VARCHAR" />
+    <result column="DICT_DESCRIBE" property="dictDescribe" jdbcType="VARCHAR" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, DICT_CODE, DICT_NAME, DICT_TYPE, DICT_DESCRIBE, ICON
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.DictExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from BASE_DICT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASE_DICT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByDictType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASE_DICT
+     where DICT_TYPE = #{dictType,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from BASE_DICT
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhijian.ebook.base.entity.DictExample" >
+    delete from BASE_DICT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhijian.ebook.base.entity.Dict" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+        SELECT REPLACE(UUID(),'-','')
+    </selectKey>
+    insert into BASE_DICT (ID, DICT_CODE, DICT_NAME, 
+      DICT_TYPE, DICT_DESCRIBE, ICON
+      )
+    values (#{id,jdbcType=VARCHAR}, #{dictCode,jdbcType=VARCHAR}, #{dictName,jdbcType=VARCHAR}, 
+      #{dictType,jdbcType=VARCHAR}, #{dictDescribe,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.Dict" >
+    insert into BASE_DICT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="dictCode != null" >
+        DICT_CODE,
+      </if>
+      <if test="dictName != null" >
+        DICT_NAME,
+      </if>
+      <if test="dictType != null" >
+        DICT_TYPE,
+      </if>
+      <if test="dictDescribe != null" >
+        DICT_DESCRIBE,
+      </if>
+      <if test="icon != null" >
+        ICON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dictCode != null" >
+        #{dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictName != null" >
+        #{dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDescribe != null" >
+        #{dictDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhijian.ebook.base.entity.DictExample" resultType="java.lang.Integer" >
+    select count(*) from BASE_DICT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update BASE_DICT
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictCode != null" >
+        DICT_CODE = #{record.dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictName != null" >
+        DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictType != null" >
+        DICT_TYPE = #{record.dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictDescribe != null" >
+        DICT_DESCRIBE = #{record.dictDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        ICON = #{record.icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update BASE_DICT
+    set ID = #{record.id,jdbcType=VARCHAR},
+      DICT_CODE = #{record.dictCode,jdbcType=VARCHAR},
+      DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
+      DICT_TYPE = #{record.dictType,jdbcType=VARCHAR},
+      DICT_DESCRIBE = #{record.dictDescribe,jdbcType=VARCHAR},
+      ICON = #{record.icon,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.base.entity.Dict" >
+    update BASE_DICT
+    <set >
+      <if test="dictCode != null" >
+        DICT_CODE = #{dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictName != null" >
+        DICT_NAME = #{dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        DICT_TYPE = #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDescribe != null" >
+        DICT_DESCRIBE = #{dictDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.base.entity.Dict" >
+    update BASE_DICT
+    set DICT_CODE = #{dictCode,jdbcType=VARCHAR},
+      DICT_NAME = #{dictName,jdbcType=VARCHAR},
+      DICT_TYPE = #{dictType,jdbcType=VARCHAR},
+      DICT_DESCRIBE = #{dictDescribe,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 自定义配置开始 -->
+  <select id="findPaginationList" resultMap="BaseResultMap">
+    select
+    <if test="example.distinct" >
+      #{example.distinct}
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from BASE_DICT
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    <if test="example.orderByClause != null" >
+      order by ${example.orderByClause}
+    </if>
+    <if test = "page != null">
+    	limit #{page.startRow},#{page.endRow}
+    </if>
+  </select>
+  <!-- 自定义配置结束 -->
+</mapper>

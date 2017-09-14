@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.base.dao.StyleSettingMapper" >
+  <resultMap id="BaseResultMap" type="com.zhijian.ebook.base.entity.StyleSetting" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="CSS_RESOURCE_URL" property="cssResourceUrl" jdbcType="VARCHAR" />
+    <result column="orgName" property="orgName" jdbcType="VARCHAR" />
+    
+    <association property="organization" javaType="com.zhijian.ebook.base.entity.Organization">
+				<id column="ORG_ID" property="id" jdbcType="VARCHAR" />
+				<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+				<result column="ORG_TYPE" property="orgType" jdbcType="INTEGER" />
+				<result column="CREATE_PERSON_ID" property="createPersonId" jdbcType="VARCHAR" />
+				<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+				<result column="MODIFY_PERSON_ID" property="modifyPersonId" jdbcType="VARCHAR" />
+				<result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+		</association>
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, ORG_ID, CSS_RESOURCE_URL
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.StyleSettingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from BASE_STYLE_SETTING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASE_STYLE_SETTING
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from BASE_STYLE_SETTING
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhijian.ebook.base.entity.StyleSettingExample" >
+    delete from BASE_STYLE_SETTING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhijian.ebook.base.entity.StyleSetting" >
+   	 <selectKey keyProperty="id" resultType="String" order="BEFORE">
+        SELECT REPLACE(UUID(),'-','')
+    </selectKey>
+    insert into BASE_STYLE_SETTING (ID, ORG_ID, CSS_RESOURCE_URL
+      )
+    values (#{id,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{cssResourceUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.StyleSetting" >
+    insert into BASE_STYLE_SETTING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="cssResourceUrl != null" >
+        CSS_RESOURCE_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="cssResourceUrl != null" >
+        #{cssResourceUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhijian.ebook.base.entity.StyleSettingExample" resultType="java.lang.Integer" >
+    select count(*) from BASE_STYLE_SETTING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update BASE_STYLE_SETTING 
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cssResourceUrl != null" >
+        CSS_RESOURCE_URL = #{record.cssResourceUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update BASE_STYLE_SETTING
+    set ID = #{record.id,jdbcType=VARCHAR},
+      ORG_ID = #{record.orgId,jdbcType=VARCHAR},
+      CSS_RESOURCE_URL = #{record.cssResourceUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.base.entity.StyleSetting" >
+    update BASE_STYLE_SETTING
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="cssResourceUrl != null" >
+        CSS_RESOURCE_URL = #{cssResourceUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.base.entity.StyleSetting" >
+    update BASE_STYLE_SETTING
+    set
+      CSS_RESOURCE_URL = #{cssResourceUrl,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+   <!-- 自定义配置开始 -->
+    <select id="findOrgIdList" resultMap="BaseResultMap">
+    select
+    
+      s.ID, s.ORG_ID, s.CSS_RESOURCE_URL, o.ORG_NAME FROM BASE_STYLE_SETTING s ,BASE_ORGANIZATION o WHERE s.ORG_ID = o.ID
+    
+   
+  
+    <if test = "page != null">
+    	limit #{page.startRow},#{page.endRow}
+    </if>
+  </select>
+  <!-- 自定义配置结束 -->
+   <select id="findOrgNameList" resultMap="BaseResultMap">
+    select
+    
+      s.ID, s.ORG_ID, s.CSS_RESOURCE_URL, o.ORG_NAME FROM BASE_STYLE_SETTING s ,BASE_ORGANIZATION o WHERE s.ORG_ID = o.ID
+    
+   
+  
+    <if test = "page != null">
+    	limit #{page.startRow},#{page.endRow}
+    </if>
+  </select>
+  
+   <!-- 自定义配置开始 -->
+    <select id="findPaginationList" resultMap="BaseResultMap">
+    select
+    <if test="example.distinct" >
+      #{example.distinct}
+    </if>
+    'true' as QUERYID,
+ 
+    s.ID, s.ORG_ID, s.CSS_RESOURCE_URL, o.ORG_NAME as orgName FROM BASE_STYLE_SETTING s join BASE_ORGANIZATION o on(s.ORG_ID = o.ID)
+ 
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    <if test="example.orderByClause != null" >
+      order by ${example.orderByClause}
+    </if>
+    <if test = "page != null">
+    	limit #{page.startRow},#{page.endRow}
+    </if>
+  </select>
+  <!-- 自定义配置结束 -->
+</mapper>
