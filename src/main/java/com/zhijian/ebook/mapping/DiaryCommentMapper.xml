@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="diary_id" property="diaryId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
   </resultMap>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, userid, diary_id, create_time, is_valid
+    id, userid, diary_id, content, create_time, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.DiaryCommentExample" >
     select
@@ -101,13 +102,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.DiaryComment" >
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+   <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
     insert into e_diary_comment (id, userid, diary_id, 
-      create_time, is_valid)
+      content, create_time, is_valid
+      )
     values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{diaryId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT})
+      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.DiaryComment" >
     insert into e_diary_comment
@@ -120,6 +123,9 @@
       </if>
       <if test="diaryId != null" >
         diary_id,
+      </if>
+      <if test="content != null" >
+        content,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -137,6 +143,9 @@
       </if>
       <if test="diaryId != null" >
         #{diaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -164,6 +173,9 @@
       <if test="record.diaryId != null" >
         diary_id = #{record.diaryId,jdbcType=VARCHAR},
       </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -180,6 +192,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=VARCHAR},
       diary_id = #{record.diaryId,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       is_valid = #{record.isValid,jdbcType=BIT}
     <if test="_parameter != null" >
@@ -195,6 +208,9 @@
       <if test="diaryId != null" >
         diary_id = #{diaryId,jdbcType=VARCHAR},
       </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -208,6 +224,7 @@
     update e_diary_comment
     set userid = #{userid,jdbcType=VARCHAR},
       diary_id = #{diaryId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       is_valid = #{isValid,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}

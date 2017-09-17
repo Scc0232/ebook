@@ -9,6 +9,8 @@ public class DiaryComment {
 
     private String diaryId;
 
+    private String content;
+
     private Date createTime;
 
     private Boolean isValid;
@@ -35,6 +37,14 @@ public class DiaryComment {
 
     public void setDiaryId(String diaryId) {
         this.diaryId = diaryId == null ? null : diaryId.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Date getCreateTime() {

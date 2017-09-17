@@ -14,14 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhijian.ebook.base.entity.Dict;
+import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseEntity;
 import com.zhijian.ebook.entity.Book;
+import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryComment;
 import com.zhijian.ebook.entity.DiaryLike;
+import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.Souvenir;
 import com.zhijian.ebook.enums.GradeLevel;
+import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.service.SouvenirService;
@@ -47,6 +52,29 @@ public class BookInterface {
 
 	@Autowired
 	private SouvenirService souvenirService;
+
+	@Autowired
+	private UserService userService;
+
+	/**
+	 * 获取轮播图
+	 * 
+	 * @return ResponseEntity 返回dict实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findBanner", method = RequestMethod.GET)
+	public ResponseEntity findBanner() {
+		// String username = UserContextHelper.getUsername();
+		List<Dict> list = null;
+		try {
+			list = bookclassService.findBanner();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+
+		return ResponseEntity.ok(list);
+	}
 
 	/**
 	 * 获取图书分类接口和考研列表
@@ -87,8 +115,9 @@ public class BookInterface {
 			classid = classid.trim();
 		}
 		try {
-			if ((grade != null) && (grade.equals(GradeLevel.ONE_LEVEL.getLevel()) || grade.equals(GradeLevel.TWO_LEVEL.getLevel())
-					|| grade.equals(GradeLevel.THREE_LEVEL.getLevel()) || grade.equals(GradeLevel.FOUR_LEVEL.getLevel()))) {
+			if ((grade != null) && (grade.equals(GradeLevel.ONE_LEVEL.getLevel())
+					|| grade.equals(GradeLevel.TWO_LEVEL.getLevel()) || grade.equals(GradeLevel.THREE_LEVEL.getLevel())
+					|| grade.equals(GradeLevel.FOUR_LEVEL.getLevel()))) {
 				list = bookService.selectHotBook(grade, null);
 			} else if (classid != null) {
 				list = bookService.selectHotBook(null, classid);
@@ -112,9 +141,9 @@ public class BookInterface {
 	@RequestMapping(value = "login/searchBook", method = RequestMethod.GET)
 	public ResponseEntity searchBook(String content) {
 		// String username = UserContextHelper.getUsername();
-		if (content!=null) {
+		if (content != null) {
 			content = content.trim();
-		}else {
+		} else {
 			return ResponseEntity.ok(new ArrayList<>(), "请输入内容");
 		}
 		List<Book> list = null;
@@ -180,7 +209,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addDiary", method = RequestMethod.POST)
+	@RequestMapping(value = "login/addDiary", method = RequestMethod.GET)
 	public ResponseEntity addDiary(Diary diary) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
@@ -199,16 +228,38 @@ public class BookInterface {
 	}
 
 	/**
-	 * 查看日记
+	 * 查看全部可见日记
 	 * 
 	 * @return ResponseEntity 返回日记实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/selectDiary", method = RequestMethod.POST)
+	@RequestMapping(value = "login/selectDiary", method = RequestMethod.GET)
 	public ResponseEntity selectDiary(Integer page, Integer rows) {
+		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
 		try {
+			String userid = userService.findUserByUsername(username).getId();
 			list = souvenirService.selectDiaryAll(page, rows);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+
+	/**
+	 * 查看我的日记
+	 * 
+	 * @return ResponseEntity 返回日记实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/selectMyDiary", method = RequestMethod.GET)
+	public ResponseEntity selectMyDiary(Integer page, Integer rows) {
+		String username = UserContextHelper.getUsername();
+		EasyuiPagination<Diary> list = null;
+		try {
+			String userid = userService.findUserByUsername(username).getId();
+			list = souvenirService.selectMyDiary(page, rows, userid);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.serverError("操作失败");
@@ -226,6 +277,9 @@ public class BookInterface {
 	public ResponseEntity addComment(DiaryComment diaryComment) {
 		int flag = 0;
 		try {
+			if (StringUtils.isBlank(diaryComment.getContent())) {
+				return ResponseEntity.serverError("没有评论内容 content");
+			}
 			flag = souvenirService.addDiaryComment(diaryComment);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -242,14 +296,17 @@ public class BookInterface {
 	@ResponseBody
 	@RequestMapping(value = "login/addLike", method = RequestMethod.POST)
 	public ResponseEntity addLike(DiaryLike diaryLike) {
-		int flag = 0;
 		try {
-			flag = souvenirService.addDiaryLike(diaryLike);
+			int rows = souvenirService.findIsLike(diaryLike.getDiaryId());
+			if (rows > 0) {
+				return ResponseEntity.ok("已点赞");
+			}
+			souvenirService.addDiaryLike(diaryLike);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.serverError("操作失败");
 		}
-		return ResponseEntity.ok(flag);
+		return ResponseEntity.ok("点赞成功");
 	}
 
 	/**
@@ -262,6 +319,10 @@ public class BookInterface {
 	public ResponseEntity removeLike(String diaryId) {
 		int flag = 0;
 		try {
+			int rows = souvenirService.findIsLike(diaryId);
+			if (rows < 1) {
+				return ResponseEntity.ok("还未点赞");
+			}
 			flag = souvenirService.removeDiaryLike(diaryId);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -269,5 +330,155 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(flag);
 	}
+
+	/**
+	 * 图书收藏
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/addCollection", method = RequestMethod.POST)
+	public ResponseEntity addCollection(String bookid) {
+		try {
+			int rows = bookService.findIsCollection(bookid);
+			if (rows > 0) {
+				return ResponseEntity.ok("已收藏");
+			}
+			bookService.addCollection(bookid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("收藏成功");
+	}
+
+	/**
+	 * 图书取消收藏
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/removeCollection", method = RequestMethod.POST)
+	public ResponseEntity removeCollection(String bookid) {
+		int flag = 0;
+		try {
+			int rows = bookService.findIsCollection(bookid);
+			if (rows < 1) {
+				return ResponseEntity.ok("还未收藏");
+			}
+			flag = bookService.removeCollection(bookid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(flag);
+	}
+
+	/**
+	 * 我的图书收藏
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findCollection", method = RequestMethod.GET)
+	public ResponseEntity findCollection() {
+		List<Collect> list = null;
+		try {
+			list = bookService.findCollection();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 添加到购物车
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/addShoppingCart", method = RequestMethod.POST)
+	public ResponseEntity addShoppingCart(String productid) {
+		try {
+			int rows = bookService.isInShoppingCart(productid);
+			if (rows > 0) {
+				return ResponseEntity.ok("已添加");
+			}else {
+				bookService.addShoppingCart(productid);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("添加成功");
+	}
+
+	/**
+	 * 从购物车删除
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/removeShoppingCart", method = RequestMethod.POST)
+	public ResponseEntity removeShoppingCart(String productid) {
+		int flag = 0;
+		try {
+			int rows = bookService.isInShoppingCart(productid);
+			if (rows < 1) {
+				return ResponseEntity.ok("已删除");
+			}else {
+				flag = bookService.removeShoppingCart(productid);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("删除成功");
+	}
+
+	/**
+	 * 我的购物车
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findShoppingCart", method = RequestMethod.GET)
+	public ResponseEntity findShoppingCart() {
+		List<ShoppingCart> list = null;
+		try {
+			list = bookService.findShoppingCart();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

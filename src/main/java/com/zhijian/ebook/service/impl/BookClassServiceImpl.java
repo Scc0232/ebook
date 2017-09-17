@@ -7,6 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhijian.ebook.base.dao.DictMapper;
+import com.zhijian.ebook.base.entity.Dict;
+import com.zhijian.ebook.base.entity.DictExample;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
 import com.zhijian.ebook.entity.Book;
@@ -23,6 +26,9 @@ public class BookClassServiceImpl implements BookClassService {
 
 	@Autowired
 	private BookMapper bookMapper;
+	
+	@Autowired
+	private DictMapper dictMapper;
 
 	@SuppressWarnings("null")
 	@Override
@@ -40,6 +46,14 @@ public class BookClassServiceImpl implements BookClassService {
 		map.put("kaoyan", booklist);
 
 		return map;
+	}
+
+	@Override
+	public List<Dict> findBanner() {
+		DictExample dictExample = new DictExample();
+		dictExample.setOrderByClause("dict_name asc");
+		
+		return dictMapper.selectByExample(dictExample);
 	}
 
 }

@@ -14,12 +14,19 @@ public interface SouvenirService {
 
 	int addNewDiary(Diary diary);
 
-	EasyuiPagination<Diary> selectDiaryAll(Integer page, Integer rows);
+	EasyuiPagination<Diary> selectDiaryAll(Integer page, Integer rows) throws Exception;
 
-	int addDiaryComment(DiaryComment diaryComment);
+	int addDiaryComment(DiaryComment diaryComment) throws Exception;
 
-	int addDiaryLike(DiaryLike diaryLike);
+	int addDiaryLike(DiaryLike diaryLike) throws Exception;
 
-	int removeDiaryLike(String diaryId);
+	int removeDiaryLike(String diaryId) throws Exception;
+
+	int addBrowsed(List<Diary> list, String userid) throws Exception;
+
+	EasyuiPagination<Diary> selectMyDiary(Integer page, Integer rows, String userid) throws Exception;
+
+	int findIsLike(String diaryId) throws Exception;
+
 
 }
