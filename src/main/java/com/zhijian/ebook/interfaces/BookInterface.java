@@ -62,7 +62,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回dict实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/findBanner", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/findBanner", method = RequestMethod.GET)
 	public ResponseEntity findBanner() {
 		// String username = UserContextHelper.getUsername();
 		List<Dict> list = null;
@@ -82,7 +82,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/selectBookClass", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/selectBookClass", method = RequestMethod.GET)
 	public ResponseEntity selectBookClass() {
 		// String username = UserContextHelper.getUsername();
 		Map<String, List<?>> map = null;
@@ -104,7 +104,7 @@ public class BookInterface {
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	@ResponseBody
-	@RequestMapping(value = "login/selectHotBook", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/selectHotBook", method = RequestMethod.GET)
 	public ResponseEntity selectHotBook(String grade, String classid) {
 		// String username = UserContextHelper.getUsername();
 		List<Book> list = null;
@@ -138,7 +138,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/searchBook", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/searchBook", method = RequestMethod.GET)
 	public ResponseEntity searchBook(String content) {
 		// String username = UserContextHelper.getUsername();
 		if (content != null) {
@@ -171,7 +171,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/updateHotValue", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/updateHotValue", method = RequestMethod.GET)
 	public ResponseEntity updateHotValue(String bookid) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
@@ -190,7 +190,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回纪念品实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/selectSouvenir", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/selectSouvenir", method = RequestMethod.GET)
 	public ResponseEntity selectSouvenir() {
 		// String username = UserContextHelper.getUsername();
 		List<Souvenir> list = null;
@@ -209,7 +209,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/addDiary", method = RequestMethod.GET)
 	public ResponseEntity addDiary(Diary diary) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
@@ -233,7 +233,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回日记实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/selectDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/selectDiary", method = RequestMethod.GET)
 	public ResponseEntity selectDiary(Integer page, Integer rows) {
 		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
@@ -253,7 +253,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回日记实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/selectMyDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/selectMyDiary", method = RequestMethod.GET)
 	public ResponseEntity selectMyDiary(Integer page, Integer rows) {
 		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
@@ -273,7 +273,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addComment", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/addComment", method = RequestMethod.POST)
 	public ResponseEntity addComment(DiaryComment diaryComment) {
 		int flag = 0;
 		try {
@@ -294,7 +294,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addLike", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/addLike", method = RequestMethod.POST)
 	public ResponseEntity addLike(DiaryLike diaryLike) {
 		try {
 			int rows = souvenirService.findIsLike(diaryLike.getDiaryId());
@@ -315,7 +315,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/removeLike", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/removeLike", method = RequestMethod.POST)
 	public ResponseEntity removeLike(String diaryId) {
 		int flag = 0;
 		try {
@@ -337,7 +337,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addCollection", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/addCollection", method = RequestMethod.POST)
 	public ResponseEntity addCollection(String bookid) {
 		try {
 			int rows = bookService.findIsCollection(bookid);
@@ -358,7 +358,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/removeCollection", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/removeCollection", method = RequestMethod.POST)
 	public ResponseEntity removeCollection(String bookid) {
 		int flag = 0;
 		try {
@@ -380,7 +380,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/findCollection", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/findCollection", method = RequestMethod.GET)
 	public ResponseEntity findCollection() {
 		List<Collect> list = null;
 		try {
@@ -402,7 +402,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addShoppingCart", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/addShoppingCart", method = RequestMethod.POST)
 	public ResponseEntity addShoppingCart(String productid) {
 		try {
 			int rows = bookService.isInShoppingCart(productid);
@@ -424,7 +424,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/removeShoppingCart", method = RequestMethod.POST)
+	@RequestMapping(value = "unlogin/removeShoppingCart", method = RequestMethod.POST)
 	public ResponseEntity removeShoppingCart(String productid) {
 		int flag = 0;
 		try {
@@ -447,7 +447,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/findShoppingCart", method = RequestMethod.GET)
+	@RequestMapping(value = "unlogin/findShoppingCart", method = RequestMethod.GET)
 	public ResponseEntity findShoppingCart() {
 		List<ShoppingCart> list = null;
 		try {
@@ -460,9 +460,39 @@ public class BookInterface {
 	}
 	
 	
+	/**
+	 * 提交订单
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "unlogin/submitOrder", method = RequestMethod.POST)
+	public ResponseEntity submitOrder(String productids) {
+		try {
+			int rows = bookService.submitOrder(productids);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("添加成功");
+	}
 	
-	
-	
+	/**
+	 * 提交订单
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "unlogin/dirSubmitOrder", method = RequestMethod.POST)
+	public ResponseEntity dirSubmitOrder(String productid, int nums) {
+		try {
+			int rows = bookService.dirSubmitOrder(productid,nums);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("添加成功");
+	}
 	
 	
 	

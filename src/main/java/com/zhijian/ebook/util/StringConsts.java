@@ -53,6 +53,8 @@ public class StringConsts {
      * 课程图片保存目录
      */
     public static String classImg="/var/zhetengba/";
+
+	public static String COMMA = ",";
  
     
     /**

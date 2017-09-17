@@ -1,8 +1,11 @@
 package com.zhijian.ebook.service.impl;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +21,14 @@ import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookExample;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
+import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.ShoppingCartExample;
 import com.zhijian.ebook.entity.Souvenir;
+import com.zhijian.ebook.interfaces.BookInterface;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookService;
+import com.zhijian.ebook.util.StringConsts;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -212,5 +218,40 @@ public class BookServiceImpl implements BookService {
 		
 		return list;
 	}
+
+	@Override
+	public int submitOrder(String productids) throws Exception {
+		List<String> productlist = Arrays.asList(productids.split(StringConsts.COMMA));
+		if (productlist.size()<2) {
+			Book book = bookMapper.selectByPrimaryKey(productlist.get(0));
+			if (book!=null) {
+				Order order = new Order();
+			}
+		}
+		
+		
+		return 0;
+	}
+
+	@Override
+	public int dirSubmitOrder(String productid, int nums) {
+		Book book = bookMapper.selectByPrimaryKey(productid);
+		if (book==null) {
+			Souvenir souvenir = souvenirMapper.selectByPrimaryKey(productid);
+		}
+		
+		return 0;
+	}
+	
+	
+	public static String getRandomOrderNO() {
+		  SimpleDateFormat simpleDateFormat;
+		  simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		  Date date = new Date();
+		  String str = simpleDateFormat.format(date);
+		  Random random = new Random();
+		  int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
+		  return rannum + str;// 当前时间  }
+		  }
 
 }
