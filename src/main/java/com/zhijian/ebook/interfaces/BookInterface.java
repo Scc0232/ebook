@@ -391,11 +391,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(list);
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * 添加到购物车
 	 * 
@@ -403,13 +399,17 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "unlogin/addShoppingCart", method = RequestMethod.POST)
-	public ResponseEntity addShoppingCart(String productid) {
+	public ResponseEntity addShoppingCart(String productid, int numbers) {
 		try {
-			int rows = bookService.isInShoppingCart(productid);
+			if (numbers == 0) {
+				numbers = 1;
+			}
+
+			int rows = bookService.isInShoppingCart(productid, numbers, true);
 			if (rows > 0) {
 				return ResponseEntity.ok("已添加");
-			}else {
-				bookService.addShoppingCart(productid);
+			} else {
+				bookService.addShoppingCart(productid,numbers);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -428,10 +428,10 @@ public class BookInterface {
 	public ResponseEntity removeShoppingCart(String productid) {
 		int flag = 0;
 		try {
-			int rows = bookService.isInShoppingCart(productid);
+			int rows = bookService.isInShoppingCart(productid, 0, false);
 			if (rows < 1) {
 				return ResponseEntity.ok("已删除");
-			}else {
+			} else {
 				flag = bookService.removeShoppingCart(productid);
 			}
 		} catch (Exception e) {
@@ -458,8 +458,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(list);
 	}
-	
-	
+
 	/**
 	 * 提交订单
 	 * 
@@ -476,9 +475,9 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok("添加成功");
 	}
-	
+
 	/**
-	 * 提交订单
+	 * 直接提交订单
 	 * 
 	 * @return ResponseEntity 返回状态
 	 */
@@ -486,29 +485,12 @@ public class BookInterface {
 	@RequestMapping(value = "unlogin/dirSubmitOrder", method = RequestMethod.POST)
 	public ResponseEntity dirSubmitOrder(String productid, int nums) {
 		try {
-			int rows = bookService.dirSubmitOrder(productid,nums);
+			int rows = bookService.dirSubmitOrder(productid, nums);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("添加成功");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

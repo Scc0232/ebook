@@ -154,7 +154,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int isInShoppingCart(String productid) throws Exception {
+	public int isInShoppingCart(String productid,int numbers, boolean flag) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		ShoppingCartExample example = new ShoppingCartExample();
 		ShoppingCartExample.Criteria criteria = example.createCriteria();
@@ -162,17 +162,22 @@ public class BookServiceImpl implements BookService {
 		criteria.andUseridEqualTo(userid);
 		List<ShoppingCart> list = shoppingCartMapper.selectByExample(example);
 		if (list != null && list.size() > 0) {
-			ShoppingCart shoppingCart = list.get(0);
-			shoppingCart.setCount(shoppingCart.getCount() + 1);
-			shoppingCartMapper.updateByPrimaryKeySelective(shoppingCart);
+			if (flag) {
+				ShoppingCart shoppingCart = list.get(0);
+				shoppingCart.setCount(shoppingCart.getCount() + numbers);
+				shoppingCartMapper.updateByPrimaryKeySelective(shoppingCart);
+			}else {
+				shoppingCartMapper.deleteByExample(example);
+			}
 			return 1;
+			
 		} else {
 			return 0;
 		}
 	}
 
 	@Override
-	public int addShoppingCart(String productid) throws Exception{		
+	public int addShoppingCart(String productid,int numbers) throws Exception{		
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		ShoppingCart shoppingCart = new ShoppingCart();
 		Book book = bookMapper.selectByPrimaryKey(productid);
@@ -190,7 +195,7 @@ public class BookServiceImpl implements BookService {
 		}
 
 		shoppingCart.setUserid(userid);
-		shoppingCart.setCount(1);
+		shoppingCart.setCount(numbers);
 		shoppingCart.setCreateTime(new Date());
 		shoppingCart.setIsValid(true);
 		return shoppingCartMapper.insert(shoppingCart);

@@ -26,9 +26,9 @@ public interface BookService {
 
 	List<Collect> findCollection() throws Exception;
 
-	int isInShoppingCart(String productid) throws Exception;
+	int isInShoppingCart(String productid,int numbers, boolean flag) throws Exception;
 
-	int addShoppingCart(String productid) throws Exception;
+	int addShoppingCart(String productid,int numbers ) throws Exception;
 
 	int removeShoppingCart(String productid) throws Exception;
 
