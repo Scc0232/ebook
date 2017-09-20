@@ -18,6 +18,7 @@ import com.zhijian.ebook.base.entity.Dict;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseEntity;
+import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Diary;
@@ -62,14 +63,14 @@ public class BookInterface {
 	 * @return ResponseEntity 返回dict实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/findBanner", method = RequestMethod.GET)
+	@RequestMapping(value = "login/findBanner", method = RequestMethod.GET)
 	public ResponseEntity findBanner() {
 		// String username = UserContextHelper.getUsername();
 		List<Dict> list = null;
 		try {
 			list = bookclassService.findBanner();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 
@@ -82,7 +83,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/selectBookClass", method = RequestMethod.GET)
+	@RequestMapping(value = "login/selectBookClass", method = RequestMethod.GET)
 	public ResponseEntity selectBookClass() {
 		// String username = UserContextHelper.getUsername();
 		Map<String, List<?>> map = null;
@@ -90,7 +91,7 @@ public class BookInterface {
 		try {
 			map = bookclassService.selectAll();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 
@@ -104,7 +105,7 @@ public class BookInterface {
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	@ResponseBody
-	@RequestMapping(value = "unlogin/selectHotBook", method = RequestMethod.GET)
+	@RequestMapping(value = "login/selectHotBook", method = RequestMethod.GET)
 	public ResponseEntity selectHotBook(String grade, String classid) {
 		// String username = UserContextHelper.getUsername();
 		List<Book> list = null;
@@ -125,7 +126,7 @@ public class BookInterface {
 				list = bookService.selectHotBook(null, null);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 
@@ -138,7 +139,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/searchBook", method = RequestMethod.GET)
+	@RequestMapping(value = "login/searchBook", method = RequestMethod.GET)
 	public ResponseEntity searchBook(String content) {
 		// String username = UserContextHelper.getUsername();
 		if (content != null) {
@@ -171,14 +172,14 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/updateHotValue", method = RequestMethod.GET)
+	@RequestMapping(value = "login/updateHotValue", method = RequestMethod.GET)
 	public ResponseEntity updateHotValue(String bookid) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
 		try {
 			flag = bookService.updateHotValue(bookid);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(flag);
@@ -190,14 +191,14 @@ public class BookInterface {
 	 * @return ResponseEntity 返回纪念品实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/selectSouvenir", method = RequestMethod.GET)
+	@RequestMapping(value = "login/selectSouvenir", method = RequestMethod.GET)
 	public ResponseEntity selectSouvenir() {
 		// String username = UserContextHelper.getUsername();
 		List<Souvenir> list = null;
 		try {
 			list = souvenirService.selectSouvenirAll();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(list);
@@ -209,7 +210,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/addDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "login/addDiary", method = RequestMethod.GET)
 	public ResponseEntity addDiary(Diary diary) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
@@ -222,7 +223,7 @@ public class BookInterface {
 				return ResponseEntity.serverError("信息缺失");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 	}
@@ -233,7 +234,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回日记实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/selectDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "login/selectDiary", method = RequestMethod.GET)
 	public ResponseEntity selectDiary(Integer page, Integer rows) {
 		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
@@ -241,7 +242,7 @@ public class BookInterface {
 			String userid = userService.findUserByUsername(username).getId();
 			list = souvenirService.selectDiaryAll(page, rows);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(list);
@@ -253,7 +254,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回日记实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/selectMyDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "login/selectMyDiary", method = RequestMethod.GET)
 	public ResponseEntity selectMyDiary(Integer page, Integer rows) {
 		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
@@ -261,7 +262,7 @@ public class BookInterface {
 			String userid = userService.findUserByUsername(username).getId();
 			list = souvenirService.selectMyDiary(page, rows, userid);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(list);
@@ -273,7 +274,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/addComment", method = RequestMethod.POST)
+	@RequestMapping(value = "login/addComment", method = RequestMethod.POST)
 	public ResponseEntity addComment(DiaryComment diaryComment) {
 		int flag = 0;
 		try {
@@ -282,7 +283,7 @@ public class BookInterface {
 			}
 			flag = souvenirService.addDiaryComment(diaryComment);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(flag);
@@ -294,7 +295,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/addLike", method = RequestMethod.POST)
+	@RequestMapping(value = "login/addLike", method = RequestMethod.POST)
 	public ResponseEntity addLike(DiaryLike diaryLike) {
 		try {
 			int rows = souvenirService.findIsLike(diaryLike.getDiaryId());
@@ -303,7 +304,7 @@ public class BookInterface {
 			}
 			souvenirService.addDiaryLike(diaryLike);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("点赞成功");
@@ -315,7 +316,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/removeLike", method = RequestMethod.POST)
+	@RequestMapping(value = "login/removeLike", method = RequestMethod.POST)
 	public ResponseEntity removeLike(String diaryId) {
 		int flag = 0;
 		try {
@@ -325,7 +326,7 @@ public class BookInterface {
 			}
 			flag = souvenirService.removeDiaryLike(diaryId);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(flag);
@@ -337,7 +338,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/addCollection", method = RequestMethod.POST)
+	@RequestMapping(value = "login/addCollection", method = RequestMethod.POST)
 	public ResponseEntity addCollection(String bookid) {
 		try {
 			int rows = bookService.findIsCollection(bookid);
@@ -346,7 +347,7 @@ public class BookInterface {
 			}
 			bookService.addCollection(bookid);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("收藏成功");
@@ -358,7 +359,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/removeCollection", method = RequestMethod.POST)
+	@RequestMapping(value = "login/removeCollection", method = RequestMethod.POST)
 	public ResponseEntity removeCollection(String bookid) {
 		int flag = 0;
 		try {
@@ -368,7 +369,7 @@ public class BookInterface {
 			}
 			flag = bookService.removeCollection(bookid);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(flag);
@@ -380,13 +381,13 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/findCollection", method = RequestMethod.GET)
+	@RequestMapping(value = "login/findCollection", method = RequestMethod.GET)
 	public ResponseEntity findCollection() {
 		List<Collect> list = null;
 		try {
 			list = bookService.findCollection();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(list);
@@ -398,21 +399,17 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/addShoppingCart", method = RequestMethod.POST)
+	@RequestMapping(value = "login/addShoppingCart", method = RequestMethod.POST)
 	public ResponseEntity addShoppingCart(String productid, int numbers) {
 		try {
-			if (numbers == 0) {
+			if (!(numbers > 0)) {
 				numbers = 1;
 			}
 
-			int rows = bookService.isInShoppingCart(productid, numbers, true);
-			if (rows > 0) {
-				return ResponseEntity.ok("已添加");
-			} else {
-				bookService.addShoppingCart(productid,numbers);
-			}
+			List<ShoppingCart> list = bookService.isInShoppingCart(productid);
+			bookService.addShoppingCart(productid, numbers, list);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("添加成功");
@@ -424,18 +421,18 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/removeShoppingCart", method = RequestMethod.POST)
+	@RequestMapping(value = "login/removeShoppingCart", method = RequestMethod.POST)
 	public ResponseEntity removeShoppingCart(String productid) {
-		int flag = 0;
 		try {
-			int rows = bookService.isInShoppingCart(productid, 0, false);
+			List<ShoppingCart> list = bookService.isInShoppingCart(productid);
+			int rows = list != null && list.size() > 0 ? 1 : 0;
 			if (rows < 1) {
 				return ResponseEntity.ok("已删除");
 			} else {
-				flag = bookService.removeShoppingCart(productid);
+				bookService.removeShoppingCart(productid, list);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("删除成功");
@@ -447,13 +444,13 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/findShoppingCart", method = RequestMethod.GET)
+	@RequestMapping(value = "login/findShoppingCart", method = RequestMethod.GET)
 	public ResponseEntity findShoppingCart() {
 		List<ShoppingCart> list = null;
 		try {
 			list = bookService.findShoppingCart();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok(list);
@@ -465,12 +462,12 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/submitOrder", method = RequestMethod.POST)
-	public ResponseEntity submitOrder(String productids) {
+	@RequestMapping(value = "login/submitOrder", method = RequestMethod.POST)
+	public ResponseEntity submitOrder(String productids, int nums) {
 		try {
-			int rows = bookService.submitOrder(productids);
+			int rows = bookService.submitOrder(productids, nums);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("添加成功");
@@ -482,15 +479,71 @@ public class BookInterface {
 	 * @return ResponseEntity 返回状态
 	 */
 	@ResponseBody
-	@RequestMapping(value = "unlogin/dirSubmitOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "login/dirSubmitOrder", method = RequestMethod.POST)
 	public ResponseEntity dirSubmitOrder(String productid, int nums) {
 		try {
 			int rows = bookService.dirSubmitOrder(productid, nums);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("添加成功");
 	}
 
+	
+	/**
+	 * 添加地址
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/addAddress", method = RequestMethod.POST)
+	public ResponseEntity addAddress(Address address) {
+		try {
+			if (StringUtils.isBlank(address.getUsername())||StringUtils.isBlank(address.getPhone())) {
+				return ResponseEntity.ok("请提供明确的收件人和手机号");
+			}
+			bookService.addAddress(address);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("添加成功");
+	}
+	
+	/**
+	 * 所有地址
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findAddress", method = RequestMethod.GET)
+	public ResponseEntity findAddress(Boolean def) {
+		List<Address> list = null;
+		try {
+			list = bookService.findAddress(def);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+	
+	/**
+	 * 修改默认地址
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/modifyDefaultAddress", method = RequestMethod.POST)
+	public ResponseEntity modifyDefaultAddress(String addressid) {
+		try {
+			int rows = bookService.selectDefaultAddress(addressid);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok("修改默认地址成功");
+	}
+	
 }

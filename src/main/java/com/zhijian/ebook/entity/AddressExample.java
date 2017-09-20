@@ -1,6 +1,7 @@
 package com.zhijian.ebook.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddressExample {
@@ -594,6 +595,76 @@ public class AddressExample {
             return (Criteria) this;
         }
 
+        public Criteria andRoomNumIsNull() {
+            addCriterion("room_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumIsNotNull() {
+            addCriterion("room_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumEqualTo(String value) {
+            addCriterion("room_num =", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumNotEqualTo(String value) {
+            addCriterion("room_num <>", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumGreaterThan(String value) {
+            addCriterion("room_num >", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumGreaterThanOrEqualTo(String value) {
+            addCriterion("room_num >=", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumLessThan(String value) {
+            addCriterion("room_num <", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumLessThanOrEqualTo(String value) {
+            addCriterion("room_num <=", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumLike(String value) {
+            addCriterion("room_num like", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumNotLike(String value) {
+            addCriterion("room_num not like", value, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumIn(List<String> values) {
+            addCriterion("room_num in", values, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumNotIn(List<String> values) {
+            addCriterion("room_num not in", values, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumBetween(String value1, String value2) {
+            addCriterion("room_num between", value1, value2, "roomNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoomNumNotBetween(String value1, String value2) {
+            addCriterion("room_num not between", value1, value2, "roomNum");
+            return (Criteria) this;
+        }
+
         public Criteria andIsDefaultIsNull() {
             addCriterion("is_default is null");
             return (Criteria) this;
@@ -651,6 +722,66 @@ public class AddressExample {
 
         public Criteria andIsDefaultNotBetween(Boolean value1, Boolean value2) {
             addCriterion("is_default not between", value1, value2, "isDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
     }

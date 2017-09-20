@@ -1,5 +1,7 @@
 package com.zhijian.ebook.entity;
 
+import java.util.Date;
+
 public class Address {
     private String id;
 
@@ -15,7 +17,11 @@ public class Address {
 
     private String flat;
 
+    private String roomNum;
+
     private Boolean isDefault;
+
+    private Date createTime;
 
     public String getId() {
         return id;
@@ -73,11 +79,27 @@ public class Address {
         this.flat = flat == null ? null : flat.trim();
     }
 
+    public String getRoomNum() {
+        return roomNum;
+    }
+
+    public void setRoomNum(String roomNum) {
+        this.roomNum = roomNum == null ? null : roomNum.trim();
+    }
+
     public Boolean getIsDefault() {
         return isDefault;
     }
 
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

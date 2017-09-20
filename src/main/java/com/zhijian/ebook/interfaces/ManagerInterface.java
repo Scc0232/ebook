@@ -277,7 +277,9 @@ public class ManagerInterface {
 	public ResponseEntity weblogin(String code, HttpSession session, HttpServletResponse response) {
 		try {
 			
-			String openid = weixinServer.getOpenIds(code);
+//			String openid = weixinServer.getOpenIds(code);
+			String openid = code;
+			System.out.println(openid);
 			User user = userService.findUserByUsername(openid);
 			// 验证用户名是否存在
 			if (user == null) {
@@ -293,6 +295,7 @@ public class ManagerInterface {
 			UserContextHelper.login(userDetails, session);
 			session.setAttribute("user", user);
 			Map<String, Object> msg = new HashMap<String, Object>();
+			user.setPassword(null);
 			msg.put("user", user);
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {

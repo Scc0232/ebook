@@ -2,6 +2,7 @@ package com.zhijian.ebook.service;
 
 import java.util.List;
 
+import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.ShoppingCart;
@@ -26,16 +27,22 @@ public interface BookService {
 
 	List<Collect> findCollection() throws Exception;
 
-	int isInShoppingCart(String productid,int numbers, boolean flag) throws Exception;
+	List<ShoppingCart> isInShoppingCart(String productid) throws Exception;
 
-	int addShoppingCart(String productid,int numbers ) throws Exception;
+	int addShoppingCart(String productid,int numbers,List<ShoppingCart>  list) throws Exception;
 
-	int removeShoppingCart(String productid) throws Exception;
+	int removeShoppingCart(String productid, List<ShoppingCart> list) throws Exception;
 
 	List<ShoppingCart> findShoppingCart() throws Exception;
 
-	int submitOrder(String productids) throws Exception;
+	int submitOrder(String productids, int nums) throws Exception;
 
 	int dirSubmitOrder(String productid, int nums);
+
+	int addAddress(Address address) throws Exception;
+
+	List<Address> findAddress(Boolean def) throws Exception;
+
+	int selectDefaultAddress(String addressid) throws Exception;
 
 }

@@ -12,15 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.User;
+import com.zhijian.ebook.base.service.UserRoleRelationService;
+import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.AccessTokenMapper;
 import com.zhijian.ebook.entity.AccessToken;
 import com.zhijian.ebook.service.WeixinServer;
 import com.zhijian.ebook.util.StringConsts;
 import com.zhijian.ebook.util.WechatConfig;
 import com.zhijian.ebook.util.WechatUtils;
-
 
 import net.sf.json.JSONObject;
 
@@ -40,12 +42,16 @@ public class WeixinServerImpl implements WeixinServer {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private UserService userService;
+
 	@SuppressWarnings({ "resource" })
 	@Override
 	public String getOpenId(String code) {
 
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=AppId&secret=AppSecret&code=CODE&grant_type=authorization_code";
-		url = url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT).replace("CODE", code);
+		url = url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT).replace("CODE",
+				code);
 		HttpGet get = new HttpGet(url);
 		HttpClient httpclient = new DefaultHttpClient();
 
@@ -53,7 +59,8 @@ public class WeixinServerImpl implements WeixinServer {
 		try {
 			HttpResponse response = httpclient.execute(get);
 			String jsonStr = EntityUtils.toString(response.getEntity(), "utf-8");
-			com.alibaba.fastjson.JSONObject jsonTexts = (com.alibaba.fastjson.JSONObject) com.alibaba.fastjson.JSONObject.parse(jsonStr);
+			com.alibaba.fastjson.JSONObject jsonTexts = (com.alibaba.fastjson.JSONObject) com.alibaba.fastjson.JSONObject
+					.parse(jsonStr);
 			if (jsonTexts.get("openid") != null) {
 				openid = jsonTexts.get("openid").toString();
 			}
@@ -66,7 +73,8 @@ public class WeixinServerImpl implements WeixinServer {
 	@Override
 	public String getOpenIds(String code) {
 
-		String url = openid_url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT).replace("CODE", code);
+		String url = openid_url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT)
+				.replace("CODE", code);
 		JSONObject jsonObject = WechatUtils.httpRequest(url, "GET", null);
 		String openid = null;
 		// 如果请求成功
@@ -76,7 +84,8 @@ public class WeixinServerImpl implements WeixinServer {
 			} catch (Exception e) {
 				// 获取openid失败
 				openid = null;
-				log.error("获取openid失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+				log.error("获取openid失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"),
+						jsonObject.getString("errmsg"));
 			}
 		}
 
@@ -108,17 +117,24 @@ public class WeixinServerImpl implements WeixinServer {
 		if (null != jsonObject) {
 			try {
 				user = new User();
-				user.setId(StringConsts.randomFileName());
+				String userid = StringConsts.randomFileName();
+				JSONArray userIds = new JSONArray();
+				userIds.add(userid);
+				user.setId(userid);
 				user.setUsername(jsonObject.getString("openid").toString());
 				user.setPetName(jsonObject.getString("nickname").toString());
 				user.setSex(jsonObject.getString("sex").toString());
 				user.setIcon(jsonObject.getString("headimgurl").toString());
+				user.setCreateTime(new Date());
+				user.setModifyTime(new Date());
 				user.setIsValid(Boolean.TRUE);
-				userMapper.insert(user);
+				user.setAccredit(1);
+				userService.addUser(user, StringConsts.USER_ROLE_ID);
 			} catch (Exception e) {
 				// 获取userinfo失败
 				user = null;
-				log.error("获取userinfo失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+				log.error("获取userinfo失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"),
+						jsonObject.getString("errmsg"));
 			}
 		}
 
