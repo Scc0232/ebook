@@ -35,9 +35,9 @@ public interface BookService {
 
 	List<ShoppingCart> findShoppingCart() throws Exception;
 
-	int submitOrder(String productids, int nums) throws Exception;
+	int submitOrder(String[] productids, String addressid) throws Exception;
 
-	int dirSubmitOrder(String productid, int nums);
+	int dirSubmitOrder(String productid, int nums, String addressid) throws Exception;
 
 	int addAddress(Address address) throws Exception;
 

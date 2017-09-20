@@ -21,6 +21,8 @@ public class Order {
 
     private Integer count;
 
+    private String addressId;
+
     private Date createTime;
 
     private Boolean isValid;
@@ -95,6 +97,14 @@ public class Order {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId == null ? null : addressId.trim();
     }
 
     public Date getCreateTime() {

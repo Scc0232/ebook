@@ -463,14 +463,18 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/submitOrder", method = RequestMethod.POST)
-	public ResponseEntity submitOrder(String productids, int nums) {
+	public ResponseEntity submitOrder(String[] productids, String addressid) {
 		try {
-			int rows = bookService.submitOrder(productids, nums);
+			int rows = bookService.submitOrder(productids, addressid);
+			if (rows > 0) {
+				return ResponseEntity.ok("提交订单成功");
+			} else {
+				return ResponseEntity.ok("提交订单失败");
+			}
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
-		return ResponseEntity.ok("添加成功");
 	}
 
 	/**
@@ -480,9 +484,12 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/dirSubmitOrder", method = RequestMethod.POST)
-	public ResponseEntity dirSubmitOrder(String productid, int nums) {
+	public ResponseEntity dirSubmitOrder(String productid, int nums, String addressid) {
 		try {
-			int rows = bookService.dirSubmitOrder(productid, nums);
+			if (nums < 1) {
+				nums = 1;
+			}
+			bookService.dirSubmitOrder(productid, nums, addressid);
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -490,7 +497,6 @@ public class BookInterface {
 		return ResponseEntity.ok("添加成功");
 	}
 
-	
 	/**
 	 * 添加地址
 	 * 
@@ -500,7 +506,7 @@ public class BookInterface {
 	@RequestMapping(value = "login/addAddress", method = RequestMethod.POST)
 	public ResponseEntity addAddress(Address address) {
 		try {
-			if (StringUtils.isBlank(address.getUsername())||StringUtils.isBlank(address.getPhone())) {
+			if (StringUtils.isBlank(address.getUsername()) || StringUtils.isBlank(address.getPhone())) {
 				return ResponseEntity.ok("请提供明确的收件人和手机号");
 			}
 			bookService.addAddress(address);
@@ -510,7 +516,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok("添加成功");
 	}
-	
+
 	/**
 	 * 所有地址
 	 * 
@@ -528,7 +534,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(list);
 	}
-	
+
 	/**
 	 * 修改默认地址
 	 * 
@@ -545,5 +551,5 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok("修改默认地址成功");
 	}
-	
+
 }

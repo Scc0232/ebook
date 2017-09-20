@@ -11,6 +11,7 @@
     <result column="product_icon" property="productIcon" jdbcType="VARCHAR" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="address_id" property="addressId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
   </resultMap>
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, order_no, product_id, product_type, product_name, product_price, product_icon, 
-    userid, count, create_time, is_valid
+    userid, count, address_id, create_time, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.OrderExample" >
     select
@@ -108,17 +109,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Order" >
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
-        SELECT REPLACE(UUID(),'-','')
-    </selectKey>
     insert into e_order (id, order_no, product_id, 
       product_type, product_name, product_price, 
       product_icon, userid, count, 
-      create_time, is_valid)
+      address_id, create_time, is_valid
+      )
     values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
       #{productType,jdbcType=TINYINT}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, 
       #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT})
+      #{addressId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Order" >
     insert into e_order
@@ -149,6 +149,9 @@
       </if>
       <if test="count != null" >
         count,
+      </if>
+      <if test="addressId != null" >
+        address_id,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -184,6 +187,9 @@
       </if>
       <if test="count != null" >
         #{count,jdbcType=INTEGER},
+      </if>
+      <if test="addressId != null" >
+        #{addressId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -229,6 +235,9 @@
       <if test="record.count != null" >
         count = #{record.count,jdbcType=INTEGER},
       </if>
+      <if test="record.addressId != null" >
+        address_id = #{record.addressId,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -251,6 +260,7 @@
       product_icon = #{record.productIcon,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=VARCHAR},
       count = #{record.count,jdbcType=INTEGER},
+      address_id = #{record.addressId,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       is_valid = #{record.isValid,jdbcType=BIT}
     <if test="_parameter != null" >
@@ -284,6 +294,9 @@
       <if test="count != null" >
         count = #{count,jdbcType=INTEGER},
       </if>
+      <if test="addressId != null" >
+        address_id = #{addressId,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -303,6 +316,7 @@
       product_icon = #{productIcon,jdbcType=VARCHAR},
       userid = #{userid,jdbcType=VARCHAR},
       count = #{count,jdbcType=INTEGER},
+      address_id = #{addressId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       is_valid = #{isValid,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}

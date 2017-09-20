@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.zhijian.ebook.dao.AddressMapper;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
 import com.zhijian.ebook.dao.CollectMapper;
+import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.dao.ShoppingCartMapper;
 import com.zhijian.ebook.dao.SouvenirMapper;
 import com.zhijian.ebook.entity.Address;
@@ -54,6 +56,9 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private AddressMapper addressMapper;
+	
+	@Autowired
+	private OrderMapper orderMapper;
 
 	@Override
 	public List<Book> selectHotBook(String grade, String classid) {
@@ -236,29 +241,44 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int submitOrder(String productids, int nums) throws Exception {
-		List<String> productlist = Arrays.asList(productids.split(StringConsts.COMMA));
-		if (productlist.size() < 2) {
-			Book book = bookMapper.selectByPrimaryKey(productlist.get(0));
-			if (book != null) {
-				Order order = new Order();
-			}
+	public int submitOrder(String[] productids, String addressid) throws Exception {
+		int flag = 0;
+		for(String productidnum : productids) {
+			String productid = StringUtils.substringBefore(productidnum, StringConsts.COMMA);
+			int nums = Integer.parseInt(StringUtils.substringAfter(productidnum, StringConsts.COMMA));
+			dirSubmitOrder(productid,nums, addressid);
+			flag++;
 		}
-
-		return 0;
+		return flag==productids.length?1:0;
+		
 	}
 
 	@Override
-	public int dirSubmitOrder(String productid, int nums) {
+	public int dirSubmitOrder(String productid, int nums, String addressid) throws Exception{
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		Order order = new Order();
 		Book book = bookMapper.selectByPrimaryKey(productid);
 		Souvenir souvenir = null;
 		if (book == null) {
 			souvenir = souvenirMapper.selectByPrimaryKey(productid);
-			
+			order.setProductIcon(souvenir.getIcon());
+			order.setProductId(souvenir.getId());
+			order.setProductName(souvenir.getName());
+			order.setProductPrice(souvenir.getPrice());
+			order.setProductType((byte)0);
+		}else {
+			order.setProductIcon(book.getIcon());
+			order.setProductId(book.getId());
+			order.setProductName(book.getTitle());
+			order.setProductPrice(book.getePrice());
+			order.setProductType((byte)1);
 		}
-
-		return 0;
+		order.setAddressId(addressid);
+		order.setCount(nums);
+		order.setIsValid(true);
+		order.setOrderNo(getRandomOrderNO());
+		order.setUserid(userid);
+		return orderMapper.insert(order);
 	}
 
 	public static String getRandomOrderNO() {
