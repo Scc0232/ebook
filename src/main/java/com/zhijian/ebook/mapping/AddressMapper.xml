@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhijian.ebook.dao.AddressMapper">
-  <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Address">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="userid" jdbcType="VARCHAR" property="userid" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="flat_id" jdbcType="VARCHAR" property="flatId" />
-    <result column="college" jdbcType="VARCHAR" property="college" />
-    <result column="flat" jdbcType="VARCHAR" property="flat" />
-    <result column="room_num" jdbcType="VARCHAR" property="roomNum" />
-    <result column="is_default" jdbcType="BIT" property="isDefault" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhijian.ebook.dao.AddressMapper" >
+  <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Address" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="flat_id" property="flatId" jdbcType="VARCHAR" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+    <result column="flat" property="flat" jdbcType="VARCHAR" />
+    <result column="room_num" property="roomNum" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_default" property="isDefault" jdbcType="BIT" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -42,25 +42,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -71,439 +71,162 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    id, userid, username, phone, flat_id, college, flat, room_num, is_default, create_time
+  <sql id="Base_Column_List" >
+    id, userid, username, phone, flat_id, college, flat, room_num, create_time, is_default
   </sql>
-  <select id="selectByExample" parameterType="com.zhijian.ebook.entity.AddressExample" resultMap="BaseResultMap">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.AddressExample" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
     from e_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from e_address
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from e_address
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.AddressExample">
+  <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.AddressExample" >
     delete from e_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhijian.ebook.entity.Address">
+  <insert id="insert" parameterType="com.zhijian.ebook.entity.Address" >
     insert into e_address (id, userid, username, 
       phone, flat_id, college, 
-      flat, room_num, is_default, 
-      create_time)
+      flat, room_num, create_time, 
+      is_default)
     values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{flatId,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, 
-      #{flat,jdbcType=VARCHAR}, #{roomNum,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{flat,jdbcType=VARCHAR}, #{roomNum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{isDefault,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Address">
+  <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Address" >
     insert into e_address
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="userid != null">
+      <if test="userid != null" >
         userid,
       </if>
-      <if test="username != null">
+      <if test="username != null" >
         username,
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         phone,
       </if>
-      <if test="flatId != null">
+      <if test="flatId != null" >
         flat_id,
       </if>
-      <if test="college != null">
+      <if test="college != null" >
         college,
       </if>
-      <if test="flat != null">
+      <if test="flat != null" >
         flat,
       </if>
-      <if test="roomNum != null">
+      <if test="roomNum != null" >
         room_num,
       </if>
-      <if test="isDefault != null">
-        is_default,
-      </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         create_time,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="userid != null">
-        #{userid,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="flatId != null">
-        #{flatId,jdbcType=VARCHAR},
-      </if>
-      <if test="college != null">
-        #{college,jdbcType=VARCHAR},
-      </if>
-      <if test="flat != null">
-        #{flat,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNum != null">
-        #{roomNum,jdbcType=VARCHAR},
-      </if>
-      <if test="isDefault != null">
-        #{isDefault,jdbcType=BIT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.zhijian.ebook.entity.AddressExample" resultType="java.lang.Integer">
-    select count(*) from e_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update e_address
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userid != null">
-        userid = #{record.userid,jdbcType=VARCHAR},
-      </if>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
-      </if>
-      <if test="record.phone != null">
-        phone = #{record.phone,jdbcType=VARCHAR},
-      </if>
-      <if test="record.flatId != null">
-        flat_id = #{record.flatId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.college != null">
-        college = #{record.college,jdbcType=VARCHAR},
-      </if>
-      <if test="record.flat != null">
-        flat = #{record.flat,jdbcType=VARCHAR},
-      </if>
-      <if test="record.roomNum != null">
-        room_num = #{record.roomNum,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isDefault != null">
-        is_default = #{record.isDefault,jdbcType=BIT},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update e_address
-    set id = #{record.id,jdbcType=VARCHAR},
-      userid = #{record.userid,jdbcType=VARCHAR},
-      username = #{record.username,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      flat_id = #{record.flatId,jdbcType=VARCHAR},
-      college = #{record.college,jdbcType=VARCHAR},
-      flat = #{record.flat,jdbcType=VARCHAR},
-      room_num = #{record.roomNum,jdbcType=VARCHAR},
-      is_default = #{record.isDefault,jdbcType=BIT},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Address">
-    update e_address
-    <set>
-      <if test="userid != null">
-        userid = #{userid,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="flatId != null">
-        flat_id = #{flatId,jdbcType=VARCHAR},
-      </if>
-      <if test="college != null">
-        college = #{college,jdbcType=VARCHAR},
-      </if>
-      <if test="flat != null">
-        flat = #{flat,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNum != null">
-        room_num = #{roomNum,jdbcType=VARCHAR},
-      </if>
-      <if test="isDefault != null">
-        is_default = #{isDefault,jdbcType=BIT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Address">
-    update e_address
-    set userid = #{userid,jdbcType=VARCHAR},
-      username = #{username,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      flat_id = #{flatId,jdbcType=VARCHAR},
-      college = #{college,jdbcType=VARCHAR},
-      flat = #{flat,jdbcType=VARCHAR},
-      room_num = #{roomNum,jdbcType=VARCHAR},
-      is_default = #{isDefault,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Address">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="userid" jdbcType="VARCHAR" property="userid" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="flat_id" jdbcType="VARCHAR" property="flatId" />
-    <result column="college" jdbcType="VARCHAR" property="college" />
-    <result column="flat" jdbcType="VARCHAR" property="flat" />
-    <result column="room_num" jdbcType="VARCHAR" property="roomNum" />
-    <result column="is_default" jdbcType="BIT" property="isDefault" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    id, userid, username, phone, flat_id, college, flat, room_num, is_default
-  </sql>
-  <select id="selectByExample" parameterType="com.zhijian.ebook.entity.AddressExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
-    <include refid="Base_Column_List" />
-    from e_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from e_address
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from e_address
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.AddressExample">
-    delete from e_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.zhijian.ebook.entity.Address">
-    insert into e_address (id, userid, username, 
-      phone, flat_id, college, 
-      flat, room_num, is_default
-      )
-    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{flatId,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, 
-      #{flat,jdbcType=VARCHAR}, #{roomNum,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Address">
-    insert into e_address
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="userid != null">
-        userid,
-      </if>
-      <if test="username != null">
-        username,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="flatId != null">
-        flat_id,
-      </if>
-      <if test="college != null">
-        college,
-      </if>
-      <if test="flat != null">
-        flat,
-      </if>
-      <if test="roomNum != null">
-        room_num,
-      </if>
-      <if test="isDefault != null">
+      <if test="isDefault != null" >
         is_default,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="userid != null">
+      <if test="userid != null" >
         #{userid,jdbcType=VARCHAR},
       </if>
-      <if test="username != null">
+      <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="flatId != null">
+      <if test="flatId != null" >
         #{flatId,jdbcType=VARCHAR},
       </if>
-      <if test="college != null">
+      <if test="college != null" >
         #{college,jdbcType=VARCHAR},
       </if>
-      <if test="flat != null">
+      <if test="flat != null" >
         #{flat,jdbcType=VARCHAR},
       </if>
-      <if test="roomNum != null">
+      <if test="roomNum != null" >
         #{roomNum,jdbcType=VARCHAR},
       </if>
-      <if test="isDefault != null">
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDefault != null" >
         #{isDefault,jdbcType=BIT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhijian.ebook.entity.AddressExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.zhijian.ebook.entity.AddressExample" resultType="java.lang.Integer" >
     select count(*) from e_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map" >
     update e_address
-    <set>
-      <if test="record.id != null">
+    <set >
+      <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.userid != null">
+      <if test="record.userid != null" >
         userid = #{record.userid,jdbcType=VARCHAR},
       </if>
-      <if test="record.username != null">
+      <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
-      <if test="record.phone != null">
+      <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.flatId != null">
+      <if test="record.flatId != null" >
         flat_id = #{record.flatId,jdbcType=VARCHAR},
       </if>
-      <if test="record.college != null">
+      <if test="record.college != null" >
         college = #{record.college,jdbcType=VARCHAR},
       </if>
-      <if test="record.flat != null">
+      <if test="record.flat != null" >
         flat = #{record.flat,jdbcType=VARCHAR},
       </if>
-      <if test="record.roomNum != null">
+      <if test="record.roomNum != null" >
         room_num = #{record.roomNum,jdbcType=VARCHAR},
       </if>
-      <if test="record.isDefault != null">
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDefault != null" >
         is_default = #{record.isDefault,jdbcType=BIT},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" parameterType="map" >
     update e_address
     set id = #{record.id,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=VARCHAR},
@@ -513,42 +236,46 @@
       college = #{record.college,jdbcType=VARCHAR},
       flat = #{record.flat,jdbcType=VARCHAR},
       room_num = #{record.roomNum,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       is_default = #{record.isDefault,jdbcType=BIT}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Address">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Address" >
     update e_address
-    <set>
-      <if test="userid != null">
+    <set >
+      <if test="userid != null" >
         userid = #{userid,jdbcType=VARCHAR},
       </if>
-      <if test="username != null">
+      <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="flatId != null">
+      <if test="flatId != null" >
         flat_id = #{flatId,jdbcType=VARCHAR},
       </if>
-      <if test="college != null">
+      <if test="college != null" >
         college = #{college,jdbcType=VARCHAR},
       </if>
-      <if test="flat != null">
+      <if test="flat != null" >
         flat = #{flat,jdbcType=VARCHAR},
       </if>
-      <if test="roomNum != null">
+      <if test="roomNum != null" >
         room_num = #{roomNum,jdbcType=VARCHAR},
       </if>
-      <if test="isDefault != null">
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDefault != null" >
         is_default = #{isDefault,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Address">
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Address" >
     update e_address
     set userid = #{userid,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
@@ -557,6 +284,7 @@
       college = #{college,jdbcType=VARCHAR},
       flat = #{flat,jdbcType=VARCHAR},
       room_num = #{roomNum,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       is_default = #{isDefault,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
