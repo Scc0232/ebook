@@ -1,1 +1,1 @@
-zhetengba init 
+ebook init 

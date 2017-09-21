@@ -14,11 +14,11 @@ public class StringConsts {
     /**
      * 上传票据---小图片保存地址
      */
-    public static final String ZHETENGBA_SMALL_IMG_PATH = "smallImg/";
+    public static final String EBOOK_SMALL_IMG_PATH = "smallImg/";
     /**
      * 上传票据---大图片保存地址
      */
-    public static final String ZHETENGBA_BIG_IMG_PATH = "bigImg/";
+    public static final String EBOOK_BIG_IMG_PATH = "bigImg/";
     
     /**
      * ue上传票据---小图片保存地址
@@ -28,12 +28,12 @@ public class StringConsts {
     /**
      * 服务器地址
      */
-    public static final String SERVER_PATH = "http://localhost:8080/zhetengba/";
+    public static final String SERVER_PATH = "http://localhost:8080/ebook/";
     
     /**
      * 票据文件上传保存根目录
      */
-    public static final String FILE_SAVE_ROOT_DIRECTORY = "/var/zhetengba/";
+    public static final String FILE_SAVE_ROOT_DIRECTORY = "/var/ebook/";
     /**
      * 用户图片上传保存根目录
      */
@@ -52,7 +52,7 @@ public class StringConsts {
     /**
      * 课程图片保存目录
      */
-    public static String classImg="/var/zhetengba/";
+    public static String classImg="/var/ebook/";
 
 	public static String COMMA = ",";
  

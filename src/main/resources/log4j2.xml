@@ -2,11 +2,11 @@
 <!-- status=debug 可以查看log4j的装配过程 -->
 <configuration status="ERROR" monitorInterval="1800">
 	<properties>
-		<property name="LOG_HOME">/var/log/zhetengba</property>
+		<property name="LOG_HOME">/var/log/ebook</property>
 		<!-- 日志备份目录 -->
 		<property name="BACKUP_HOME">{LOG_HOME}/backup</property>
 		<property name="STAT_NAME">stat</property>
-		<property name="SERVER_NAME">zhetengba</property>
+		<property name="SERVER_NAME">ebook</property>
 	</properties>
 	<appenders>
 		<!-- 定义控制台输出 -->

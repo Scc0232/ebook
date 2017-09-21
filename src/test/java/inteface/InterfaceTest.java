@@ -45,7 +45,7 @@ public class InterfaceTest{
 	public void test(){
 		try {
 			WebResource client = Client.create().resource("");
-			String url = "http://localhost:8080/zhetengba/industryMsg/findInDustryListByEmployeeCount.do";
+			String url = "http://localhost:8080/ebook/industryMsg/findInDustryListByEmployeeCount.do";
 			WebResource wr = client.path(url);
 			MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 			param.add("industry", "互联网");

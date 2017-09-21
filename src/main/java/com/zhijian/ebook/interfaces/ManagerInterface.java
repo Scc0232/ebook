@@ -188,7 +188,7 @@ public class ManagerInterface {
 	// return ResponseEntity.serverError("用户不存在！");
 	// }
 	// String app_name =
-	// ReadPropertiesFileUtils.getInstance().getPropValueByKey("zhetengba_app_name",
+	// ReadPropertiesFileUtils.getInstance().getPropValueByKey("_app_name",
 	// "折腾吧");
 	// if (StringUtils.isBlank(user.getMobilePhoneKey())) {
 	// return ResponseEntity.ok(VERFY_MOBILE_PHONEKEY_RESULT_INIT , "尊敬的用户，欢迎登录[" +
