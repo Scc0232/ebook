@@ -5,6 +5,8 @@ import java.util.List;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.Collect;
+import com.zhijian.ebook.entity.Donation;
+import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.ShoppingCart;
 
 public interface BookService {
@@ -44,5 +46,17 @@ public interface BookService {
 	List<Address> findAddress(Boolean def) throws Exception;
 
 	int selectDefaultAddress(String addressid) throws Exception;
+
+	int deleteAddress(String addressid) throws Exception;
+
+	List<String> findCollege() throws Exception;
+
+	List<String> findFlat(String collegename);
+
+	List<Order> findMyOrders() throws Exception;
+
+	int addDonation(Donation donation) throws Exception;
+
+	List<Donation> findMyDonation() throws Exception;
 
 }

@@ -24,6 +24,8 @@ import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryComment;
 import com.zhijian.ebook.entity.DiaryLike;
+import com.zhijian.ebook.entity.Donation;
+import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.Souvenir;
 import com.zhijian.ebook.enums.GradeLevel;
@@ -103,11 +105,9 @@ public class BookInterface {
 	 * 
 	 * @return ResponseEntity 返回图书实体
 	 */
-	@SuppressWarnings("unlikely-arg-type")
 	@ResponseBody
 	@RequestMapping(value = "login/selectHotBook", method = RequestMethod.GET)
 	public ResponseEntity selectHotBook(String grade, String classid) {
-		// String username = UserContextHelper.getUsername();
 		List<Book> list = null;
 		if (grade != null) {
 			grade = grade.trim();
@@ -236,10 +236,8 @@ public class BookInterface {
 	@ResponseBody
 	@RequestMapping(value = "login/selectDiary", method = RequestMethod.GET)
 	public ResponseEntity selectDiary(Integer page, Integer rows) {
-		String username = UserContextHelper.getUsername();
 		EasyuiPagination<Diary> list = null;
 		try {
-			String userid = userService.findUserByUsername(username).getId();
 			list = souvenirService.selectDiaryAll(page, rows);
 		} catch (Exception e) {
 			log.error("", e);
@@ -498,6 +496,24 @@ public class BookInterface {
 	}
 
 	/**
+	 * 获取我的订单
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findMyOrders", method = RequestMethod.GET)
+	public ResponseEntity findMyOrders() {
+		List<Order> list = null;
+		try {
+			list = bookService.findMyOrders();
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+
+	/**
 	 * 添加地址
 	 * 
 	 * @return ResponseEntity 返回状态
@@ -544,12 +560,115 @@ public class BookInterface {
 	@RequestMapping(value = "login/modifyDefaultAddress", method = RequestMethod.POST)
 	public ResponseEntity modifyDefaultAddress(String addressid) {
 		try {
-			int rows = bookService.selectDefaultAddress(addressid);
+			bookService.selectDefaultAddress(addressid);
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
 		}
 		return ResponseEntity.ok("修改默认地址成功");
+	}
+
+	/**
+	 * 删除地址
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/removeAddress", method = RequestMethod.POST)
+	public ResponseEntity removeAddress(String addressid) {
+		try {
+			int rows = bookService.deleteAddress(addressid);
+			if (rows > 0) {
+				return ResponseEntity.ok("删除地址成功");
+			} else {
+				return ResponseEntity.ok("参数有误");
+			}
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+
+	/**
+	 * 获取学校名称
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "unlogin/findCollege", method = RequestMethod.GET)
+	public ResponseEntity findCollege() {
+		try {
+			List<String> colleges = bookService.findCollege();
+			return ResponseEntity.ok(colleges);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+
+	/**
+	 * 获取宿舍楼名称
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "unlogin/findFlat", method = RequestMethod.GET)
+	public ResponseEntity findFlat(String collegename) {
+		List<String> flats = null;
+		try {
+			if (StringUtils.isBlank(collegename)) {
+				return ResponseEntity.ok("学校名称为空");
+			}
+			flats = bookService.findFlat(collegename);
+			if (flats == null || flats.size() < 1) {
+				return ResponseEntity.ok("该校没有宿舍");
+			}
+			return ResponseEntity.ok(flats);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+
+	/**
+	 * 捐赠图书
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/addDonation", method = RequestMethod.POST)
+	public ResponseEntity addDonation(Donation donation) {
+		try {
+			if (StringUtils.isBlank(donation.getBookId())) {
+				return ResponseEntity.ok("未提供明确的图书信息");
+			}
+			int rows = bookService.addDonation(donation);
+			if (rows > 0) {
+				return ResponseEntity.ok("捐赠成功");
+			}
+			return ResponseEntity.serverError("参数有误");
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+
+	/**
+	 * 我的捐赠
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findMyDonation", method = RequestMethod.GET)
+	public ResponseEntity findMyDonation() {
+		List<Donation> list = null;
+		try {
+			list = bookService.findMyDonation();
+			return ResponseEntity.ok(list);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
 	}
 
 }

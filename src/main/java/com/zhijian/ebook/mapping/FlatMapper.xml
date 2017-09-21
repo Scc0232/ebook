@@ -176,4 +176,16 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  
+  <select id="selectCollege"  resultType="java.lang.String">
+		select distinct college_name from e_flat order by college_name desc
+	</select>
+  
+  <select id="selectFlat"  resultType="java.lang.String" parameterType="java.lang.String">
+		select distinct flat_name from e_flat
+		<if test="collegename != null and collegename != ''">
+			where college_name = '${collegename}'
+		</if>
+		 order by flat_name desc
+	</select>
 </mapper>

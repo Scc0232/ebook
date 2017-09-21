@@ -1,7 +1,6 @@
 package com.zhijian.ebook.service.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +14,8 @@ import com.zhijian.ebook.dao.AddressMapper;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
 import com.zhijian.ebook.dao.CollectMapper;
+import com.zhijian.ebook.dao.DonationMapper;
+import com.zhijian.ebook.dao.FlatMapper;
 import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.dao.ShoppingCartMapper;
 import com.zhijian.ebook.dao.SouvenirMapper;
@@ -25,7 +26,10 @@ import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookExample;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
+import com.zhijian.ebook.entity.Donation;
+import com.zhijian.ebook.entity.DonationExample;
 import com.zhijian.ebook.entity.Order;
+import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.ShoppingCartExample;
 import com.zhijian.ebook.entity.Souvenir;
@@ -53,12 +57,18 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private SouvenirMapper souvenirMapper;
-	
+
 	@Autowired
 	private AddressMapper addressMapper;
-	
+
 	@Autowired
 	private OrderMapper orderMapper;
+
+	@Autowired
+	private FlatMapper flatMapper;
+	
+	@Autowired
+	private DonationMapper donationMapper;
 
 	@Override
 	public List<Book> selectHotBook(String grade, String classid) {
@@ -243,18 +253,18 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public int submitOrder(String[] productids, String addressid) throws Exception {
 		int flag = 0;
-		for(String productidnum : productids) {
+		for (String productidnum : productids) {
 			String productid = StringUtils.substringBefore(productidnum, StringConsts.COMMA);
 			int nums = Integer.parseInt(StringUtils.substringAfter(productidnum, StringConsts.COMMA));
-			dirSubmitOrder(productid,nums, addressid);
+			dirSubmitOrder(productid, nums, addressid);
 			flag++;
 		}
-		return flag==productids.length?1:0;
-		
+		return flag == productids.length ? 1 : 0;
+
 	}
 
 	@Override
-	public int dirSubmitOrder(String productid, int nums, String addressid) throws Exception{
+	public int dirSubmitOrder(String productid, int nums, String addressid) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		Order order = new Order();
 		Book book = bookMapper.selectByPrimaryKey(productid);
@@ -265,19 +275,25 @@ public class BookServiceImpl implements BookService {
 			order.setProductId(souvenir.getId());
 			order.setProductName(souvenir.getName());
 			order.setProductPrice(souvenir.getPrice());
-			order.setProductType((byte)0);
-		}else {
+			order.setProductType((byte) 0);
+		} else {
 			order.setProductIcon(book.getIcon());
 			order.setProductId(book.getId());
 			order.setProductName(book.getTitle());
 			order.setProductPrice(book.getePrice());
-			order.setProductType((byte)1);
+			order.setProductType((byte) 1);
 		}
 		order.setAddressId(addressid);
 		order.setCount(nums);
 		order.setIsValid(true);
 		order.setOrderNo(getRandomOrderNO());
 		order.setUserid(userid);
+
+		ShoppingCartExample shopExample = new ShoppingCartExample();
+		ShoppingCartExample.Criteria criteria = shopExample.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andProductIdEqualTo(productid);
+		shoppingCartMapper.deleteByExample(shopExample);
 		return orderMapper.insert(order);
 	}
 
@@ -292,33 +308,32 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int addAddress(Address address) throws Exception{
+	public int addAddress(Address address) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		address.setUserid(userid);
-		
+
 		AddressExample example = new AddressExample();
 		AddressExample.Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userid);
 		int counts = addressMapper.countByExample(example);
-		if (counts>0) {
+		if (counts > 0) {
 			address.setIsDefault(false);
-		}else {
+		} else {
 			address.setIsDefault(true);
 		}
-		
-		
+
 		return addressMapper.insert(address);
 	}
 
 	@Override
-	public List<Address> findAddress(Boolean def) throws Exception{
+	public List<Address> findAddress(Boolean def) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		AddressExample example = new AddressExample();
 		AddressExample.Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userid);
 		if (def) {
 			example.setOrderByClause(" is_default desc, create_time asc limit 1");
-		}else {
+		} else {
 			example.setOrderByClause(" is_default desc, create_time asc");
 		}
 		List<Address> list = addressMapper.selectByExample(example);
@@ -326,23 +341,95 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int selectDefaultAddress(String addressid) throws Exception{
+	public int selectDefaultAddress(String addressid) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		AddressExample example = new AddressExample();
 		AddressExample.Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userid);
 		criteria.andIsDefaultEqualTo(true);
 		List<Address> list = addressMapper.selectByExample(example);
-		if (list!=null&& list.size()>0) {
+		if (list != null && list.size() > 0) {
 			Address oldaddress = list.get(0);
 			oldaddress.setIsDefault(false);
 			addressMapper.updateByPrimaryKeySelective(oldaddress);
 		}
 		Address newAddress = addressMapper.selectByPrimaryKey(addressid);
 		newAddress.setIsDefault(true);
-		
-		
+
 		return addressMapper.updateByPrimaryKeySelective(newAddress);
+	}
+
+	@Override
+	public int deleteAddress(String addressid) throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		AddressExample example = new AddressExample();
+		AddressExample.Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andIdEqualTo(addressid);
+		int counts = addressMapper.countByExample(example);
+		return counts > 0 ? addressMapper.deleteByPrimaryKey(addressid) : 0;
+	}
+
+	@Override
+	public List<String> findCollege() throws Exception {
+		List<String> list = null;
+		list = flatMapper.selectCollege();
+		return list;
+	}
+
+	@Override
+	public List<String> findFlat(String collegename) {
+		List<String> list = null;
+		list = flatMapper.selectFlat(collegename);
+		return list;
+	}
+
+	@Override
+	public List<Order> findMyOrders() throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		List<Order> list = null;
+		OrderExample example = new OrderExample();
+		OrderExample.Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andIsValidEqualTo(true);
+		list = orderMapper.selectByExample(example);
+		return list;
+	}
+
+	@Override
+	public int addDonation(Donation donation) throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		Book book = bookMapper.selectByPrimaryKey(donation.getBookId());
+		Address address = addressMapper.selectByPrimaryKey(donation.getAddressId());
+		if (book != null && address != null) {
+				donation.setAuthor(book.getAuthor());
+				donation.setBookIcon(book.getIcon());
+				donation.setBookName(book.getTitle());
+				donation.setCreateTime(new Date());
+				donation.seteValue(book.getePrice());
+				donation.setIsbn(book.getIsbn());
+				donation.setIsValid(true);
+				donation.setPublisher(book.getPublisher());
+				donation.setStatus(0);
+				donation.setUserid(userid);
+				donationMapper.insert(donation);
+				return 1;
+		}
+
+		return 0;
+	}
+
+	@Override
+	public List<Donation> findMyDonation() throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		List<Donation> list = null;
+		DonationExample example = new DonationExample();
+		DonationExample.Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andIsValidEqualTo(true);
+		example.setOrderByClause("create_time desc");
+		list = donationMapper.selectByExample(example);
+		return list;
 	}
 
 }

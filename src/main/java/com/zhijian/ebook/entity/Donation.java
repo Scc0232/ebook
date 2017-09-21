@@ -13,7 +13,19 @@ public class Donation {
 
     private String bookIcon;
 
+    private String isbn;
+
+    private String author;
+
+    private String publisher;
+
+    private Boolean isNote;
+
+    private String degree;
+
     private String userid;
+
+    private String addressId;
 
     private Date createTime;
 
@@ -61,12 +73,60 @@ public class Donation {
         this.bookIcon = bookIcon == null ? null : bookIcon.trim();
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author == null ? null : author.trim();
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher == null ? null : publisher.trim();
+    }
+
+    public Boolean getIsNote() {
+        return isNote;
+    }
+
+    public void setIsNote(Boolean isNote) {
+        this.isNote = isNote;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree == null ? null : degree.trim();
+    }
+
     public String getUserid() {
         return userid;
     }
 
     public void setUserid(String userid) {
         this.userid = userid == null ? null : userid.trim();
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId == null ? null : addressId.trim();
     }
 
     public Date getCreateTime() {

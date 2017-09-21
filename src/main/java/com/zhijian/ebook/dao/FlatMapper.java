@@ -19,4 +19,8 @@ public interface FlatMapper {
     int updateByExampleSelective(@Param("record") Flat record, @Param("example") FlatExample example);
 
     int updateByExample(@Param("record") Flat record, @Param("example") FlatExample example);
+
+	List<String> selectCollege();
+
+	List<String> selectFlat(@Param("collegename")String collegename);
 }
