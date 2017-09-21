@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.User;
-import com.zhijian.ebook.base.service.UserRoleRelationService;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.AccessTokenMapper;
 import com.zhijian.ebook.entity.AccessToken;
@@ -38,9 +36,6 @@ public class WeixinServerImpl implements WeixinServer {
 
 	@Autowired
 	private AccessTokenMapper accessTokenMapper;
-
-	@Autowired
-	private UserMapper userMapper;
 
 	@Autowired
 	private UserService userService;

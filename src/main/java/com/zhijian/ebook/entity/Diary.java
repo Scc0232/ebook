@@ -26,6 +26,8 @@ public class Diary {
     private Date createTime;
 
     private Boolean isValid;
+    
+    private Boolean isLiked;
 
     public String getId() {
         return id;
@@ -122,4 +124,12 @@ public class Diary {
     public void setIsValid(Boolean isValid) {
         this.isValid = isValid;
     }
+
+	public Boolean getIsLiked() {
+		return isLiked;
+	}
+
+	public void setIsLiked(Boolean isLiked) {
+		this.isLiked = isLiked;
+	}
 }

@@ -38,7 +38,6 @@ import com.zhijian.ebook.bean.SMSCaptcha;
 import com.zhijian.ebook.bean.SysUserDetails;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.WeixinServer;
-import com.zhijian.ebook.util.CaptchaUtils;
 import com.zhijian.ebook.util.ConstantString;
 import com.zhijian.ebook.util.FileUpLoadUtils;
 import com.zhijian.ebook.util.PasswordEncoderUtil;
