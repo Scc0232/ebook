@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.DiaryComment;
 import com.zhijian.ebook.entity.DiaryCommentExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface DiaryCommentMapper {
     int updateByPrimaryKeySelective(DiaryComment record);
 
     int updateByPrimaryKey(DiaryComment record);
+
+	List<DiaryComment> slectCommentsByExample(@Param("example")DiaryCommentExample example, @Param("page")Page page);
 }

@@ -288,6 +288,27 @@ public class BookInterface {
 	}
 
 	/**
+	 * 获取日记评论列表
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findDiaryComments", method = RequestMethod.GET)
+	public ResponseEntity findDiaryComments(String diaryId, Integer page, Integer rows) {
+		EasyuiPagination<DiaryComment> list = null;
+		try {
+			if (StringUtils.isBlank(diaryId)) {
+				return ResponseEntity.illegalParam("");
+			}
+			list = souvenirService.findDiaryComments(diaryId, page, rows);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(list);
+	}
+	
+	/**
 	 * 日记点赞
 	 * 
 	 * @return ResponseEntity 返回状态

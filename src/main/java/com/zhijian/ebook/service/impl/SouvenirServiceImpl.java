@@ -1,5 +1,6 @@
 package com.zhijian.ebook.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.zhijian.ebook.dao.DiaryMapper;
 import com.zhijian.ebook.dao.SouvenirMapper;
 import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryComment;
+import com.zhijian.ebook.entity.DiaryCommentExample;
 import com.zhijian.ebook.entity.DiaryExample;
 import com.zhijian.ebook.entity.DiaryLike;
 import com.zhijian.ebook.entity.DiaryLikeExample;
@@ -119,8 +121,11 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Override
 	public int removeDiaryLike(String diaryId) throws Exception {
-		// TODO
 		String userId = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		Diary diary = diaryMapper.selectByPrimaryKey(diaryId);
+		diary.setLikedTimes(diary.getLikedTimes()-1);
+		diaryMapper.updateByPrimaryKeySelective(diary);
+		
 		DiaryLikeExample example = new DiaryLikeExample();
 		DiaryLikeExample.Criteria criteria = example.createCriteria();
 		criteria.andDiaryIdEqualTo(diaryId);
@@ -142,13 +147,13 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Override
 	public EasyuiPagination<Diary> selectMyDiary(Integer page, Integer rows, String userid) {
-		List<Diary> list = null;
+		List<Diary> list = new ArrayList<>();
 		DiaryExample example = new DiaryExample();
 		DiaryExample.Criteria criteria = example.createCriteria();
 		criteria.andVisibilityEqualTo(Boolean.TRUE);
 		criteria.andUseridEqualTo(userid);
 		Page pag = null;
-		if (page == null || rows == null || page < 1 || rows < 0) {
+		if (page == null || rows == null || page < 1 || rows < 1) {
 			pag = new Page(1, 10);
 		}
 		list = diaryMapper.selectDiaryByExample(example, pag);
@@ -163,6 +168,26 @@ public class SouvenirServiceImpl implements SouvenirService {
 		criteria.andDiaryIdEqualTo(diaryId);
 		criteria.andUseridEqualTo(userid);
 		return diaryLikeMapper.countByExample(likeExample);
+	}
+
+	@Override
+	public EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows)
+			throws Exception {
+		List<DiaryComment> list = new ArrayList<>();
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		DiaryCommentExample example = new DiaryCommentExample();
+		DiaryCommentExample.Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andDiaryIdEqualTo(diaryid);
+		criteria.andIsValidEqualTo(true);
+		Page pa = null;
+		if (page == null || rows == null || page < 1 || rows < 1) {
+			pa = new Page(1, 10);
+		}
+		list = diaryCommentMapper.slectCommentsByExample(example, pa);
+		
+		
+		return new EasyuiPagination<>(list.size(), list);
 	}
 
 }

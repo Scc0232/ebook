@@ -28,5 +28,7 @@ public interface SouvenirService {
 
 	int findIsLike(String diaryId) throws Exception;
 
+	EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows) throws Exception;
+
 
 }

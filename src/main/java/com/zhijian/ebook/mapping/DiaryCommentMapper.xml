@@ -229,4 +229,20 @@
       is_valid = #{isValid,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <!-- 自定义 -->
+  
+  <select id="slectCommentsByExample" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from e_diary_comment
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    order by create_time desc
+    <if test = "page != null">
+    	limit #{page.startRow},#{page.endRow}
+    </if>
+  </select>
+  
 </mapper>
