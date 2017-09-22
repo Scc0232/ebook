@@ -11,6 +11,10 @@ public class Order {
 
     private Byte productType;
 
+    private Double depPrice;
+
+    private Double desposit;
+
     private String productName;
 
     private Double productPrice;
@@ -57,6 +61,22 @@ public class Order {
 
     public void setProductType(Byte productType) {
         this.productType = productType;
+    }
+
+    public Double getDepPrice() {
+        return depPrice;
+    }
+
+    public void setDepPrice(Double depPrice) {
+        this.depPrice = depPrice;
+    }
+
+    public Double getDesposit() {
+        return desposit;
+    }
+
+    public void setDesposit(Double desposit) {
+        this.desposit = desposit;
     }
 
     public String getProductName() {

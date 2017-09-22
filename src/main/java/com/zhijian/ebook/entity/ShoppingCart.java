@@ -15,6 +15,10 @@ public class ShoppingCart {
 
     private String productIcon;
 
+    private Double depPrice;
+
+    private Double desposit;
+
     private String userid;
 
     private Date createTime;
@@ -69,6 +73,22 @@ public class ShoppingCart {
 
     public void setProductIcon(String productIcon) {
         this.productIcon = productIcon == null ? null : productIcon.trim();
+    }
+
+    public Double getDepPrice() {
+        return depPrice;
+    }
+
+    public void setDepPrice(Double depPrice) {
+        this.depPrice = depPrice;
+    }
+
+    public Double getDesposit() {
+        return desposit;
+    }
+
+    public void setDesposit(Double desposit) {
+        this.desposit = desposit;
     }
 
     public String getUserid() {

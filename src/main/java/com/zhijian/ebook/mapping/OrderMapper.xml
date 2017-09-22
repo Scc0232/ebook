@@ -6,6 +6,8 @@
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="product_id" property="productId" jdbcType="VARCHAR" />
     <result column="product_type" property="productType" jdbcType="TINYINT" />
+    <result column="dep_price" property="depPrice" jdbcType="DOUBLE" />
+    <result column="desposit" property="desposit" jdbcType="DOUBLE" />
     <result column="product_name" property="productName" jdbcType="VARCHAR" />
     <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
     <result column="product_icon" property="productIcon" jdbcType="VARCHAR" />
@@ -74,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, order_no, product_id, product_type, product_name, product_price, product_icon, 
-    userid, count, address_id, create_time, is_valid
+    id, order_no, product_id, product_type, dep_price, desposit, product_name, product_price, 
+    product_icon, userid, count, address_id, create_time, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.OrderExample" >
     select
@@ -109,16 +111,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Order" >
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
+        SELECT REPLACE(UUID(),'-','')
+    </selectKey>
     insert into e_order (id, order_no, product_id, 
-      product_type, product_name, product_price, 
-      product_icon, userid, count, 
-      address_id, create_time, is_valid
-      )
+      product_type, dep_price, desposit, 
+      product_name, product_price, product_icon, 
+      userid, count, address_id, 
+      create_time, is_valid)
     values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
-      #{productType,jdbcType=TINYINT}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, 
-      #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
-      #{addressId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT}
-      )
+      #{productType,jdbcType=TINYINT}, #{depPrice,jdbcType=DOUBLE}, #{desposit,jdbcType=DOUBLE}, 
+      #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, #{productIcon,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, #{addressId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Order" >
     insert into e_order
@@ -134,6 +139,12 @@
       </if>
       <if test="productType != null" >
         product_type,
+      </if>
+      <if test="depPrice != null" >
+        dep_price,
+      </if>
+      <if test="desposit != null" >
+        desposit,
       </if>
       <if test="productName != null" >
         product_name,
@@ -172,6 +183,12 @@
       </if>
       <if test="productType != null" >
         #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="depPrice != null" >
+        #{depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="desposit != null" >
+        #{desposit,jdbcType=DOUBLE},
       </if>
       <if test="productName != null" >
         #{productName,jdbcType=VARCHAR},
@@ -220,6 +237,12 @@
       <if test="record.productType != null" >
         product_type = #{record.productType,jdbcType=TINYINT},
       </if>
+      <if test="record.depPrice != null" >
+        dep_price = #{record.depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.desposit != null" >
+        desposit = #{record.desposit,jdbcType=DOUBLE},
+      </if>
       <if test="record.productName != null" >
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>
@@ -255,6 +278,8 @@
       order_no = #{record.orderNo,jdbcType=VARCHAR},
       product_id = #{record.productId,jdbcType=VARCHAR},
       product_type = #{record.productType,jdbcType=TINYINT},
+      dep_price = #{record.depPrice,jdbcType=DOUBLE},
+      desposit = #{record.desposit,jdbcType=DOUBLE},
       product_name = #{record.productName,jdbcType=VARCHAR},
       product_price = #{record.productPrice,jdbcType=DOUBLE},
       product_icon = #{record.productIcon,jdbcType=VARCHAR},
@@ -278,6 +303,12 @@
       </if>
       <if test="productType != null" >
         product_type = #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="depPrice != null" >
+        dep_price = #{depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="desposit != null" >
+        desposit = #{desposit,jdbcType=DOUBLE},
       </if>
       <if test="productName != null" >
         product_name = #{productName,jdbcType=VARCHAR},
@@ -311,6 +342,8 @@
     set order_no = #{orderNo,jdbcType=VARCHAR},
       product_id = #{productId,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=TINYINT},
+      dep_price = #{depPrice,jdbcType=DOUBLE},
+      desposit = #{desposit,jdbcType=DOUBLE},
       product_name = #{productName,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DOUBLE},
       product_icon = #{productIcon,jdbcType=VARCHAR},

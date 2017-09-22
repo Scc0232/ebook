@@ -106,6 +106,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Address" >
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
+        SELECT REPLACE(UUID(),'-','')
+    </selectKey>
     insert into e_address (id, userid, username, 
       phone, flat_id, college, 
       flat, room_num, create_time, 

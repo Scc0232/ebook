@@ -59,4 +59,6 @@ public interface BookService {
 
 	List<Donation> findMyDonation() throws Exception;
 
+	int deleteShoppingCart() throws Exception;
+
 }

@@ -44,12 +44,13 @@ public class SouvenirServiceImpl implements SouvenirService {
 	private UserService userService;
 
 	@Override
-	public List<Souvenir> selectSouvenirAll() {
+	public List<Souvenir> selectSouvenirAll(int type) {
 
 		List<Souvenir> list = null;
 		SouvenirExample example = new SouvenirExample();
 		SouvenirExample.Criteria criteria = example.createCriteria();
 		criteria.andIsValidEqualTo(true);
+		criteria.andTypeEqualTo(type);
 		example.setOrderByClause("name asc");
 
 		list = souvenirMapper.selectByExample(example);

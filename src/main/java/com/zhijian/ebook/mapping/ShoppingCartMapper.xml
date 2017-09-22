@@ -8,6 +8,8 @@
     <result column="product_name" property="productName" jdbcType="VARCHAR" />
     <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
     <result column="product_icon" property="productIcon" jdbcType="VARCHAR" />
+    <result column="dep_price" property="depPrice" jdbcType="DOUBLE" />
+    <result column="desposit" property="desposit" jdbcType="DOUBLE" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="count" property="count" jdbcType="INTEGER" />
@@ -72,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, product_id, product_type, product_name, product_price, product_icon, userid, 
-    create_time, count, is_valid
+    id, product_id, product_type, product_name, product_price, product_icon, dep_price, 
+    desposit, userid, create_time, count, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.ShoppingCartExample" >
     select
@@ -107,17 +109,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.ShoppingCart" >
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
     insert into e_shopping_cart (id, product_id, product_type, 
       product_name, product_price, product_icon, 
-      userid, create_time, count, 
-      is_valid)
+      dep_price, desposit, userid, 
+      create_time, count, is_valid
+      )
     values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, 
       #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, #{productIcon,jdbcType=VARCHAR}, 
-      #{userid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{count,jdbcType=INTEGER}, 
-      #{isValid,jdbcType=BIT})
+      #{depPrice,jdbcType=DOUBLE}, #{desposit,jdbcType=DOUBLE}, #{userid,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{count,jdbcType=INTEGER}, #{isValid,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.ShoppingCart" >
     insert into e_shopping_cart
@@ -139,6 +143,12 @@
       </if>
       <if test="productIcon != null" >
         product_icon,
+      </if>
+      <if test="depPrice != null" >
+        dep_price,
+      </if>
+      <if test="desposit != null" >
+        desposit,
       </if>
       <if test="userid != null" >
         userid,
@@ -171,6 +181,12 @@
       </if>
       <if test="productIcon != null" >
         #{productIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="depPrice != null" >
+        #{depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="desposit != null" >
+        #{desposit,jdbcType=DOUBLE},
       </if>
       <if test="userid != null" >
         #{userid,jdbcType=VARCHAR},
@@ -213,6 +229,12 @@
       <if test="record.productIcon != null" >
         product_icon = #{record.productIcon,jdbcType=VARCHAR},
       </if>
+      <if test="record.depPrice != null" >
+        dep_price = #{record.depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.desposit != null" >
+        desposit = #{record.desposit,jdbcType=DOUBLE},
+      </if>
       <if test="record.userid != null" >
         userid = #{record.userid,jdbcType=VARCHAR},
       </if>
@@ -238,6 +260,8 @@
       product_name = #{record.productName,jdbcType=VARCHAR},
       product_price = #{record.productPrice,jdbcType=DOUBLE},
       product_icon = #{record.productIcon,jdbcType=VARCHAR},
+      dep_price = #{record.depPrice,jdbcType=DOUBLE},
+      desposit = #{record.desposit,jdbcType=DOUBLE},
       userid = #{record.userid,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       count = #{record.count,jdbcType=INTEGER},
@@ -264,6 +288,12 @@
       <if test="productIcon != null" >
         product_icon = #{productIcon,jdbcType=VARCHAR},
       </if>
+      <if test="depPrice != null" >
+        dep_price = #{depPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="desposit != null" >
+        desposit = #{desposit,jdbcType=DOUBLE},
+      </if>
       <if test="userid != null" >
         userid = #{userid,jdbcType=VARCHAR},
       </if>
@@ -286,6 +316,8 @@
       product_name = #{productName,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DOUBLE},
       product_icon = #{productIcon,jdbcType=VARCHAR},
+      dep_price = #{depPrice,jdbcType=DOUBLE},
+      desposit = #{desposit,jdbcType=DOUBLE},
       userid = #{userid,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       count = #{count,jdbcType=INTEGER},

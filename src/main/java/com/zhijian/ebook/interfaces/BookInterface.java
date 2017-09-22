@@ -177,6 +177,9 @@ public class BookInterface {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
 		try {
+			if (StringUtils.isBlank(bookid)) {
+				return ResponseEntity.illegalParam("参数错误");
+			}
 			flag = bookService.updateHotValue(bookid);
 		} catch (Exception e) {
 			log.error("", e);
@@ -192,11 +195,11 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/selectSouvenir", method = RequestMethod.GET)
-	public ResponseEntity selectSouvenir() {
+	public ResponseEntity selectSouvenir(int type) {
 		// String username = UserContextHelper.getUsername();
 		List<Souvenir> list = null;
 		try {
-			list = souvenirService.selectSouvenirAll();
+			list = souvenirService.selectSouvenirAll(type);
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -443,6 +446,11 @@ public class BookInterface {
 	@RequestMapping(value = "login/removeShoppingCart", method = RequestMethod.POST)
 	public ResponseEntity removeShoppingCart(String productid) {
 		try {
+			if (StringUtils.isBlank(productid)) {
+				bookService.deleteShoppingCart();
+				return ResponseEntity.ok("清空购物车成功");
+			}
+			
 			List<ShoppingCart> list = bookService.isInShoppingCart(productid);
 			int rows = list != null && list.size() > 0 ? 1 : 0;
 			if (rows < 1) {
@@ -564,6 +572,10 @@ public class BookInterface {
 	public ResponseEntity findAddress(Boolean def) {
 		List<Address> list = null;
 		try {
+			if (def==null) {
+				def= false;
+			}
+			
 			list = bookService.findAddress(def);
 		} catch (Exception e) {
 			log.error("", e);

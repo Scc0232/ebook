@@ -3,6 +3,7 @@
 <mapper namespace="com.zhijian.ebook.dao.SouvenirMapper" >
   <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Souvenir" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="introduce" property="introduce" jdbcType="VARCHAR" />
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, price, introduce, icon, create_person, create_time, is_valid
+    id, type, name, price, introduce, icon, create_person, create_time, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.SouvenirExample" >
     select
@@ -104,21 +105,26 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Souvenir" >
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
-    insert into e_souvenir (id, name, price, 
-      introduce, icon, create_person, 
-      create_time, is_valid)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{introduce,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{createPerson,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT})
+    insert into e_souvenir (id, type, name, 
+      price, introduce, icon, 
+      create_person, create_time, is_valid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{introduce,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{createPerson,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Souvenir" >
     insert into e_souvenir
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="name != null" >
         name,
@@ -145,6 +151,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -181,6 +190,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -210,6 +222,7 @@
   <update id="updateByExample" parameterType="map" >
     update e_souvenir
     set id = #{record.id,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DOUBLE},
       introduce = #{record.introduce,jdbcType=VARCHAR},
@@ -224,6 +237,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Souvenir" >
     update e_souvenir
     <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -250,7 +266,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Souvenir" >
     update e_souvenir
-    set name = #{name,jdbcType=VARCHAR},
+    set type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       price = #{price,jdbcType=DOUBLE},
       introduce = #{introduce,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},

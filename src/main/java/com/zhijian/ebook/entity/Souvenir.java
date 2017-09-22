@@ -5,6 +5,8 @@ import java.util.Date;
 public class Souvenir {
     private String id;
 
+    private Integer type;
+
     private String name;
 
     private Double price;
@@ -25,6 +27,14 @@ public class Souvenir {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getName() {

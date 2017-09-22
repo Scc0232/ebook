@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -215,14 +216,18 @@ public class BookServiceImpl implements BookService {
 				shoppingCart.setProductIcon(souvenir.getIcon());
 				shoppingCart.setProductName(souvenir.getName());
 				shoppingCart.setProductPrice(souvenir.getPrice());
+				shoppingCart.setDepPrice(0.0);
+				shoppingCart.setDesposit(0.0);
 			} else {
 				// 图书 type = 1
 				shoppingCart.setProductType((byte) 1);
 				shoppingCart.setProductIcon(book.getIcon());
 				shoppingCart.setProductName(book.getTitle());
 				shoppingCart.setProductPrice(book.getePrice());
+				shoppingCart.setDepPrice(book.getDepPrice());
+				shoppingCart.setDesposit(book.getDeposit());
 			}
-
+			shoppingCart.setProductId(productid);
 			shoppingCart.setUserid(userid);
 			shoppingCart.setCount(numbers);
 			shoppingCart.setCreateTime(new Date());
@@ -272,17 +277,20 @@ public class BookServiceImpl implements BookService {
 		if (book == null) {
 			souvenir = souvenirMapper.selectByPrimaryKey(productid);
 			order.setProductIcon(souvenir.getIcon());
-			order.setProductId(souvenir.getId());
 			order.setProductName(souvenir.getName());
 			order.setProductPrice(souvenir.getPrice());
 			order.setProductType((byte) 0);
+			order.setDepPrice(0.0);
+			order.setDesposit(0.0);
 		} else {
 			order.setProductIcon(book.getIcon());
-			order.setProductId(book.getId());
 			order.setProductName(book.getTitle());
 			order.setProductPrice(book.getePrice());
 			order.setProductType((byte) 1);
+			order.setDepPrice(book.getDeposit());
+			order.setDesposit(book.getDeposit());
 		}
+		order.setProductId(productid);
 		order.setAddressId(addressid);
 		order.setCount(nums);
 		order.setIsValid(true);
@@ -311,7 +319,11 @@ public class BookServiceImpl implements BookService {
 	public int addAddress(Address address) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		address.setUserid(userid);
-
+		if (StringUtils.isNotBlank(address.getId())) {
+			address.setIsDefault(addressMapper.selectByPrimaryKey(address.getId()).getIsDefault());
+			
+			return addressMapper.updateByPrimaryKey(address);
+		}
 		AddressExample example = new AddressExample();
 		AddressExample.Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userid);
@@ -430,6 +442,16 @@ public class BookServiceImpl implements BookService {
 		example.setOrderByClause("create_time desc");
 		list = donationMapper.selectByExample(example);
 		return list;
+	}
+
+	@Override
+	public int deleteShoppingCart() throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		ShoppingCartExample example = new ShoppingCartExample();
+		ShoppingCartExample.Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andIsValidEqualTo(true);
+		return shoppingCartMapper.deleteByExample(example);
 	}
 
 }

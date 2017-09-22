@@ -10,7 +10,7 @@ import com.zhijian.ebook.entity.Souvenir;
 
 public interface SouvenirService {
 
-	List<Souvenir> selectSouvenirAll();
+	List<Souvenir> selectSouvenirAll(int type);
 
 	int addNewDiary(Diary diary);
 

@@ -375,6 +375,126 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andDepPriceIsNull() {
+            addCriterion("dep_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceIsNotNull() {
+            addCriterion("dep_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceEqualTo(Double value) {
+            addCriterion("dep_price =", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceNotEqualTo(Double value) {
+            addCriterion("dep_price <>", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceGreaterThan(Double value) {
+            addCriterion("dep_price >", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("dep_price >=", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceLessThan(Double value) {
+            addCriterion("dep_price <", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceLessThanOrEqualTo(Double value) {
+            addCriterion("dep_price <=", value, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceIn(List<Double> values) {
+            addCriterion("dep_price in", values, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceNotIn(List<Double> values) {
+            addCriterion("dep_price not in", values, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceBetween(Double value1, Double value2) {
+            addCriterion("dep_price between", value1, value2, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepPriceNotBetween(Double value1, Double value2) {
+            addCriterion("dep_price not between", value1, value2, "depPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositIsNull() {
+            addCriterion("desposit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositIsNotNull() {
+            addCriterion("desposit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositEqualTo(Double value) {
+            addCriterion("desposit =", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositNotEqualTo(Double value) {
+            addCriterion("desposit <>", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositGreaterThan(Double value) {
+            addCriterion("desposit >", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositGreaterThanOrEqualTo(Double value) {
+            addCriterion("desposit >=", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositLessThan(Double value) {
+            addCriterion("desposit <", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositLessThanOrEqualTo(Double value) {
+            addCriterion("desposit <=", value, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositIn(List<Double> values) {
+            addCriterion("desposit in", values, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositNotIn(List<Double> values) {
+            addCriterion("desposit not in", values, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositBetween(Double value1, Double value2) {
+            addCriterion("desposit between", value1, value2, "desposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDespositNotBetween(Double value1, Double value2) {
+            addCriterion("desposit not between", value1, value2, "desposit");
+            return (Criteria) this;
+        }
+
         public Criteria andProductNameIsNull() {
             addCriterion("product_name is null");
             return (Criteria) this;
