@@ -50,7 +50,8 @@ public class ExcelUtils<T> {
      * @return
      * @throws Exception
      */
-    private List<T> readExcel(MultipartFile file,Class<T> entityClazz,List<String> medthodList) throws Exception {
+    @SuppressWarnings("unlikely-arg-type")
+	private List<T> readExcel(MultipartFile file,Class<T> entityClazz,List<String> medthodList) throws Exception {
         String _fileName = file.getOriginalFilename();
         String suffer = _fileName.substring(_fileName.lastIndexOf(".") + 1);
         List<T> list = new ArrayList<T>();
@@ -190,7 +191,8 @@ public class ExcelUtils<T> {
      * @return
      * @throws Exception
      */
-    private boolean setValue(Class<?> clazzType,Method method,T t,Cell cell) throws Exception {
+    @SuppressWarnings("unlikely-arg-type")
+	private boolean setValue(Class<?> clazzType,Method method,T t,Cell cell) throws Exception {
         if (cell == null || cell.equals("")) {
             return false;
         }

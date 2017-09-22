@@ -32,7 +32,7 @@ package com.zhijian.ebook.util;
 //    private static final String APP_ID = "8a48b55152624825015263afff9604aa";
 //
 //    /**
-//     *TODO 注册验证码短信模板ID
+//     * 注册验证码短信模板ID
 //     */
 //    private static String DEFAULT_TEMPLATE_ID = "68392";
 //    

@@ -232,7 +232,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int addUser(User user, String userRoleId) {
-		//TODO 生成推荐码
 //		user.setMyReferralCode(generateReferralCode());
 		PasswordEncoderUtil md5Mncoder = new PasswordEncoderUtil(user.getUsername(), StringConsts.PASSWORD_ENCRYPTION_WAY);
 		String password = user.getPassword();
@@ -275,7 +274,8 @@ public class UserServiceImpl implements UserService {
      *
      * @return
      */
-    private String generateReferralCode() {
+    @SuppressWarnings("unused")
+	private String generateReferralCode() {
         return RandomStringUtils.randomAlphanumeric(REFERRAL_CODE_LENGTH)
                 .toUpperCase();
     }

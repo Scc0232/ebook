@@ -3,7 +3,6 @@ package com.zhijian.ebook.base.controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
 import com.zhijian.ebook.util.PasswordEncoderUtil;
-import com.zhijian.ebook.util.ReadPropertiesFileUtils;
 import com.zhijian.ebook.util.StringConsts;
 
 

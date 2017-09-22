@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.zhijian.ebook.base.dao.AuthorityMapper;
 import com.zhijian.ebook.base.dao.AuthorityResourceRelationMapper;
-import com.zhijian.ebook.base.dao.ResourceMapper;
 import com.zhijian.ebook.base.entity.AuthorityResourceRelation;
 import com.zhijian.ebook.base.entity.AuthorityResourceRelationExample;
 import com.zhijian.ebook.base.service.AuthorityResourceRelationService;
@@ -19,12 +17,6 @@ public class AuthorityResourceRelationServiceImpl implements AuthorityResourceRe
 	
 	@Autowired
 	private AuthorityResourceRelationMapper authorityResourceRelationMapper;
-	
-	@Autowired 
-	private AuthorityMapper authorityMapper;
-	
-	@Autowired
-	private ResourceMapper resourceMapper;
 	
 	@Override
 	public List<AuthorityResourceRelation> findAuthorityResourceRelation(AuthorityResourceRelation arr) {

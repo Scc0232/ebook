@@ -30,7 +30,6 @@ public class BookClassServiceImpl implements BookClassService {
 	@Autowired
 	private DictMapper dictMapper;
 
-	@SuppressWarnings("null")
 	@Override
 	public Map<String, List<?>> selectAll() {
 		Map<String, List<?>> map = new HashMap<String, List<?>>();

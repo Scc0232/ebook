@@ -29,7 +29,6 @@ public class ResourceController {
 	 * 
 	 * @return 资源列表路径
 	 */
-	@SuppressWarnings("static-method")
 	@RequestMapping("index")
 	public String index() {
 		return "manager/resource/resourceList";
@@ -58,7 +57,6 @@ public class ResourceController {
 	 * 
 	 * @return 添加资源路径
 	 */
-	@SuppressWarnings("static-method")
 	@RequestMapping("addResourceView")
 	public String addResourceView() {
 		return "manager/resource/addResource";

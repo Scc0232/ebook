@@ -22,12 +22,12 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
-
 import sun.misc.BASE64Decoder;
 /**
  * UEditor文件上传辅助类
  *
  */
+@SuppressWarnings("restriction")
 public class Uploader {
 	// 输出文件地址
 	private String url = "";
@@ -213,7 +213,7 @@ public class Uploader {
 	}
 
 	public void setSavePath(String savePath) {
-		this.savePath = savePath;
+		Uploader.savePath = savePath;
 	}
 
 	public void setAllowFiles(String[] allowFiles) {

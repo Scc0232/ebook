@@ -18,12 +18,12 @@ public class CaptchaUtils {
     /**
      * 图片验证码 宽度
      */
-    private static final int IMAGE_CAPTCHA_WIDTH = 200;
+//    private static final int IMAGE_CAPTCHA_WIDTH = 200;
 
     /**
      * 图片验证码 高度
      */
-    private static final int IMAGE_CAPTCHA_HEIGHT = 50;
+//    private static final int IMAGE_CAPTCHA_HEIGHT = 50;
 
     /**
      * 图片验证码 字符数

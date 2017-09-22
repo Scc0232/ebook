@@ -41,7 +41,6 @@ import com.zhijian.ebook.service.WeixinServer;
 import com.zhijian.ebook.util.ConstantString;
 import com.zhijian.ebook.util.FileUpLoadUtils;
 import com.zhijian.ebook.util.PasswordEncoderUtil;
-import com.zhijian.ebook.util.ReadPropertiesFileUtils;
 import com.zhijian.ebook.util.StringConsts;
 
 /**
@@ -123,7 +122,7 @@ public class ManagerInterface {
 			 * boolean isFlag = captchaService .validateSMSCaptcha(captcha, session); if
 			 * (!isFlag) { return ResponseEntity.serverError("验证码错误！"); }
 			 */
-			String countStr = ReadPropertiesFileUtils.getInstance().getPropValueByKey("default_bind_mobile_phone_count");
+//			String countStr = ReadPropertiesFileUtils.getInstance().getPropValueByKey("default_bind_mobile_phone_count");
 			// 设置手机可更换绑定次数(配置文件配置，如特殊需要修改，用户需联系管理员从管理平台修改)
 			// user.setBindMobileCount(StringUtils.isBlank(countStr)?0:Integer.valueOf(countStr));
 			// 验证手机号
@@ -155,13 +154,13 @@ public class ManagerInterface {
 		}
 	}
 
-	private static final String VERFY_MOBILE_PHONEKEY_RESULT_OK = "1"; // 校验通过
+//	private static final String VERFY_MOBILE_PHONEKEY_RESULT_OK = "1"; // 校验通过
 
-	private static final String VERFY_MOBILE_PHONEKEY_RESULT_INIT = "0"; // 登录手机key未绑定，需要绑定
+//	private static final String VERFY_MOBILE_PHONEKEY_RESULT_INIT = "0"; // 登录手机key未绑定，需要绑定
 
-	private static final String VERFY_MOBILE_PHONEKEY_RESULT_EDIT = "2"; // 更换手机key绑定状态
+//	private static final String VERFY_MOBILE_PHONEKEY_RESULT_EDIT = "2"; // 更换手机key绑定状态
 
-	private static final String VERFY_MOBILE_PHONEKEY_RESULT_FAIL = "-1"; // 更换手机key绑定状态
+//	private static final String VERFY_MOBILE_PHONEKEY_RESULT_FAIL = "-1"; // 更换手机key绑定状态
 
 	/**
 	 * 校验登录用户手机唯一key的绑定情况接口（登录前校验）
