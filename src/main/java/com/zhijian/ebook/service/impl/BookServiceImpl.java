@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhijian.ebook.base.service.UserService;
+import com.zhijian.ebook.bean.EasyuiPagination;
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.dao.AddressMapper;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
@@ -295,6 +297,7 @@ public class BookServiceImpl implements BookService {
 		order.setIsValid(true);
 		order.setOrderNo(getRandomOrderNO());
 		order.setUserid(userid);
+		order.setOrderStatus(0);
 
 		ShoppingCartExample shopExample = new ShoppingCartExample();
 		ShoppingCartExample.Criteria criteria = shopExample.createCriteria();
@@ -306,7 +309,7 @@ public class BookServiceImpl implements BookService {
 
 	public static String getRandomOrderNO() {
 		SimpleDateFormat simpleDateFormat;
-		simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
 		Date date = new Date();
 		String str = simpleDateFormat.format(date);
 		Random random = new Random();
@@ -451,6 +454,45 @@ public class BookServiceImpl implements BookService {
 		criteria.andUseridEqualTo(userid);
 		criteria.andIsValidEqualTo(true);
 		return shoppingCartMapper.deleteByExample(example);
+	}
+
+	@Override
+	public EasyuiPagination<Book> findBookPagination(Book book, Integer page, Integer rows) {
+		BookExample bookExample = new BookExample();
+		BookExample.Criteria criteria = bookExample.createCriteria();
+		if (StringUtils.isNotBlank(book.getTitle())) {
+			criteria.andTitleLike("%"+book.getTitle()+"%");
+		}
+		if (StringUtils.isNotBlank(book.getIsbn())) {
+			criteria.andIsbn10EqualTo(book.getIsbn());
+		}
+		if (StringUtils.isNotBlank(book.getClassId())) {
+			criteria.andClassIdEqualTo(book.getClassId());
+		}
+		bookExample.setOrderByClause("hot_value desc");
+		List<Book> list = bookMapper.findPaginationList(new Page(page, rows),bookExample);
+		
+		return new EasyuiPagination<Book>(list.size(),list);
+	}
+
+	@Override
+	public int addBook(Book book) {
+		return bookMapper.insert(book);
+	}
+
+	@Override
+	public int removeBookById(String id) {
+		return bookMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public Book findBookById(String id) {
+		return bookMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public int modifyBook(Book book) {
+		return bookMapper.updateByPrimaryKeySelective(book);
 	}
 
 }

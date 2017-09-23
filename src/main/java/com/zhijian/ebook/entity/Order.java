@@ -7,6 +7,8 @@ public class Order {
 
     private String orderNo;
 
+    private Integer orderStatus;
+
     private String productId;
 
     private Byte productType;
@@ -45,6 +47,14 @@ public class Order {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo == null ? null : orderNo.trim();
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getProductId() {

@@ -44,8 +44,8 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<!-- quartz定时任务配置  
-	<import resource="quartz-context.xml"/>-->
+	<!-- quartz定时任务配置  -->
+	<import resource="quartz-context.xml"/>
 	
 	<!-- spring security 配置 -->
 	<import resource="security-context.xml" />
