@@ -177,7 +177,7 @@ public class BookServiceImpl implements BookService {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		ShoppingCartExample example = new ShoppingCartExample();
 		ShoppingCartExample.Criteria criteria = example.createCriteria();
-		criteria.andProductIconEqualTo(productid);
+		criteria.andProductIdEqualTo(productid);
 		criteria.andUseridEqualTo(userid);
 		List<ShoppingCart> list = shoppingCartMapper.selectByExample(example);
 		return list;
