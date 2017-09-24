@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,9 @@ public class WeixinInterface {
 	
 	@Autowired
 	private WeixinServer weixinServer;
+	
+	private static final Logger log = LogManager.getLogger();
+
 
 	@ResponseBody
 	@RequestMapping(value="unlogin/link",method=RequestMethod.GET)
@@ -36,6 +41,12 @@ public class WeixinInterface {
 				String echostr = request.getParameter("echostr");
 
 				PrintWriter out = response.getWriter();
+				
+				log.error(signature+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				log.error(timestamp+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				log.error(nonce+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				log.error(echostr+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				
 				// 请求校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
 				if (WechatUtils.checkSignature(signature, timestamp, nonce)) {
 					out.print(echostr);

@@ -2,7 +2,9 @@ package com.zhijian.ebook.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
@@ -257,21 +259,24 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int submitOrder(String[] productids, String addressid) throws Exception {
-		int flag = 0;
-		for (String productidnum : productids) {
+	public String submitOrder(String productids, String addressid) throws Exception {
+		String[] product = productids.split(";");
+		String orderNo = getRandomOrderNO();
+		for (String productidnum : product) {
 			String productid = StringUtils.substringBefore(productidnum, StringConsts.COMMA);
 			int nums = Integer.parseInt(StringUtils.substringAfter(productidnum, StringConsts.COMMA));
-			dirSubmitOrder(productid, nums, addressid);
-			flag++;
+			dirSubmitOrder(productid, nums, addressid, orderNo);
 		}
-		return flag == productids.length ? 1 : 0;
-
+		return orderNo;
 	}
 
 	@Override
-	public int dirSubmitOrder(String productid, int nums, String addressid) throws Exception {
+	public int dirSubmitOrder(String productid, int nums, String addressid , String orderNo) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		if (orderNo==null) {
+			orderNo = getRandomOrderNO();
+		}
+		
 		Order order = new Order();
 		Book book = bookMapper.selectByPrimaryKey(productid);
 		Souvenir souvenir = null;
@@ -288,14 +293,14 @@ public class BookServiceImpl implements BookService {
 			order.setProductName(book.getTitle());
 			order.setProductPrice(book.getePrice());
 			order.setProductType((byte) 1);
-			order.setDepPrice(book.getDeposit());
+			order.setDepPrice(book.getDepPrice());
 			order.setDesposit(book.getDeposit());
 		}
 		order.setProductId(productid);
 		order.setAddressId(addressid);
 		order.setCount(nums);
 		order.setIsValid(true);
-		order.setOrderNo(getRandomOrderNO());
+		order.setOrderNo(orderNo);
 		order.setUserid(userid);
 		order.setOrderStatus(0);
 
@@ -406,6 +411,7 @@ public class BookServiceImpl implements BookService {
 		OrderExample.Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userid);
 		criteria.andIsValidEqualTo(true);
+		example.setOrderByClause("create_time desc");
 		list = orderMapper.selectByExample(example);
 		return list;
 	}
@@ -469,6 +475,9 @@ public class BookServiceImpl implements BookService {
 		if (StringUtils.isNotBlank(book.getClassId())) {
 			criteria.andClassIdEqualTo(book.getClassId());
 		}
+		if (StringUtils.isNotBlank(book.getAuthor())) {
+			criteria.andAuthorEqualTo("%"+book.getAuthor()+"%");
+		}
 		bookExample.setOrderByClause("hot_value desc");
 		List<Book> list = bookMapper.findPaginationList(new Page(page, rows),bookExample);
 		
@@ -493,6 +502,36 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public int modifyBook(Book book) {
 		return bookMapper.updateByPrimaryKeySelective(book);
+	}
+
+	@Override
+	public List<BookClass> findClassNameList() {
+		
+		return bookClassMapper.selectByExample(null);
+	}
+
+	@Override
+	public Map<String, String> computePrice(String orderNo) {
+		Map<String, String> map = new HashMap<>();
+		List<Order> list = null;
+		OrderExample example = new OrderExample();
+		OrderExample.Criteria criteria = example.createCriteria();
+		criteria.andOrderNoEqualTo(orderNo);
+		criteria.andIsValidEqualTo(true);
+		list = orderMapper.selectByExample(example);
+		int value = 0;
+		int prevalue = 0;
+		for(Order order : list) {
+			value += (order.getDepPrice()+order.getDesposit()+order.getProductPrice()) * order.getCount();
+			if (order.getProductType()==1) {
+				prevalue += order.getDepPrice() * order.getCount();
+			}else {
+				prevalue += 2* order.getCount();
+			}
+		}
+		map.put("value", value+"");
+		map.put("prevalue", prevalue+"");
+		return map;
 	}
 
 }

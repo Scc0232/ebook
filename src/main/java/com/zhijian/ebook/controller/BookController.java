@@ -1,5 +1,7 @@
 package com.zhijian.ebook.controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
 import com.zhijian.ebook.entity.Book;
+import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.service.BookService;
 
 /**
@@ -87,6 +90,20 @@ public class BookController {
 		map.put("BookMap", BookMap);
 		return "manager/Book/modifyBook";
 	}
+	
+	/**
+	 * 修改图书界面
+	 * 
+	 * @param map
+	 *            图书信息
+	 * @param BookId
+	 *            图书ID
+	 * @return 修改图书路径
+	 */
+	@RequestMapping("findClassNameList")
+	public List<BookClass> findClassNameList() {
+		return bookService.findClassNameList();
+	}
 
 	/**
 	 * 添加图书
@@ -128,7 +145,6 @@ public class BookController {
 	@ResponseBody
 	@RequestMapping("modifyBook")
 	public ResponseMsg modifyBook(ModelMap map, Book book) {
-		String id = book.getId();
 		// BookMap.setQq(qq);
 		// BookMap.setCompanyName(companyName);
 		// BookMap.setCompanyPhone(companyPhone);

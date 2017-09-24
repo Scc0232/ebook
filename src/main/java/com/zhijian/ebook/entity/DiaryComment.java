@@ -6,6 +6,10 @@ public class DiaryComment {
     private String id;
 
     private String userid;
+    
+    private String username;
+    
+    private String usericon;
 
     private String diaryId;
 
@@ -62,4 +66,20 @@ public class DiaryComment {
     public void setIsValid(Boolean isValid) {
         this.isValid = isValid;
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getUsericon() {
+		return usericon;
+	}
+
+	public void setUsericon(String usericon) {
+		this.usericon = usericon;
+	}
 }

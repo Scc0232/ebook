@@ -1,10 +1,12 @@
 package com.zhijian.ebook.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
+import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Donation;
 import com.zhijian.ebook.entity.Order;
@@ -38,9 +40,9 @@ public interface BookService {
 
 	List<ShoppingCart> findShoppingCart() throws Exception;
 
-	int submitOrder(String[] productids, String addressid) throws Exception;
+	String submitOrder(String productids, String addressid) throws Exception;
 
-	int dirSubmitOrder(String productid, int nums, String addressid) throws Exception;
+	int dirSubmitOrder(String productid, int nums, String addressid, String orderNo) throws Exception;
 
 	int addAddress(Address address) throws Exception;
 
@@ -71,5 +73,9 @@ public interface BookService {
 	Book findBookById(String id);
 
 	int modifyBook(Book book);
+
+	List<BookClass> findClassNameList();
+
+	Map<String, String> computePrice(String orderNo);
 
 }

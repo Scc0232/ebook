@@ -30,5 +30,7 @@ public interface SouvenirService {
 
 	EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows) throws Exception;
 
+	Diary findDiaryDetail(String diaryId) throws Exception;
+
 
 }

@@ -1,10 +1,19 @@
 package com.zhijian.ebook.interfaces;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +27,7 @@ import com.zhijian.ebook.base.entity.Dict;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseEntity;
+import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.Collect;
@@ -26,6 +36,7 @@ import com.zhijian.ebook.entity.DiaryComment;
 import com.zhijian.ebook.entity.DiaryLike;
 import com.zhijian.ebook.entity.Donation;
 import com.zhijian.ebook.entity.Order;
+import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.Souvenir;
 import com.zhijian.ebook.enums.GradeLevel;
@@ -33,6 +44,9 @@ import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.service.SouvenirService;
+import com.zhijian.ebook.util.MD5;
+import com.zhijian.ebook.util.WechatConfig;
+import com.zhijian.ebook.util.WechatCore;
 
 /**
  * 图书接口
@@ -58,6 +72,9 @@ public class BookInterface {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private OrderMapper orderMapper;
 
 	/**
 	 * 获取轮播图
@@ -270,6 +287,24 @@ public class BookInterface {
 	}
 
 	/**
+	 * 查看日记详情
+	 * 
+	 * @return ResponseEntity 返回日记实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findDiaryDetail", method = RequestMethod.GET)
+	public ResponseEntity findDiaryDetail(String diaryId) {
+		Diary diary = null;
+		try {
+			diary = souvenirService.findDiaryDetail(diaryId);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+		return ResponseEntity.ok(diary);
+	}
+	
+	/**
 	 * 添加日记评论
 	 * 
 	 * @return ResponseEntity 返回状态
@@ -310,7 +345,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(list);
 	}
-	
+
 	/**
 	 * 日记点赞
 	 * 
@@ -450,7 +485,7 @@ public class BookInterface {
 				bookService.deleteShoppingCart();
 				return ResponseEntity.ok("清空购物车成功");
 			}
-			
+
 			List<ShoppingCart> list = bookService.isInShoppingCart(productid);
 			int rows = list != null && list.size() > 0 ? 1 : 0;
 			if (rows < 1) {
@@ -490,13 +525,16 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/submitOrder", method = RequestMethod.POST)
-	public ResponseEntity submitOrder(String[] productids, String addressid) {
+	public ResponseEntity submitOrder(String productids, String addressid) {
+		Map<String, String> map = null;
 		try {
-			int rows = bookService.submitOrder(productids, addressid);
-			if (rows > 0) {
-				return ResponseEntity.ok("提交订单成功");
+
+			String orderNo = bookService.submitOrder(productids, addressid);
+			if (orderNo!=null) {
+				map = bookService.computePrice(orderNo);
+				return ResponseEntity.ok(map);
 			} else {
-				return ResponseEntity.ok("提交订单失败");
+				return ResponseEntity.serverError("提交订单失败");
 			}
 		} catch (Exception e) {
 			log.error("", e);
@@ -516,7 +554,7 @@ public class BookInterface {
 			if (nums < 1) {
 				nums = 1;
 			}
-			bookService.dirSubmitOrder(productid, nums, addressid);
+			bookService.dirSubmitOrder(productid, nums, addressid, null);
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -572,10 +610,10 @@ public class BookInterface {
 	public ResponseEntity findAddress(Boolean def) {
 		List<Address> list = null;
 		try {
-			if (def==null) {
-				def= false;
+			if (def == null) {
+				def = false;
 			}
-			
+
 			list = bookService.findAddress(def);
 		} catch (Exception e) {
 			log.error("", e);
@@ -703,5 +741,127 @@ public class BookInterface {
 			return ResponseEntity.serverError("操作失败");
 		}
 	}
+	
+	/**
+	 * 预支付
+	 * 
+	 * @return ResponseEntity 返回实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/prePay", method = RequestMethod.GET)
+	public ResponseEntity prePay(String orderNo, String fee, HttpServletRequest request) {
+		// String username = UserContextHelper.getUsername();
+		Object obj = nullValue();
+		try {
+			String ip = request.getLocalAddr();
+			obj = bookclassService.prePay(orderNo, fee, ip);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+
+		return ResponseEntity.ok(obj);
+	}
+	
+	/**
+	 * 微信支付回调
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "unlogin/notify", method = RequestMethod.GET)
+	public String notify(HttpServletRequest request){
+    	Map<String, String> resultMap = new HashMap<String, String>();
+    	InputStream is = null;
+    	try {
+			is = request.getInputStream();
+			if (is !=null ) {
+				String result = IOUtils.toString(is, "utf-8");
+				if (StringUtils.isEmpty(result)) {
+					// 参数错误
+					resultMap.put("return_code", "FAIL");
+					resultMap.put("return_msg", "参数错误");
+					return WechatCore.mapToXml(resultMap);
+				} else {
+					Map<String, String> paramMap = WechatCore
+							.xmlToMap(result);
+
+					String return_code = paramMap.get("return_code");
+					if (return_code.equals("SUCCESS")) {
+						// 校验签名
+						String signData = paramMap.get("sign");
+
+						paramMap = WechatCore.paraFilter(paramMap);
+						result = WechatCore.createLinkString(paramMap);
+						result += "&key=" + WechatConfig.APPSECRECT;
+						try {
+							result = MD5.getMessageDigest(
+									result.getBytes("utf-8"))
+									.toUpperCase();
+						} catch (UnsupportedEncodingException e1) {
+							// e1.printStackTrace();
+						}
+						// result = MD5.getMD5ofStr(result).toUpperCase();
+						if (!result.equals(signData)) {
+							resultMap.put("return_code", "FAIL");
+							resultMap.put("return_msg", "签名错误");
+							return WechatCore.mapToXml(resultMap);
+						}
+
+						String result_code = paramMap.get("result_code");
+						if (result_code.equals("SUCCESS")) {
+							// 成功支付
+							// 交易成功，更新商户订单状态
+							String id = paramMap.get("out_trade_no");
+//							CrbtOrder order = orderService.findOne(Long.parseLong(id));
+							OrderExample orderExample = new OrderExample();
+							OrderExample.Criteria criteria = orderExample.createCriteria();
+							criteria.andOrderNoEqualTo(id);
+							int counts = orderMapper.countByExample(orderExample);
+							List<Order> orders = orderMapper.selectByExample(orderExample);
+							if (counts <1) {
+								resultMap.put("return_code", "FAIL");
+								resultMap.put("return_msg", "支付订单不存在！");
+								return WechatCore.mapToXml(resultMap);
+							}
+							if (orders.get(0).getOrderStatus() == 1) {
+								resultMap.put("return_code", "SUCCESS");
+								resultMap.put("return_msg", "OK");
+								return WechatCore.mapToXml(resultMap);
+							}
+							String total_fee = paramMap.get("total_fee");
+//							if (order.getFee() * 100 != Float
+//									.valueOf(total_fee)) {
+//								resultMap.put("return_code", "FAIL");
+//								resultMap.put("return_msg", "支付金额不一致！");
+//								return WechatCore.mapToXml(resultMap);
+//							}
+							String pay_voucher = paramMap.get("transaction_id");
+							String payment_time = paramMap.get("time_end");
+							String bank_type = paramMap.get("bank_type");// 付款银行
+							String type = paramMap.get("attach");//回传参数,付费内容，3补缴
+//							order.setStatus((byte) 1);
+//							orderDao.save(order);
+							for(Order or : orders) {
+								or.setOrderStatus(1);
+								orderMapper.updateByPrimaryKeySelective(or);
+							}
+						}
+					}
+				}
+				
+			}
+			resultMap.put("return_code", "FAIL");
+			resultMap.put("return_msg", "系统错误");
+			return WechatCore.mapToXml(resultMap);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			resultMap.put("return_code", "FAIL");
+			resultMap.put("return_msg", "系统错误");
+			return WechatCore.mapToXml(resultMap);
+		}
+    }
+	
 
 }

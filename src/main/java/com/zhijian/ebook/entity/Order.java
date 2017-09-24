@@ -31,6 +31,8 @@ public class Order {
 
     private Date createTime;
 
+    private String message;
+
     private Boolean isValid;
 
     public String getId() {
@@ -143,6 +145,14 @@ public class Order {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message == null ? null : message.trim();
     }
 
     public Boolean getIsValid() {

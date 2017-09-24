@@ -117,7 +117,7 @@ public class WeixinServerImpl implements WeixinServer {
 				userIds.add(userid);
 				user.setId(userid);
 				user.setUsername(jsonObject.getString("openid").toString());
-				user.setPetName(jsonObject.getString("nickname").toString());
+//				user.setPetName(jsonObject.getString("nickname").toString());
 				user.setSex(jsonObject.getString("sex").toString());
 				user.setIcon(jsonObject.getString("headimgurl").toString());
 				user.setCreateTime(new Date());

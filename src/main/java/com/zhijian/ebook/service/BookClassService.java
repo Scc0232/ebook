@@ -16,4 +16,6 @@ public interface BookClassService {
 
 	List<Dict> findBanner();
 
+	Object prePay(String orderNo, String fee, String ip);
+
 }

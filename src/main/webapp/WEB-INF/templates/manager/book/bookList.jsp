@@ -20,13 +20,25 @@
 			selectOnCheck : true,
 			columns : [ [ { field : 'id', title : '选择', checkbox : true },
 			        { field : 'isbn', title : 'ISBN', width:'120px' },
-			        { field : 'title', title : '书名', width:'120px' },
+			        { field : 'title', title : '书名', width:'160px' },
 			        { field : 'author', title : '作者', width:'120px' },
 			        { field : 'page', title : '页数', width:'120px' },
-			        { field : 'e_price', title : 'e币价格', width:'120px' },
+			        { field : 'ePrice', title : 'e币价格', width:'120px' },
 			        { field : 'author', title : '作者', width:'120px' },
-			        { field : 'grade', title : '年级', width:'120px' },
-					{ field : 'pubDate', title : '创建时间', width:'150px', formatter : function(val) {
+			        { field : 'className', title : '分类', width:'120px' },
+			        { field : 'grade', title : '年级', width:'120px' ,formatter : function(val){
+                   		if(val=='one'){
+                   			return '大一';
+                   		}else if(val=='two'){
+                   			return '大二';
+                   		}else if(val=='three'){
+                   			return '大三';
+                   		}else {
+                   			return '大四';
+                   		}
+                   		
+                   	}},
+					{ field : 'pubdate', title : '创建时间', width:'150px', formatter : function(val) {
 						return formatDate(val);
 					} } ] ],
 			// 工具栏
@@ -119,7 +131,7 @@
 	</div>
 	<div style="padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">
 		<a id="book-addBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-add'">增加图书</a> 
-		<a id="book-modifyBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-book_gray'">修改图书</a>
+		<a id="book-modifyBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-user_gray'">修改图书</a>
 		<a id="book-removeBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-edit_remove'">删除图书</a>
 	</div>
 </div>

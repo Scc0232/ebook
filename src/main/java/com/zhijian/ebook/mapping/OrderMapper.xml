@@ -16,6 +16,7 @@
     <result column="count" property="count" jdbcType="INTEGER" />
     <result column="address_id" property="addressId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, order_no, order_status, product_id, product_type, dep_price, desposit, product_name, 
-    product_price, product_icon, userid, count, address_id, create_time, is_valid
+    product_price, product_icon, userid, count, address_id, create_time, message, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.OrderExample" >
     select
@@ -112,21 +113,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Order" >
-      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
     insert into e_order (id, order_no, order_status, 
       product_id, product_type, dep_price, 
       desposit, product_name, product_price, 
       product_icon, userid, count, 
-      address_id, create_time, is_valid
-      )
+      address_id, create_time, message, 
+      is_valid)
     values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, 
       #{productId,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, #{depPrice,jdbcType=DOUBLE}, 
       #{desposit,jdbcType=DOUBLE}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, 
       #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
-      #{addressId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=BIT}
-      )
+      #{addressId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{message,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Order" >
     insert into e_order
@@ -172,6 +173,9 @@
       </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+      <if test="message != null" >
+        message,
       </if>
       <if test="isValid != null" >
         is_valid,
@@ -219,6 +223,9 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
       </if>
       <if test="isValid != null" >
         #{isValid,jdbcType=BIT},
@@ -276,6 +283,9 @@
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.message != null" >
+        message = #{record.message,jdbcType=VARCHAR},
+      </if>
       <if test="record.isValid != null" >
         is_valid = #{record.isValid,jdbcType=BIT},
       </if>
@@ -300,6 +310,7 @@
       count = #{record.count,jdbcType=INTEGER},
       address_id = #{record.addressId,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      message = #{record.message,jdbcType=VARCHAR},
       is_valid = #{record.isValid,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -347,6 +358,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
       <if test="isValid != null" >
         is_valid = #{isValid,jdbcType=BIT},
       </if>
@@ -368,6 +382,7 @@
       count = #{count,jdbcType=INTEGER},
       address_id = #{addressId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      message = #{message,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>

@@ -1,5 +1,7 @@
 package com.zhijian.ebook.service.impl;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhijian.ebook.base.dao.UserMapper;
+import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
@@ -42,6 +46,9 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public List<Souvenir> selectSouvenirAll(int type) {
@@ -76,6 +83,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 		DiaryExample example = new DiaryExample();
 		DiaryExample.Criteria criteria = example.createCriteria();
 		criteria.andVisibilityEqualTo(Boolean.TRUE);
+		criteria.andIsValidEqualTo(true);
 		Page pag = null;
 		if (page == null || rows == null || page < 1 || rows < 0) {
 			pag = new Page(1, 10);
@@ -87,6 +95,10 @@ public class SouvenirServiceImpl implements SouvenirService {
 			DiaryLikeExample.Criteria criteria2 = likeExample.createCriteria();
 			criteria2.andUseridEqualTo(userid);
 			criteria2.andDiaryIdEqualTo(diary.getId());
+			User userEntity = userMapper.selectByPrimaryKey(diary.getUserid());
+			diary.setUsername(userEntity.getPetName());
+			diary.setUsericon(userEntity.getIcon());
+			
 			int counts = diaryLikeMapper.countByExample(likeExample);
 			if(counts>0) {
 				diary.setIsLiked(true);
@@ -186,9 +198,36 @@ public class SouvenirServiceImpl implements SouvenirService {
 			pa = new Page(1, 10);
 		}
 		list = diaryCommentMapper.slectCommentsByExample(example, pa);
-		
+		for(DiaryComment comment : list) {
+			User userEntity = userMapper.selectByPrimaryKey(comment.getUserid());
+			comment.setUsername(userEntity.getPetName());
+			comment.setUsericon(userEntity.getIcon());
+		}
 		
 		return new EasyuiPagination<>(list.size(), list);
+	}
+
+	@Override
+	public Diary findDiaryDetail(String diaryId) throws Exception {
+		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		Diary diary = diaryMapper.selectByPrimaryKey(diaryId);
+		User userEntity = userMapper.selectByPrimaryKey(diary.getUserid());
+		diary.setUsername(userEntity.getPetName());
+		diary.setUsericon(userEntity.getIcon());
+		
+		DiaryLikeExample likeExample = new DiaryLikeExample();
+		DiaryLikeExample.Criteria criteria = likeExample.createCriteria();
+		criteria.andUseridEqualTo(userid);
+		criteria.andDiaryIdEqualTo(diaryId);
+		criteria.andIsValidEqualTo(true);
+		int counts = diaryLikeMapper.countByExample(likeExample);
+		if (counts>0) {
+			diary.setIsLiked(true);
+		}else {
+			diary.setIsLiked(false);
+		}
+		
+		return diary;
 	}
 
 }
