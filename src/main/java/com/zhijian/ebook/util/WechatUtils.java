@@ -9,6 +9,11 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -176,6 +181,68 @@ public class WechatUtils {
 
 		String s = new String(tempArr);
 		return s;
+	}
+
+	/**
+	 * 微信支付签名算法sign
+	 * 
+	 * @param characterEncoding
+	 * @param parameters
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String createSign(String characterEncoding, SortedMap<String, String> parameters) {
+		StringBuffer sb = new StringBuffer();
+		Set es = parameters.entrySet();// 所有参与传参的参数按照accsii排序（升序）
+		Iterator it = es.iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			String k = (String) entry.getKey();
+			Object v = entry.getValue();
+			if (null != v && !"".equals(v) && !"sign".equals(k) && !"key".equals(k)) {
+				sb.append(k + "=" + v + "&");
+			}
+		}
+		String key = WechatConfig.KEYSECRECT;
+		sb.append("key=" + key);
+		String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
+		return sign;
+	}
+
+	public static boolean checkSign(String xmlString) {
+		Map<String, String> map = null;
+		try {
+			map = WechatCore.xmlToMap(xmlString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String signFromAPIResponse = map.get("sign").toString();
+		if (signFromAPIResponse == "" || signFromAPIResponse == null) {
+			System.out.println("API返回的数据签名数据不存在，有可能被第三方篡改!!!");
+			return false;
+		}
+		System.out.println("服务器回包里面的签名是:" + signFromAPIResponse);
+		// 清掉返回数据对象里面的Sign数据（不能把这个数据也加进去进行签名），然后用签名算法进行签名
+		map.put("sign", "");
+		// 将API返回的数据根据用签名算法进行计算新的签名，用来跟API返回的签名进行比较
+		String signForAPIResponse = getSign(map);
+		if (!signForAPIResponse.equals(signFromAPIResponse)) {
+			// 签名验不过，表示这个API返回的数据有可能已经被篡改了
+			System.out.println("API返回的数据签名验证不通过，有可能被第三方篡改!!! signForAPIResponse生成的签名为" + signForAPIResponse);
+			return false;
+		}
+		System.out.println("恭喜，API返回的数据签名验证通过!!!");
+		return true;
+	}
+
+	public static String getSign(Map<String, String> map) {
+		SortedMap<String, String> signParams = new TreeMap<String, String>();
+		for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
+			signParams.put(stringStringEntry.getKey(), stringStringEntry.getValue());
+		}
+		signParams.remove("sign");
+		String sign = createSign("UTF-8", signParams);
+		return sign;
 	}
 
 }

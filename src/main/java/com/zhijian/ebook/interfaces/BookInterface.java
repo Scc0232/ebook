@@ -1,17 +1,19 @@
 package com.zhijian.ebook.interfaces;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +24,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.zhijian.ebook.base.entity.Dict;
 import com.zhijian.ebook.base.service.UserService;
@@ -44,9 +49,12 @@ import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.service.SouvenirService;
+import com.zhijian.ebook.util.FileUpLoadUtils;
 import com.zhijian.ebook.util.MD5;
+import com.zhijian.ebook.util.StringConsts;
 import com.zhijian.ebook.util.WechatConfig;
 import com.zhijian.ebook.util.WechatCore;
+import com.zhijian.ebook.util.WechatUtils;
 
 /**
  * 图书接口
@@ -72,7 +80,7 @@ public class BookInterface {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private OrderMapper orderMapper;
 
@@ -133,9 +141,7 @@ public class BookInterface {
 			classid = classid.trim();
 		}
 		try {
-			if ((grade != null) && (grade.equals(GradeLevel.ONE_LEVEL.getLevel())
-					|| grade.equals(GradeLevel.TWO_LEVEL.getLevel()) || grade.equals(GradeLevel.THREE_LEVEL.getLevel())
-					|| grade.equals(GradeLevel.FOUR_LEVEL.getLevel()))) {
+			if ((grade != null) && (grade.equals(GradeLevel.ONE_LEVEL.getLevel()) || grade.equals(GradeLevel.TWO_LEVEL.getLevel()) || grade.equals(GradeLevel.THREE_LEVEL.getLevel()) || grade.equals(GradeLevel.FOUR_LEVEL.getLevel()))) {
 				list = bookService.selectHotBook(grade, null);
 			} else if (classid != null) {
 				list = bookService.selectHotBook(null, classid);
@@ -235,8 +241,7 @@ public class BookInterface {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
 		try {
-			if ((StringUtils.isNotBlank(diary.getTitle()))
-					&& (StringUtils.isNotBlank(diary.getContent()) || StringUtils.isNotBlank(diary.getIcon()))) {
+			if ((StringUtils.isNotBlank(diary.getTitle())) && (StringUtils.isNotBlank(diary.getContent()) || StringUtils.isNotBlank(diary.getIcon()))) {
 				flag = souvenirService.addNewDiary(diary);
 				return ResponseEntity.ok(flag);
 			} else {
@@ -303,7 +308,7 @@ public class BookInterface {
 		}
 		return ResponseEntity.ok(diary);
 	}
-	
+
 	/**
 	 * 添加日记评论
 	 * 
@@ -530,7 +535,7 @@ public class BookInterface {
 		try {
 
 			String orderNo = bookService.submitOrder(productids, addressid);
-			if (orderNo!=null) {
+			if (orderNo != null) {
 				map = bookService.computePrice(orderNo);
 				return ResponseEntity.ok(map);
 			} else {
@@ -741,7 +746,7 @@ public class BookInterface {
 			return ResponseEntity.serverError("操作失败");
 		}
 	}
-	
+
 	/**
 	 * 预支付
 	 * 
@@ -754,7 +759,6 @@ public class BookInterface {
 		Object obj = null;
 		try {
 			String ip = request.getLocalAddr();
-			ip = "211.95.63.212";
 			obj = bookclassService.prePay(orderNo, fee, ip);
 		} catch (Exception e) {
 			log.error("", e);
@@ -763,106 +767,155 @@ public class BookInterface {
 
 		return ResponseEntity.ok(obj);
 	}
-	
+
 	/**
 	 * 微信支付回调
+	 * 
 	 * @param request
 	 * @return
 	 */
+	@RequestMapping("unlogin/notify")
 	@ResponseBody
-	@RequestMapping(value = "unlogin/notify", method = RequestMethod.GET)
-	public String notify(HttpServletRequest request){
-    	Map<String, String> resultMap = new HashMap<String, String>();
-    	InputStream is = null;
-    	try {
+	public String notify(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		InputStream is = null;
+		try {
 			is = request.getInputStream();
-			if (is !=null ) {
+			if (is != null) {
 				String result = IOUtils.toString(is, "utf-8");
+				log.info("result 返回参数:" + result);
 				if (StringUtils.isEmpty(result)) {
 					// 参数错误
 					resultMap.put("return_code", "FAIL");
 					resultMap.put("return_msg", "参数错误");
+					log.info("return_msg" + "参数错误");
 					return WechatCore.mapToXml(resultMap);
 				} else {
-					Map<String, String> paramMap = WechatCore
-							.xmlToMap(result);
-
+					Map<String, String> paramMap = WechatCore.xmlToMap(result);
+					log.info("paramMap回传参数:" + paramMap);
 					String return_code = paramMap.get("return_code");
 					if (return_code.equals("SUCCESS")) {
 						// 校验签名
 						String signData = paramMap.get("sign");
-
 						paramMap = WechatCore.paraFilter(paramMap);
-						result = WechatCore.createLinkString(paramMap);
-						result += "&key=" + WechatConfig.APPSECRECT;
-						try {
-							result = MD5.getMessageDigest(
-									result.getBytes("utf-8"))
-									.toUpperCase();
-						} catch (UnsupportedEncodingException e1) {
-							// e1.printStackTrace();
-						}
-						// result = MD5.getMD5ofStr(result).toUpperCase();
-						if (!result.equals(signData)) {
+						if (!WechatUtils.checkSign(result)) {
 							resultMap.put("return_code", "FAIL");
 							resultMap.put("return_msg", "签名错误");
+							log.info("return_msg" + "签名错误");
 							return WechatCore.mapToXml(resultMap);
 						}
-
 						String result_code = paramMap.get("result_code");
 						if (result_code.equals("SUCCESS")) {
 							// 成功支付
 							// 交易成功，更新商户订单状态
 							String id = paramMap.get("out_trade_no");
-//							CrbtOrder order = orderService.findOne(Long.parseLong(id));
+							// CrbtOrder order = orderService.findOne(Long.parseLong(id));
 							OrderExample orderExample = new OrderExample();
 							OrderExample.Criteria criteria = orderExample.createCriteria();
 							criteria.andOrderNoEqualTo(id);
 							int counts = orderMapper.countByExample(orderExample);
 							List<Order> orders = orderMapper.selectByExample(orderExample);
-							if (counts <1) {
+							if (counts < 1) {
 								resultMap.put("return_code", "FAIL");
 								resultMap.put("return_msg", "支付订单不存在！");
+								log.info("return_msg" + "支付订单不存在！");
 								return WechatCore.mapToXml(resultMap);
 							}
 							if (orders.get(0).getOrderStatus() == 1) {
+								resultMap.put("return_code", "FAIL");
+								resultMap.put("return_msg", "已支付的订单");
+							}
+							String total_fee = paramMap.get("total_fee");
+							// if (order.getFee() * 100 != Float
+							// .valueOf(total_fee)) {
+							// resultMap.put("return_code", "FAIL");
+							// resultMap.put("return_msg", "支付金额不一致！");
+							// return WechatCore.mapToXml(resultMap);
+							// }
+							String attach = paramMap.get("attach");
+							if (Integer.parseInt(attach) == 2) {
+								for (Order or : orders) {
+									or.setOrderStatus(1);
+									orderMapper.updateByPrimaryKeySelective(or);
+								}
 								resultMap.put("return_code", "SUCCESS");
 								resultMap.put("return_msg", "OK");
 								return WechatCore.mapToXml(resultMap);
 							}
-							String total_fee = paramMap.get("total_fee");
-//							if (order.getFee() * 100 != Float
-//									.valueOf(total_fee)) {
-//								resultMap.put("return_code", "FAIL");
-//								resultMap.put("return_msg", "支付金额不一致！");
-//								return WechatCore.mapToXml(resultMap);
-//							}
-							String pay_voucher = paramMap.get("transaction_id");
-							String payment_time = paramMap.get("time_end");
-							String bank_type = paramMap.get("bank_type");// 付款银行
-							String type = paramMap.get("attach");//回传参数,付费内容，3补缴
-//							order.setStatus((byte) 1);
-//							orderDao.save(order);
-							for(Order or : orders) {
-								or.setOrderStatus(1);
-								orderMapper.updateByPrimaryKeySelective(or);
-							}
 						}
 					}
 				}
-				
+
 			}
 			resultMap.put("return_code", "FAIL");
 			resultMap.put("return_msg", "系统错误");
 			return WechatCore.mapToXml(resultMap);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			resultMap.put("return_code", "FAIL");
 			resultMap.put("return_msg", "系统错误");
 			return WechatCore.mapToXml(resultMap);
 		}
-    }
-	
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "login/uploadImg", method = RequestMethod.POST)
+	public ResponseEntity uploadImg(HttpServletRequest request) {
+		String userName = UserContextHelper.getUsername();
+		if (StringUtils.isBlank(userName)) {
+			return ResponseEntity.serverError("请先登录");
+		}
+		try {
+			List<String> sufferList = new ArrayList<>();
+			sufferList.add("jpg");
+			sufferList.add("png");
+			sufferList.add("gif");
+			sufferList.add("bmp");
+			sufferList.add("jpeg");
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+			Map<String, List<String>> fileImgMap = new HashMap<>();
+			List<MultipartFile> valueList = new ArrayList<>();
+			int vainIndex = 0;
+			if (multipartResolver.isMultipart(request)) {
+				MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+
+				Iterator<String> iter = multiRequest.getFileNames();
+				while (iter.hasNext()) {
+					MultipartFile file = multiRequest.getFile((String) iter.next());
+					if (file != null) {
+						String suffer = FileUpLoadUtils.getFileSuffix(file);
+						if (sufferList.contains(suffer.toLowerCase())) {
+							valueList.add(file);
+						} else {
+							vainIndex++;
+						}
+					}
+				}
+				if (vainIndex > 0) {
+					return ResponseEntity.serverError("只支持jpg,png,gif,bmp,jpeg格式的图片, 请检查!");
+				}
+				if (valueList.size() == 0) {
+					return ResponseEntity.serverError("没有要上传的图片");
+				}
+				String PATH = "/var/ebook/image/";
+				String imgPath = PATH + "gallery";
+				String bigPath = PATH + "biggallery";
+				List<String> imglist = new ArrayList<>();
+				for (MultipartFile file : valueList) {
+					String newFileName = StringConsts.randomFileName().substring(15);
+
+					String smallPaths = FileUpLoadUtils.writeFile(file, imgPath, newFileName, true);
+					imglist.add(smallPaths);
+					FileUpLoadUtils.writeFile(file, bigPath, newFileName, false);
+				}
+				fileImgMap.put("imgpaths", imglist);
+			}
+			log.info("图片上传成功,上传路径:", new Object[] { fileImgMap.toString() });
+			return ResponseEntity.ok(fileImgMap, "上传图片成功");
+		} catch (Exception e) {
+			log.error("上传图片异常!", e);
+		}
+		return ResponseEntity.serverError("上传图片异常");
+	}
 
 }
