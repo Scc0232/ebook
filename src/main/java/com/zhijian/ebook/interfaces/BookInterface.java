@@ -751,9 +751,10 @@ public class BookInterface {
 	@RequestMapping(value = "login/prePay", method = RequestMethod.GET)
 	public ResponseEntity prePay(String orderNo, String fee, HttpServletRequest request) {
 		// String username = UserContextHelper.getUsername();
-		Object obj = nullValue();
+		Object obj = null;
 		try {
 			String ip = request.getLocalAddr();
+			ip = "211.95.63.212";
 			obj = bookclassService.prePay(orderNo, fee, ip);
 		} catch (Exception e) {
 			log.error("", e);

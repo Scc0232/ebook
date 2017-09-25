@@ -105,7 +105,7 @@ public class BookClassServiceImpl implements BookClassService {
 		paramMap.put("body", "订单支付");
 		paramMap.put("out_trade_no", String.valueOf(orderNo));
 		paramMap.put("fee_type", "CNY");
-		paramMap.put("total_fee", fee);
+		paramMap.put("total_fee", Math.round(Double.parseDouble(fee)*100)+"");
 		paramMap.put("spbill_create_ip", ip);
 		paramMap.put("notify_url", WechatConfig.NOTIFYURL);
 		paramMap.put("trade_type", "JSAPI");
