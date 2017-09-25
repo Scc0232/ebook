@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-//import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.http.client.methods.HttpGet;
 
 import com.zhijian.ebook.base.dao.DictMapper;
 import com.zhijian.ebook.base.entity.Dict;
