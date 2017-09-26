@@ -4,16 +4,19 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -245,4 +248,81 @@ public class WechatUtils {
 		return sign;
 	}
 
+	
+	public static void main(String[] args) throws UnsupportedEncodingException {
+		Map<String, String> params = new HashMap<String, String>();
+        params.put("appid",WechatConfig.APPID);
+        params.put("secret",WechatConfig.APPSECRECT);
+        params.put("access_token", "8Ygpu-xPHgsGVFpvWkjTl1r3aiQtL_hYV8Ras4fOiUhGHd-zO_CEJGYWCK1jOd6Uu0iCmb_l8lPrYWLJ58KfxqEGVxWlT08pJ06M82WG9JrxBtTeauPqDx52S_M8DZxfFKGcAEAPUQ");
+		String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket";
+		Map<String, String> map = new HashMap<String, String>();
+		String xml = HttpXmlClient.post(url,params); 
+		JSONObject jsonMap  = JSONObject.fromObject(xml);
+		Iterator<String> it = jsonMap.keys();  
+		jsonMap  = JSONObject.fromObject(xml);
+        it = jsonMap.keys();  
+        while(it.hasNext()) {  
+            String key = (String) it.next();  
+            String u = jsonMap.get(key).toString();
+            map.put(key, u);  
+        }
+        String jsapi_ticket = map.get("ticket");
+        System.out.println("jsapi_ticket=" + jsapi_ticket);
+ 
+        //获取签名signature
+        String noncestr = UUID.randomUUID().toString();
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        noncestr = "201ac188-3484-4600-906d-7285b8c201bb";
+        timestamp = "1506437543";
+        
+         url="http://mp.weixin.qq.com";
+         //"jsapi_ticket=" + jsapi_ticket +
+        String str = "jsapi_ticket=" + jsapi_ticket +
+                "&noncestr=" + noncestr +
+                "&timestamp=" + timestamp +
+                "&url=" + url;
+        System.out.println(str);
+        //sha1加密
+        String signature = SHA1(str);
+        System.out.println("noncestr=" + noncestr);
+        System.out.println("timestamp=" + timestamp);
+        System.out.println("signature=" + signature);
+        //最终获得调用微信js接口验证需要的三个参数noncestr、timestamp、signature
+        
+        Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("noncestr", noncestr);
+		paramMap.put("timestamp", timestamp);
+		paramMap.put("jsapi_ticket", "null");
+		paramMap.put("url", url);
+		paramMap = WechatCore.paraFilter(paramMap);
+		String result = WechatCore.createLinkString(paramMap);
+		System.out.println(result);
+		System.out.println("result:"+SHA1(result));
+	}
+	
+	public static String SHA1(String str) throws UnsupportedEncodingException {
+        try {
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance("SHA-1"); //如果是SHA加密只需要将"SHA-1"改成"SHA"即可
+            digest.reset();
+            digest.update(str.getBytes("UTF-8"));
+            byte messageDigest[] = digest.digest();
+            // Create Hex String
+            StringBuffer hexStr = new StringBuffer();
+            // 字节数组转换为 十六进制 数
+            for (int i = 0; i < messageDigest.length; i++) {
+                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+                if (shaHex.length() < 2) {
+                    hexStr.append(0);
+                }
+                hexStr.append(shaHex);
+            }
+            return hexStr.toString();
+ 
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
 }
