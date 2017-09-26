@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-//import com.gener.common.util.ObjectUtil;
 import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.Dict;
 import com.zhijian.ebook.base.entity.User;
@@ -281,6 +280,9 @@ public class ManagerInterface {
 
 			if (openid == null) {
 				openid = weixinServer.getOpenIds(code);
+				if (openid == null) {
+					return ResponseEntity.serverError("重复的code");
+				}
 			}
 
 			// String openid = weixinServer.getOpenIds(code);
@@ -425,55 +427,7 @@ public class ManagerInterface {
 		}
 	}
 
-	// /**
-	// * 发送手机验证码
-	// *
-	// * @param request
-	// * 请求
-	// * @param response
-	// * 响应
-	// * @param phoneNumber
-	// * 手机号
-	// * @param imageCaptcha
-	// * 图片验证码
-	// * @param isRegister
-	// * 是注册还是找回密码
-	// * @return ResponseEntity 响应信息
-	// */
-	// @ResponseBody
-	// @RequestMapping(value = "unLogin/sendSmsCaptcha", method =
-	// RequestMethod.POST)
-	// public ResponseEntity sendSmsCaptcha(HttpServletRequest request,
-	// HttpServletResponse response, String phoneNumber,
-	// String imageCaptcha, boolean isRegister) {
-	// HttpSession session = request.getSession();
-	// if (StringUtils.isBlank(phoneNumber)) {
-	// return ResponseEntity.serverError("手机号为空！");
-	// }
-	// try {
-	// ResponseEntity result = captchaService.isCanSend(
-	// request.getRemoteAddr(), phoneNumber, isRegister);
-	// if (result == null) {
-	// // 发送短信验证码
-	// String captcha = CaptchaUtils.generate();
-	// log.info("phoneNumber={},captcha={}", phoneNumber, captcha);
-	// Map<String, Object> smsResult = SMSUtils.sendCaptchaSMS(
-	// phoneNumber, captcha);
-	// log.info(smsResult);
-	// // 实例化SMSCaptcha, 并放入Session中
-	// SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
-	// captchaService.setSMSCaptchaToSession(sms, session);
-	// log.info("发送短信验证码完成！{}", sms);
-	// return ResponseEntity.ok();
-	// } else {
-	// return result;
-	// }
-	// } catch (Exception e) {
-	// log.error("根据用户名查询唯一用户失败", e);
-	// return ResponseEntity.serverError();
-	// }
-	// }
-
+	
 	/**
 	 * 忘记密码接口（需要短信验证码）
 	 *

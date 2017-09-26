@@ -298,4 +298,21 @@ public class UserServiceImpl implements UserService {
 			return flag;
 	
 	}
+
+	@Override
+	public boolean isBindThisMobile(String phoneNumber) {
+		UserExample example = new UserExample();
+		UserExample.Criteria criteria = example.createCriteria();
+		criteria.andPhoneEqualTo(phoneNumber);
+		criteria.andIsValidEqualTo(true);
+		int counts = userMapper.countByExample(example);
+		return counts==0?false:true;
+	}
+
+	@Override
+	public int bindMoidle(String phoneNumber) {
+		User userEntity = userMapper.findUserByUsername(UserContextHelper.getUsername());
+		userEntity.setPhone(phoneNumber);
+		return userMapper.updateByPrimaryKeySelective(userEntity);
+	}
 }

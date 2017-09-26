@@ -92,4 +92,8 @@ public interface UserService {
 	 * @throws Exception
 	 */
 	public int findCountByReferralCode(String referralCode)throws Exception;
+
+	boolean isBindThisMobile(String phoneNumber);
+
+	int bindMoidle(String phoneNumber);
 }

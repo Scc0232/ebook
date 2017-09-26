@@ -2,18 +2,16 @@ package com.zhijian.ebook.interfaces;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,9 +27,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.zhijian.ebook.base.entity.Dict;
+import com.zhijian.ebook.base.service.CaptchaService;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseEntity;
+import com.zhijian.ebook.bean.SMSCaptcha;
 import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
@@ -49,12 +49,15 @@ import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.service.SouvenirService;
+import com.zhijian.ebook.util.CaptchaUtils;
 import com.zhijian.ebook.util.FileUpLoadUtils;
-import com.zhijian.ebook.util.MD5;
 import com.zhijian.ebook.util.StringConsts;
-import com.zhijian.ebook.util.WechatConfig;
 import com.zhijian.ebook.util.WechatCore;
 import com.zhijian.ebook.util.WechatUtils;
+import com.zhijian.ebook.util.CLSMS.ChuangLanSmsUtil;
+import com.zhijian.ebook.util.CLSMS.SMSType;
+import com.zhijian.ebook.util.CLSMS.SmsBalanceResponse;
+import com.zhijian.ebook.util.CLSMS.SmsSendResponse;
 
 /**
  * 图书接口
@@ -83,6 +86,9 @@ public class BookInterface {
 
 	@Autowired
 	private OrderMapper orderMapper;
+
+	@Autowired
+	private CaptchaService captchaService;
 
 	/**
 	 * 获取轮播图
@@ -783,7 +789,6 @@ public class BookInterface {
 			is = request.getInputStream();
 			if (is != null) {
 				String result = IOUtils.toString(is, "utf-8");
-				log.info("result 返回参数:" + result);
 				if (StringUtils.isEmpty(result)) {
 					// 参数错误
 					resultMap.put("return_code", "FAIL");
@@ -796,8 +801,7 @@ public class BookInterface {
 					String return_code = paramMap.get("return_code");
 					if (return_code.equals("SUCCESS")) {
 						// 校验签名
-						String signData = paramMap.get("sign");
-						paramMap = WechatCore.paraFilter(paramMap);
+						// paramMap = WechatCore.paraFilter(paramMap);
 						if (!WechatUtils.checkSign(result)) {
 							resultMap.put("return_code", "FAIL");
 							resultMap.put("return_msg", "签名错误");
@@ -809,7 +813,6 @@ public class BookInterface {
 							// 成功支付
 							// 交易成功，更新商户订单状态
 							String id = paramMap.get("out_trade_no");
-							// CrbtOrder order = orderService.findOne(Long.parseLong(id));
 							OrderExample orderExample = new OrderExample();
 							OrderExample.Criteria criteria = orderExample.createCriteria();
 							criteria.andOrderNoEqualTo(id);
@@ -825,13 +828,6 @@ public class BookInterface {
 								resultMap.put("return_code", "FAIL");
 								resultMap.put("return_msg", "已支付的订单");
 							}
-							String total_fee = paramMap.get("total_fee");
-							// if (order.getFee() * 100 != Float
-							// .valueOf(total_fee)) {
-							// resultMap.put("return_code", "FAIL");
-							// resultMap.put("return_msg", "支付金额不一致！");
-							// return WechatCore.mapToXml(resultMap);
-							// }
 							String attach = paramMap.get("attach");
 							if (Integer.parseInt(attach) == 2) {
 								for (Order or : orders) {
@@ -845,7 +841,6 @@ public class BookInterface {
 						}
 					}
 				}
-
 			}
 			resultMap.put("return_code", "FAIL");
 			resultMap.put("return_msg", "系统错误");
@@ -858,6 +853,106 @@ public class BookInterface {
 		}
 	}
 
+	/**
+	 * 发送手机验证码
+	 *
+	 * @param request
+	 *            请求
+	 * @param response
+	 *            响应
+	 * @param phoneNumber
+	 *            手机号
+	 * @return ResponseEntity 响应信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/sendSmsCaptcha", method = RequestMethod.GET)
+	public ResponseEntity sendSmsCaptcha(HttpServletRequest request, HttpServletResponse response, String phoneNumber) {
+		HttpSession session = request.getSession();
+		if (StringUtils.isBlank(phoneNumber)) {
+			return ResponseEntity.serverError("手机号为空！");
+		}
+		if (!userService.isBindThisMobile(phoneNumber)) {
+			return ResponseEntity.ok("该手机号已被绑定,请更换手机!");
+		}
+		try {
+			String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+			ResponseEntity result = captchaService.isCanSend(userid, phoneNumber, false);
+			if (result == null) {
+				String captcha = CaptchaUtils.generate();
+				SmsSendResponse res = ChuangLanSmsUtil.sendMessage(SMSType.templateSMS(SMSType.EB_TITLE, captcha), phoneNumber);
+				log.info("响应状态:" + res);
+				if (res.getCode().equals("0")) {
+					SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
+					captchaService.setSMSCaptchaToSession(sms, session);
+					log.info("发送短信验证码完成！{}", sms);
+					return ResponseEntity.ok();
+				} else {
+					SmsBalanceResponse smsbalance = ChuangLanSmsUtil.selectBlance();
+					log.info(smsbalance);
+					log.info("余额状态:" + smsbalance.getBalance());
+					if (Integer.parseInt(smsbalance.getBalance()) == 0) {
+						return ResponseEntity.serverError("余额不足");
+					}
+					return ResponseEntity.serverError(res.getErrorMsg());
+				}
+			} else {
+				return result;
+			}
+		} catch (Exception e) {
+			return ResponseEntity.serverError();
+		}
+
+	}
+	
+	
+	/**
+	 * 绑定手机号
+	 *
+	 * @param request
+	 *            请求
+	 * @param response
+	 *            响应
+	 * @param phoneNumber
+	 *            手机号
+	 * @return ResponseEntity 响应信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/bindMobile", method = RequestMethod.POST)
+	public ResponseEntity bindMobile(HttpServletRequest request, String captcha, String phoneNumber) {
+		HttpSession session = request.getSession();
+		if (StringUtils.isBlank(captcha)) {
+			return ResponseEntity.serverError("短信验证码为空！");
+		}
+		if (StringUtils.isBlank(phoneNumber)) {
+			return ResponseEntity.serverError("手机号为空！");
+		}
+		if (!userService.isBindThisMobile(phoneNumber)) {
+			return ResponseEntity.ok("该手机号已被绑定,请更换手机!");
+		}
+		try {
+			SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
+			Boolean flag = captchaService.validateSMSCaptcha(sms, session);
+			if (flag) {
+				int rows = userService.bindMoidle(phoneNumber);
+				if (rows>0) {
+					log.info("{} 手机号绑定成功！", phoneNumber);
+					return ResponseEntity.ok();
+				}
+				return ResponseEntity.serverError();
+			}else {
+				return ResponseEntity.serverError("验证码错误！");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.serverError();
+		}
+
+	}
+	
+	/**
+	 * 上传图片
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "login/uploadImg", method = RequestMethod.POST)
 	public ResponseEntity uploadImg(HttpServletRequest request) {
