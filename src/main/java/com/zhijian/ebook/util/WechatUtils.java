@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zhijian.ebook.entity.AccessToken;
+import com.zhijian.ebook.service.impl.BookClassServiceImpl;
 
 /**
  * 公众平台通用接口工具类
@@ -250,54 +251,108 @@ public class WechatUtils {
 
 	
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		Map<String, String> params = new HashMap<String, String>();
-        params.put("appid",WechatConfig.APPID);
-        params.put("secret",WechatConfig.APPSECRECT);
-        params.put("access_token", "8Ygpu-xPHgsGVFpvWkjTl1r3aiQtL_hYV8Ras4fOiUhGHd-zO_CEJGYWCK1jOd6Uu0iCmb_l8lPrYWLJ58KfxqEGVxWlT08pJ06M82WG9JrxBtTeauPqDx52S_M8DZxfFKGcAEAPUQ");
-		String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket";
-		Map<String, String> map = new HashMap<String, String>();
-		String xml = HttpXmlClient.post(url,params); 
-		JSONObject jsonMap  = JSONObject.fromObject(xml);
-		Iterator<String> it = jsonMap.keys();  
-		jsonMap  = JSONObject.fromObject(xml);
-        it = jsonMap.keys();  
-        while(it.hasNext()) {  
-            String key = (String) it.next();  
-            String u = jsonMap.get(key).toString();
-            map.put(key, u);  
-        }
-        String jsapi_ticket = map.get("ticket");
-        System.out.println("jsapi_ticket=" + jsapi_ticket);
+//		Map<String, String> params = new HashMap<String, String>();
+//        params.put("appid",WechatConfig.APPID);
+//        params.put("secret",WechatConfig.APPSECRECT);
+//        params.put("access_token", "8Ygpu-xPHgsGVFpvWkjTl1r3aiQtL_hYV8Ras4fOiUhGHd-zO_CEJGYWCK1jOd6Uu0iCmb_l8lPrYWLJ58KfxqEGVxWlT08pJ06M82WG9JrxBtTeauPqDx52S_M8DZxfFKGcAEAPUQ");
+//		String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket";
+//		Map<String, String> map = new HashMap<String, String>();
+//		String xml = HttpXmlClient.post(url,params); 
+//		JSONObject jsonMap  = JSONObject.fromObject(xml);
+//		Iterator<String> it = jsonMap.keys();  
+//		jsonMap  = JSONObject.fromObject(xml);
+//        it = jsonMap.keys();  
+//        while(it.hasNext()) {  
+//            String key = (String) it.next();  
+//            String u = jsonMap.get(key).toString();
+//            map.put(key, u);  
+//        }
+//        String jsapi_ticket = map.get("ticket");
+//        System.out.println("jsapi_ticket=" + jsapi_ticket);
  
         //获取签名signature
-        String noncestr = UUID.randomUUID().toString();
-        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-        noncestr = "201ac188-3484-4600-906d-7285b8c201bb";
-        timestamp = "1506437543";
-        
-         url="http://mp.weixin.qq.com";
-         //"jsapi_ticket=" + jsapi_ticket +
-        String str = "jsapi_ticket=" + jsapi_ticket +
-                "&noncestr=" + noncestr +
-                "&timestamp=" + timestamp +
-                "&url=" + url;
-        System.out.println(str);
-        //sha1加密
-        String signature = SHA1(str);
-        System.out.println("noncestr=" + noncestr);
-        System.out.println("timestamp=" + timestamp);
-        System.out.println("signature=" + signature);
-        //最终获得调用微信js接口验证需要的三个参数noncestr、timestamp、signature
-        
-        Map<String, String> paramMap = new HashMap<String, String>();
+//        String noncestr = UUID.randomUUID().toString();
+//        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+//        noncestr = "201ac188-3484-4600-906d-7285b8c201bb";
+//        timestamp = "1506437543";
+//        
+//        String url="http://mp.weixin.qq.com";
+//         String jsapi_ticket = null;
+//		//"jsapi_ticket=" + jsapi_ticket +
+//        String str = "jsapi_ticket=" + jsapi_ticket  +
+//                "&noncestr=" + noncestr +
+//                "&timestamp=" + timestamp +
+//                "&url=" + url;
+//        System.out.println(str);
+//        //sha1加密
+//        String signature = SHA1(str);
+//        System.out.println("noncestr=" + noncestr);
+//        System.out.println("timestamp=" + timestamp);
+//        System.out.println("signature=" + signature);
+//        //最终获得调用微信js接口验证需要的三个参数noncestr、timestamp、signature
+//        
+//        Map<String, String> paramMap = new HashMap<String, String>();
+//		paramMap.put("noncestr", noncestr);
+//		paramMap.put("timestamp", timestamp);
+//		paramMap.put("jsapi_ticket", "null");
+//		paramMap.put("url", url);
+//		paramMap = WechatCore.paraFilter(paramMap);
+//		String result = WechatCore.createLinkString(paramMap);
+//		System.out.println(result);
+//		System.out.println("result:"+SHA1(result));
+//		
+//		System.out.println(new BookClassServiceImpl().findSign());
+		
+		
+//		String accessToken = weixinServer.getAccessToken();
+		String accessToken = "tFTw_H58-GBhq7x9aDEOAzuZM06ZhBH5TDZ1OKiUdp5rTUQhcABgqJvyHaBugeBtUA_aZL5Wml0kqy9nePDozm67tKlhAZlp6fu-FjIAKNjjJmYhT551rADwJc5SrtdlLYKcAIAVIU";
+		String appid = WechatConfig.APPID;
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("appid", WechatConfig.APPID);
+		params.put("secret", WechatConfig.APPSECRECT);
+		params.put("access_token", accessToken);
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
+		Map<String, String> map = new HashMap<String, String>();
+		String xml = HttpXmlClient.get(url.replace("ACCESS_TOKEN", accessToken));
+		log.info(xml);
+		JSONObject jsonMap = JSONObject.fromObject(xml);
+		Iterator<String> it = jsonMap.keys();
+		jsonMap = JSONObject.fromObject(xml);
+		it = jsonMap.keys();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			String u = jsonMap.get(key).toString();
+			map.put(key, u);
+		}
+		String jsapi_ticket = map.get("ticket");
+		System.out.println("jsapi_ticket=" + jsapi_ticket);
+
+		String noncestr = UUID.randomUUID().toString();
+		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+		url = "http://mp.weixin.qq.com";
+		String signature = null;
+		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("noncestr", noncestr);
 		paramMap.put("timestamp", timestamp);
-		paramMap.put("jsapi_ticket", "null");
+		paramMap.put("jsapi_ticket", jsapi_ticket);
 		paramMap.put("url", url);
 		paramMap = WechatCore.paraFilter(paramMap);
 		String result = WechatCore.createLinkString(paramMap);
 		System.out.println(result);
-		System.out.println("result:"+SHA1(result));
+		try {
+			signature = WechatUtils.SHA1(result);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("appid", appid);
+		param.put("noncestr", noncestr);
+		param.put("timestamp", timestamp);
+		param.put("signature", signature);
+
+		System.out.println(param);
+		
 	}
 	
 	public static String SHA1(String str) throws UnsupportedEncodingException {

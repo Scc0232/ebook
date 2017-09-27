@@ -18,4 +18,6 @@ public interface BookClassService {
 
 	Object prePay(String orderNo, String fee, String ip);
 
+	Object findSign(String targetUrl);
+
 }

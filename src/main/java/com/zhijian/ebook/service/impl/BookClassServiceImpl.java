@@ -2,8 +2,10 @@ package com.zhijian.ebook.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,7 @@ import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
 import com.zhijian.ebook.dao.OrderMapper;
+import com.zhijian.ebook.entity.AccessToken;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookClassExample;
@@ -29,16 +32,21 @@ import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
+import com.zhijian.ebook.service.WeixinServer;
+import com.zhijian.ebook.util.HttpXmlClient;
 import com.zhijian.ebook.util.MD5;
 import com.zhijian.ebook.util.UUIDGenerator;
 import com.zhijian.ebook.util.WechatConfig;
 import com.zhijian.ebook.util.WechatCore;
+import com.zhijian.ebook.util.WechatUtils;
+
+import net.sf.json.JSONObject;
 
 @Service
 public class BookClassServiceImpl implements BookClassService {
-	
+
 	private static final Logger log = LogManager.getLogger();
-	
+
 	public static String ORDERURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
 	@Autowired
@@ -55,6 +63,9 @@ public class BookClassServiceImpl implements BookClassService {
 
 	@Autowired
 	private OrderMapper orderMapper;
+
+	@Autowired
+	private WeixinServer weixinServer;
 
 	@Override
 	public Map<String, List<?>> selectAll() {
@@ -105,7 +116,7 @@ public class BookClassServiceImpl implements BookClassService {
 		paramMap.put("body", "订单支付");
 		paramMap.put("out_trade_no", String.valueOf(orderNo));
 		paramMap.put("fee_type", "CNY");
-		paramMap.put("total_fee", Math.round(Double.parseDouble(fee)*100)+"");
+		paramMap.put("total_fee", Math.round(Double.parseDouble(fee) * 100) + "");
 		paramMap.put("spbill_create_ip", ip);
 		paramMap.put("notify_url", WechatConfig.NOTIFYURL);
 		paramMap.put("trade_type", "JSAPI");
@@ -117,7 +128,6 @@ public class BookClassServiceImpl implements BookClassService {
 		try {
 			result = MD5.getMessageDigest(result.getBytes("utf-8")).toUpperCase();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		paramMap.put("sign", result);
@@ -182,6 +192,61 @@ public class BookClassServiceImpl implements BookClassService {
 		}
 		return resultsMap;
 
+	}
+
+	@Override
+	public Object findSign(String targetUrl) {
+		int index = targetUrl.indexOf("#");
+        if (index > 0) {
+            targetUrl = targetUrl.substring(0, index);
+            //targetUrl = targetUrl.toLowerCase();
+            log.info("targetUrl：" + targetUrl);
+        }
+		String accessToken = weixinServer.getAccessToken();
+		String appid = WechatConfig.APPID;
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("appid", WechatConfig.APPID);
+		params.put("secret", WechatConfig.APPSECRECT);
+		params.put("access_token", accessToken);
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
+		Map<String, String> map = new HashMap<String, String>();
+		String xml = HttpXmlClient.get(url.replace("ACCESS_TOKEN", accessToken));
+		JSONObject jsonMap = JSONObject.fromObject(xml);
+		Iterator<String> it = jsonMap.keys();
+		jsonMap = JSONObject.fromObject(xml);
+		it = jsonMap.keys();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			String u = jsonMap.get(key).toString();
+			map.put(key, u);
+		}
+		String jsapi_ticket = map.get("ticket");
+		System.out.println("jsapi_ticket=" + jsapi_ticket);
+
+		String noncestr = UUID.randomUUID().toString();
+		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+//		url = "http://www.ebenshu.cn";
+		String signature = null;
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("noncestr", noncestr);
+		paramMap.put("timestamp", timestamp);
+		paramMap.put("jsapi_ticket", jsapi_ticket);
+		paramMap.put("url", targetUrl);
+		paramMap = WechatCore.paraFilter(paramMap);
+		String result = WechatCore.createLinkString(paramMap);
+		System.out.println(result);
+		try {
+			signature = WechatUtils.SHA1(result);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("appid", appid);
+		param.put("noncestr", noncestr);
+		param.put("timestamp", timestamp);
+		param.put("signature", signature);
+		return param;
 	}
 
 }

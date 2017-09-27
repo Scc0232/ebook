@@ -949,6 +949,27 @@ public class BookInterface {
 	}
 	
 	/**
+	 * 获取签名
+	 * 
+	 * @return ResponseEntity 返回实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findSign", method = RequestMethod.GET)
+	public ResponseEntity findSign(String targetUrl) {
+		// String username = UserContextHelper.getUsername();
+		Object obj = null;
+		try {
+			obj = bookclassService.findSign(targetUrl);
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+
+		return ResponseEntity.ok(obj);
+	}
+	
+	
+	/**
 	 * 上传图片
 	 * @param request
 	 * @return
