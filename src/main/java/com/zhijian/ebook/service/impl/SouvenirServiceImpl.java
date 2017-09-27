@@ -189,7 +189,6 @@ public class SouvenirServiceImpl implements SouvenirService {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		DiaryCommentExample example = new DiaryCommentExample();
 		DiaryCommentExample.Criteria criteria = example.createCriteria();
-		criteria.andUseridEqualTo(userid);
 		criteria.andDiaryIdEqualTo(diaryid);
 		criteria.andIsValidEqualTo(true);
 		Page pa = null;
