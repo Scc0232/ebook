@@ -242,7 +242,7 @@ public class BookInterface {
 	 * @return ResponseEntity 返回图书分类实体
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login/addDiary", method = RequestMethod.GET)
+	@RequestMapping(value = "login/addDiary", method = RequestMethod.POST)
 	public ResponseEntity addDiary(Diary diary) {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
