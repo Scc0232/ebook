@@ -23,14 +23,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zhijian.ebook.entity.AccessToken;
-import com.zhijian.ebook.service.impl.BookClassServiceImpl;
+
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 /**
  * 公众平台通用接口工具类
@@ -250,6 +249,7 @@ public class WechatUtils {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws UnsupportedEncodingException {
 //		Map<String, String> params = new HashMap<String, String>();
 //        params.put("appid",WechatConfig.APPID);

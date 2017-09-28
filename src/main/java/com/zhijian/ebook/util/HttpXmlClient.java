@@ -2,16 +2,11 @@ package com.zhijian.ebook.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import net.sf.json.JSONObject;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -26,9 +21,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+@SuppressWarnings("deprecation")
 public class HttpXmlClient {
 	 
-    public static String post(String url, Map<String, String> params) {
+	public static String post(String url, Map<String, String> params) {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         String body = null;
         HttpPost post = postForm(url, params);
@@ -37,7 +33,7 @@ public class HttpXmlClient {
         return body;
     }
  
-    public static String get(String url) {
+	public static String get(String url) {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         String body = null;
         HttpGet get = new HttpGet(url);
@@ -46,16 +42,17 @@ public class HttpXmlClient {
         return body;
     }
  
-    private static String invoke(DefaultHttpClient httpclient,
+	private static String invoke(DefaultHttpClient httpclient,
             HttpUriRequest httpost) {
         HttpResponse response = sendRequest(httpclient, httpost);
         String body = paseResponse(response);
         return body;
     }
  
-    private static String paseResponse(HttpResponse response) {
+    @SuppressWarnings({ "unused" })
+	private static String paseResponse(HttpResponse response) {
         HttpEntity entity = response.getEntity();
-        String charset = EntityUtils.getContentCharSet(entity);
+		String charset = EntityUtils.getContentCharSet(entity);
         String body = null;
         try {
             body = EntityUtils.toString(entity);
@@ -67,7 +64,7 @@ public class HttpXmlClient {
         return body;
     }
  
-    private static HttpResponse sendRequest(DefaultHttpClient httpclient,
+	private static HttpResponse sendRequest(DefaultHttpClient httpclient,
             HttpUriRequest httpost) {
         HttpResponse response = null;
         try {
@@ -80,7 +77,7 @@ public class HttpXmlClient {
         return response;
     }
  
-    private static HttpPost postForm(String url, Map<String, String> params) {
+	private static HttpPost postForm(String url, Map<String, String> params) {
  
         HttpPost httpost = new HttpPost(url);
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();

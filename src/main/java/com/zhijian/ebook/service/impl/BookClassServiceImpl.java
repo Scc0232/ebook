@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import com.zhijian.ebook.base.dao.DictMapper;
 import com.zhijian.ebook.base.entity.Dict;
@@ -22,14 +22,10 @@ import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
-import com.zhijian.ebook.dao.OrderMapper;
-import com.zhijian.ebook.entity.AccessToken;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookClassExample;
 import com.zhijian.ebook.entity.BookExample;
-import com.zhijian.ebook.entity.Order;
-import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.WeixinServer;
@@ -62,9 +58,6 @@ public class BookClassServiceImpl implements BookClassService {
 	private UserService userService;
 
 	@Autowired
-	private OrderMapper orderMapper;
-
-	@Autowired
 	private WeixinServer weixinServer;
 
 	@Override
@@ -92,6 +85,7 @@ public class BookClassServiceImpl implements BookClassService {
 		return dictMapper.selectByExample(dictExample);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object prePay(String orderNo, String fee, String ip) {
 		User user = null;
@@ -101,12 +95,12 @@ public class BookClassServiceImpl implements BookClassService {
 			e2.printStackTrace();
 		}
 		String openId = user.getUsername();
-		OrderExample example = new OrderExample();
-		OrderExample.Criteria criteria = example.createCriteria();
-		criteria.andOrderNoEqualTo(orderNo);
-		criteria.andUseridEqualTo(user.getId());
-		criteria.andIsValidEqualTo(true);
-		List<Order> listOrder = orderMapper.selectByExample(example);
+//		OrderExample example = new OrderExample();
+//		OrderExample.Criteria criteria = example.createCriteria();
+//		criteria.andOrderNoEqualTo(orderNo);
+//		criteria.andUseridEqualTo(user.getId());
+//		criteria.andIsValidEqualTo(true);
+//		List<Order> listOrder = orderMapper.selectByExample(example);
 
 		Map<String, String> resultsMap = new HashMap<String, String>();
 		Map<String, String> paramMap = new HashMap<String, String>();
@@ -194,6 +188,7 @@ public class BookClassServiceImpl implements BookClassService {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object findSign(String targetUrl) {
 		int index = targetUrl.indexOf("#");
