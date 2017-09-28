@@ -475,6 +475,9 @@ public class BookServiceImpl implements BookService {
 		if (StringUtils.isNotBlank(book.getClassId())) {
 			criteria.andClassIdEqualTo(book.getClassId());
 		}
+		if (StringUtils.isNotBlank(book.getGrade())) {
+			criteria.andGradeEqualTo(book.getGrade());
+		}
 		if (StringUtils.isNotBlank(book.getAuthor())) {
 			criteria.andAuthorEqualTo("%"+book.getAuthor()+"%");
 		}

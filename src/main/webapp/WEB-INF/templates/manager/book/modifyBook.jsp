@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: lidongwei
+  Book: lidongwei
   Date: 16/1/21
   Time: 16:06
   To change this template use File | Settings | File Templates.
@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <script>
 $(function(){
-	$("user-fm").form('clear');
-	$("#userModify-saveBtn").click(function(){
-		 $("#user-fm").form('submit', { 
-			 url : '${basePath}manager/user/modifyUser.do', 
+	$("book-fm").form('clear');
+	$("#bookModify-saveBtn").click(function(){
+		 $("#book-fm").form('submit', { 
+			 url : '${basePath}manager/book/modifyBook.do', 
 			 onSubmit : function() {
             loading();
-            if (!$('#user-fm').form('validate')) {
+            if (!$('#book-fm').form('validate')) {
                 closeLoading();
                 return false;
             }
@@ -26,9 +26,9 @@ $(function(){
             if (result.flag === 'fail') {
                 $.messager.show({ title : 'Error', msg : result.msg });
             } else {
-            	parent.$('#user-add').window('close');
+            	parent.$('#book-add').window('close');
             	layer.msg('修改成功！');
-                $("#user-grid").datagrid('reload'); // 刷新数据网格
+                $("#book-grid").datagrid('reload'); // 刷新数据网格
             }
         } });
 	});
@@ -36,44 +36,68 @@ $(function(){
 
 </script>
 
-<form id="user-fm" method="post" novalidate style="margin-top: 50px;">
+<form id="book-fm" method="post" novalidate style="margin-top: 50px;">
     <div>
-        <input id="id" name="id" type="hidden" value="${userMap.id}"/>
-	    <input id="password" name="password" type="hidden" value="${userMap.password}"/>
+        <input id="id" name="id" type="hidden" value="${book.id}"/>
     </div>
 	<div class="fitem" style="margin-top: 20px;">
-		<label align="right">用户名 ：</label> 
-		<input name="username" validtype="length[5,20]" missingMessage="不能为空" invalidMessage="有效长度5-20"   class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${userMap.username}">
-	   <label style="margin-left: 20px" align="right">姓名 ：</label>
-		<input name="name"  data-options="required:true,validType:'NAME'" class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${userMap.name}">
+		<label align="right">ISBN：</label> 
+		<input name="isbn" validtype="length[5,20]" missingMessage="不能为空" invalidMessage="有效长度5-20"   class="easyui-textbox" required="true" style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">书名：</label>
+		<input name="title" class="easyui-textbox" required="true" style="width: 180px; height: 26px;">
 	</div>
 		<div class="fitem" style="margin-top: 20px;">
-		<label align="right">电话 ：</label> 
-		<input name="phone" data-options="required:true,validType:'mobile'" class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${userMap.phone}">
-	   <label style="margin-left: 20px" align="right">邮箱 ：</label>
-		<input name="email" data-options="required:true,validType:'email'" class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${userMap.email}">
+		<label align="right">子标题：</label> 
+		<input name="phone" class="easyui-textbox" style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">作者 ：</label>
+		<input name="author"  class="easyui-textbox" style="width: 180px; height: 26px;">
 	</div>
 		<div class="fitem" style="margin-top: 20px;">
-		<label align="right">QQ :</label> 
-		<input name="qq" data-options="validType:'QQ'" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${userMap.qq}">
-	   <label style="margin-left: 20px" align="right">公司名称 :</label>
-		<input name="companyName" maxlength='100' class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${userMap.companyName}">
+		<label align="right">出版社 :</label> 
+		<input name="publisher" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">页数 :</label>
+		<input name="page"  class="easyui-textbox"   style="width: 180px; height: 26px;">
 	</div>
-	<div class="fitem" style="margin-top: 20px;">
-		<label align="right">公司电话 :</label> 
-		<input name="companyPhone"  class="easyui-textbox"  style="width: 180px; height: 26px;" value="${userMap.companyPhone}">
-	   <label style="margin-left: 20px" align="right">公司地址 :</label>
-		<input name="companyAddr" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" value="${userMap.companyAddr}">
+		<div class="fitem" style="margin-top: 20px;">
+		<label align="right">折旧价格 :</label> 
+		<input name="depPrice" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">押金 :</label>
+		<input name="deposit" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;">
 	</div>
-	<div class="fitem" style="margin-top: 20px;">
-		<label align="right">邀请码 :</label> 
-		<input name="myReferralCode" validtype="length[5,20]" required="true" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${userMap.myReferralCode}">
+		<div class="fitem" style="margin-top: 20px;">
+		<label align="right">e币价格 :</label> 
+		<input name="ePrice" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">分类名称 :</label>
+    		<select  class="easyui-combobox" name="classId" style="width:180px;" editable="false" panelHeight="auto">
+			        	<option value="1">考研</option>
+			        	<option value="2">公务员</option>
+			        	<option value="3">四六级</option>
+			        	<option value="4">文学类</option>
+			        	<option value="5">理工类</option>
+			        	<option value="6">政史类</option>
+			        	<option value="7">计算机类</option>
+			        	<option value="8">英语类</option>
+			        	<option value="9">经管类机类</option>
+			        	<option value="10">语言类</option>
+			        	<option value="11">其他</option>
+    		</select> 
 	</div>
-	<div class="fitem" style="margin-top: 20px;">
-		<label align="right">手机绑定次数 :</label> 
-		<input name="bindMobileCount" required="true" class="easyui-numberbox" precision="0" min = "0" style="width: 180px; height: 26px;" value="${userMap.bindMobileCount}">
+		<div class="fitem" style="margin-top: 20px;">
+		<label align="right">学校 :</label> 
+		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">年级 :</label>
+	   <select  class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto">
+			        	<option value=" " > </option>
+			        	<option value="one">一年级</option>
+			        	<option value="two">二年级</option>
+			        	<option value="three">三年级</option>
+			        	<option value="four">四年级</option>
+    		</select> 
+	</div>
+	<div>
+		<label align="left">图片URL :</label><input name="icon" class="easyui-textbox"  style="width: 380px; height: 26px;">
 	</div>
 </form>
 <p align="center">
-	<a id="userModify-saveBtn" class="easyui-linkbutton"><font size="2">提&nbsp;&nbsp;交</font></a>
+	<a id="bookModify-saveBtn" class="easyui-linkbutton"><font size="2">提&nbsp;&nbsp;交</font></a>
 </p>

@@ -83,26 +83,12 @@ public class BookController {
 	 */
 	@RequestMapping("modifyBookView")
 	public String modifyBookView(ModelMap map, String bookid) {
-		Book BookMap = BookService.findBookById(bookid);
+		Book book = BookService.findBookById(bookid);
 		// if (BookMap.getBindMobileCount() == null) {
 		// BookMap.setBindMobileCount(0);
 		// }
-		map.put("BookMap", BookMap);
-		return "manager/Book/modifyBook";
-	}
-	
-	/**
-	 * 修改图书界面
-	 * 
-	 * @param map
-	 *            图书信息
-	 * @param BookId
-	 *            图书ID
-	 * @return 修改图书路径
-	 */
-	@RequestMapping("findClassNameList")
-	public List<BookClass> findClassNameList() {
-		return bookService.findClassNameList();
+		map.put("book", book);
+		return "manager/book/modifyBook";
 	}
 
 	/**
@@ -144,14 +130,13 @@ public class BookController {
 	 */
 	@ResponseBody
 	@RequestMapping("modifyBook")
-	public ResponseMsg modifyBook(ModelMap map, Book book) {
+	public ResponseMsg modifyBook(Book book) {
 		// BookMap.setQq(qq);
 		// BookMap.setCompanyName(companyName);
 		// BookMap.setCompanyPhone(companyPhone);
 		// BookMap.setCompanyAddr(companyAddr);
 		// BookMap.setMyReferralCode(myReferralCode);
 		// BookMap.setBindMobileCount(bindMobileCount);
-		map.put("bookMap", book);
 		int row = BookService.modifyBook(book);
 		if (row > 0) {
 			return ResponseMsg.success("修改图书成功！");

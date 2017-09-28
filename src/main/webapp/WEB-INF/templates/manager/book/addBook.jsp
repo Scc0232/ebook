@@ -3,21 +3,6 @@
     $(function () {
         var saveBtn = $('#book-saveBtn');
         var form = $('#bookAdd-fm');
-        
-      //分类名称下拉列表
-		$('#classNameCombobox').combobox({
-			url:'${basePath}book/findClassNameList.do',
-			valueField:'id',
-			textField:'name',
-			panelHeight: "auto",
-            editable: false,
-			onLoadSuccess: function (data) {
-                if (data) {
-                    $('#classNameCombobox').combobox('setValue',data[0].id);
-                }
-            }
-		});
-
         $(saveBtn).bind('click', function () {
           
             var obj = toObject(form);
@@ -73,13 +58,34 @@
 		<label align="right">e币价格 :</label> 
 		<input name="ePrice" class="easyui-textbox"  style="width: 180px; height: 26px;">
 	   <label style="margin-left: 20px" align="right">分类名称 :</label>
-		<input id="classNameCombobox"  class="easyui-combobox" name="className"  editable="false" data-options="required:true,validType:'class_name'"  style="width: 180px; height: 26px;">
+    		<select  class="easyui-combobox" name="classId" style="width:180px;" editable="false" panelHeight="auto">
+			        	<option value="1">考研</option>
+			        	<option value="2">公务员</option>
+			        	<option value="3">四六级</option>
+			        	<option value="4">文学类</option>
+			        	<option value="5">理工类</option>
+			        	<option value="6">政史类</option>
+			        	<option value="7">计算机类</option>
+			        	<option value="8">英语类</option>
+			        	<option value="9">经管类机类</option>
+			        	<option value="10">语言类</option>
+			        	<option value="11">其他</option>
+    		</select> 
 	</div>
 		<div class="fitem" style="margin-top: 20px;">
 		<label align="right">学校 :</label> 
 		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;">
 	   <label style="margin-left: 20px" align="right">年级 :</label>
-		<input name="grade"  class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <select  class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto">
+			        	<option value=" " > </option>
+			        	<option value="one">一年级</option>
+			        	<option value="two">二年级</option>
+			        	<option value="three">三年级</option>
+			        	<option value="four">四年级</option>
+    		</select> 
+	</div>
+	<div>
+		<label align="left">图片URL :</label><input name="icon" class="easyui-textbox"  style="width: 380px; height: 26px;">
 	</div>
 </form>
 <p align="center" style="margin-top: 50px;">
