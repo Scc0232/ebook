@@ -186,7 +186,6 @@ public class SouvenirServiceImpl implements SouvenirService {
 	public EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows)
 			throws Exception {
 		List<DiaryComment> list = new ArrayList<>();
-		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		DiaryCommentExample example = new DiaryCommentExample();
 		DiaryCommentExample.Criteria criteria = example.createCriteria();
 		criteria.andDiaryIdEqualTo(diaryid);
