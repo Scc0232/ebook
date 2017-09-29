@@ -22,53 +22,33 @@
 				title : '选择',
 				checkbox : true
 			}, {
-				field : 'isbn',
-				title : 'ISBN',
-				width : '120px'
-			}, {
-				field : 'title',
-				title : '书名',
-				width : '160px'
-			}, {
-				field : 'author',
-				title : '作者',
-				width : '120px'
-			}, {
-				field : 'page',
-				title : '页数',
-				width : '120px'
-			}, {
-				field : 'ePrice',
-				title : 'e币价格',
-				width : '120px'
-			}, {
-				field : 'author',
-				title : '作者',
-				width : '120px'
-			}, {
-				field : 'className',
-				title : '分类',
-				width : '120px'
-			}, {
-				field : 'grade',
-				title : '年级',
+				field : 'type',
+				title : '类型',
 				width : '120px',
 				formatter : function(val) {
-					if (val == 'one') {
-						return '大一';
-					} else if (val == 'two') {
-						return '大二';
-					} else if (val == 'three') {
-						return '大三';
+					if (val == '1') {
+						return '校园文创';
 					} else {
-						return '大四';
-					}
+						return '文化';
+					} 
 
 				}
 			}, {
-				field : 'pubdate',
+				field : 'name',
+				title : '名称',
+				width : '160px'
+			}, {
+				field : 'introduce',
+				title : '简介',
+				width : '120px'
+			}, {
+				field : 'icon',
+				title : '图片',
+				width : '120px'
+			}, {
+				field : 'createTime',
 				title : '创建时间',
-				width : '150px',
+				width : '120px',
 				formatter : function(val) {
 					return formatDate(val);
 				}
@@ -88,7 +68,7 @@
 		//添加方法
 		$(saveBtn).bind('click', function() {
 			$('#souvenir-add').dialog({
-				title : '增加图书',
+				title : '增加纪念品',
 				width : 600,
 				height : 520,
 				closed : false,
@@ -109,7 +89,7 @@
 								$.messager
 										.confirm(
 												'温馨提示',
-												'确认删除此图书?',
+												'确认删除此纪念品?',
 												function(r) {
 													if (!r) {
 														return;
@@ -149,7 +129,7 @@
 								$('#souvenir-add')
 										.dialog(
 												{
-													title : '修改图书',
+													title : '修改纪念品',
 													width : 600,
 													height : 520,
 													closed : false,
@@ -171,41 +151,23 @@
 
 <div id="souvenir-tool">
 	<div id="souvenir-search" style="padding-top: 10px;">
-			<label style="padding-left: 10px;">书名:</label> <input name="title" class="easyui-textbox" style="height: 26px;"> 
-			<label style="padding-left: 10px;">作者:</label> <input name="author" class="easyui-textbox" style="height: 26px;">
-			<label style="padding-left: 10px;">年级:
-			<select  class="easyui-combobox" name="grade" style="width:74px;" editable="false" panelHeight="auto">
+			<label style="padding-left: 10px;">名称:</label> <input name="name" class="easyui-textbox" style="height: 26px;"> 
+			<label style="padding-left: 10px;">类型:
+			<select  class="easyui-combobox" name="type" style="width:74px;" editable="false" panelHeight="auto">
 			        	<option value=" " > </option>
 			        	<option value=" " > </option>
-			        	<option value="one">一年级</option>
-			        	<option value="two">二年级</option>
-			        	<option value="three">三年级</option>
-			        	<option value="four">四年级</option>
+			        	<option value="1">校园文创</option>
+			        	<option value="2">文化</option>
     		</select> 
-    		<label style="padding-left: 10px;">分类:
-    		<select  class="easyui-combobox" name="classId" style="width:74px;" editable="false" panelHeight="auto">
-			        	<option value=" " ></option>
-			        	<option value=" " ></option>
-			        	<option value="1">考研</option>
-			        	<option value="2">公务员</option>
-			        	<option value="3">四六级</option>
-			        	<option value="4">文学类</option>
-			        	<option value="5">理工类</option>
-			        	<option value="6">政史类</option>
-			        	<option value="7">计算机类</option>
-			        	<option value="8">英语类</option>
-			        	<option value="9">经管类机类</option>
-			        	<option value="10">语言类</option>
-			        	<option value="11">其他</option>
-    		</select> 
+    		
     		
     		
 			<a id="souvenir-searchBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
 	</div>
 	<div style="padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">
-		<a id="souvenir-addBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-add'">增加图书</a> <a id="souvenir-modifyBtn"
-			href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-user_gray'">修改图书</a> <a id="souvenir-removeBtn" href="#"
-			class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-edit_remove'">删除图书</a>
+		<a id="souvenir-addBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-add'">增加纪念品</a> <a id="souvenir-modifyBtn"
+			href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-user_gray'">修改纪念品</a> <a id="souvenir-removeBtn" href="#"
+			class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-edit_remove'">删除纪念品</a>
 	</div>
 </div>
 <div id="souvenir-grid"></div>

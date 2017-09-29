@@ -235,6 +235,9 @@ public class SouvenirServiceImpl implements SouvenirService {
 		if (StringUtils.isNotBlank(souvenir.getName())) {
 			criteria.andNameEqualTo(souvenir.getName());
 		}
+		if(StringUtils.isNotBlank(souvenir.getType()+"")) {
+			criteria.andTypeEqualTo(souvenir.getType());
+		}
 		criteria.andIsValidEqualTo(true);
 		souvenirExample.setOrderByClause("create_time desc ");
 		List<Souvenir> list = souvenirMapper.findPaginationList(new Page(page, rows),souvenirExample);
@@ -243,26 +246,22 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Override
 	public Souvenir findSouvenirById(String souvenirid) {
-		// TODO Auto-generated method stub
-		return null;
+		return souvenirMapper.selectByPrimaryKey(souvenirid);
 	}
 
 	@Override
 	public int addSouvenir(Souvenir souvenir) {
-		// TODO Auto-generated method stub
-		return 0;
+		return souvenirMapper.insert(souvenir);
 	}
 
 	@Override
 	public int modifySouvenir(Souvenir souvenir) {
-		// TODO Auto-generated method stub
-		return 0;
+		return souvenirMapper.updateByPrimaryKeySelective(souvenir);
 	}
 
 	@Override
 	public int removeSouvenirById(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return souvenirMapper.deleteByPrimaryKey(id);
 	}
 
 }

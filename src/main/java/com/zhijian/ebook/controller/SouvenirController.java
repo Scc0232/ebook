@@ -17,7 +17,7 @@ import com.zhijian.ebook.service.SouvenirService;
 
 /**
  * 
- * 图书控制器
+ * 纪念品控制器
  * 
  * @author Administrator
  *
@@ -34,9 +34,9 @@ public class SouvenirController {
 	private SouvenirService souvenirService;
 
 	/**
-	 * 图书列表界面
+	 * 纪念品列表界面
 	 * 
-	 * @return 图书列表路径
+	 * @return 纪念品列表路径
 	 */
 	@RequestMapping("index")
 	public String index() {
@@ -44,10 +44,10 @@ public class SouvenirController {
 	}
 
 	/**
-	 * 获取图书分页数据
+	 * 获取纪念品分页数据
 	 * 
 	 * @param Souvenir
-	 *            图书实体
+	 *            纪念品实体
 	 * @param page
 	 *            页数
 	 * @param rows
@@ -62,9 +62,9 @@ public class SouvenirController {
 	}
 
 	/**
-	 * 添加图书页面
+	 * 添加纪念品页面
 	 * 
-	 * @return 添加图书路径
+	 * @return 添加纪念品路径
 	 */
 	@RequestMapping("addSouvenirView")
 	public String addSouvenirView() {
@@ -72,13 +72,13 @@ public class SouvenirController {
 	}
 
 	/**
-	 * 修改图书界面
+	 * 修改纪念品界面
 	 * 
 	 * @param map
-	 *            图书信息
+	 *            纪念品信息
 	 * @param SouvenirId
-	 *            图书ID
-	 * @return 修改图书路径
+	 *            纪念品ID
+	 * @return 修改纪念品路径
 	 */
 	@RequestMapping("modifySouvenirView")
 	public String modifySouvenirView(ModelMap map, String souvenirid) {
@@ -91,11 +91,11 @@ public class SouvenirController {
 	}
 
 	/**
-	 * 添加图书
+	 * 添加纪念品
 	 * 
 	 * @param Souvenir
-	 *            图书信息
-	 * @return 添加图书情况
+	 *            纪念品信息
+	 * @return 添加纪念品情况
 	 */
 	@ResponseBody
 	@RequestMapping("addSouvenir")
@@ -104,28 +104,28 @@ public class SouvenirController {
 			// if (Souvenir.getBindMobileCount() == null || Souvenir.getBindMobileCount() == 0) {
 			// String countStr =
 			// ReadPropertiesFileUtils.getInstance().getPropValueByKey("default_bind_mobile_phone_count");
-			// //设置手机可更换绑定次数(配置文件配置，如特殊需要修改，图书需联系管理员从管理平台修改)
+			// //设置手机可更换绑定次数(配置文件配置，如特殊需要修改，纪念品需联系管理员从管理平台修改)
 			// Souvenir.setBindMobileCount(StringUtils.isBlank(countStr)?0:Integer.valueOf(countStr));
 			// }
 			int row = souvenirService.addSouvenir(souvenir);
 			if (row > 0) {
-				return ResponseMsg.success("添加图书成功！");
+				return ResponseMsg.success("添加纪念品成功！");
 			} else {
-				return ResponseMsg.fail("添加图书失败！");
+				return ResponseMsg.fail("添加纪念品失败！");
 			}
 		} catch (Exception e) {
-			logger.error("添加图书异常", e);
-			return ResponseMsg.fail("添加图书异常！");
+			logger.error("添加纪念品异常", e);
+			return ResponseMsg.fail("添加纪念品异常！");
 		}
 
 	}
 
 	/**
-	 * 修改图书
+	 * 修改纪念品
 	 * 
 	 * @param Souvenir
-	 *            图书信息
-	 * @return 修改图书情况
+	 *            纪念品信息
+	 * @return 修改纪念品情况
 	 */
 	@ResponseBody
 	@RequestMapping("modifySouvenir")
@@ -138,27 +138,27 @@ public class SouvenirController {
 		// SouvenirMap.setBindMobileCount(bindMobileCount);
 		int row = SouvenirService.modifySouvenir(souvenir);
 		if (row > 0) {
-			return ResponseMsg.success("修改图书成功！");
+			return ResponseMsg.success("修改纪念品成功！");
 		} else {
-			return ResponseMsg.fail("修改图书失败！");
+			return ResponseMsg.fail("修改纪念品失败！");
 		}
 	}
 
 	/**
-	 * 删除图书
+	 * 删除纪念品
 	 * 
 	 * @param id
-	 *            图书ID
-	 * @return 删除图书情况
+	 *            纪念品ID
+	 * @return 删除纪念品情况
 	 */
 	@ResponseBody
 	@RequestMapping("removeSouvenir")
 	public ResponseMsg removeSouvenirById(String id) {
 		int row = souvenirService.removeSouvenirById(id);
 		if (row > 0) {
-			return ResponseMsg.success("删除图书成功！");
+			return ResponseMsg.success("删除纪念品成功！");
 		} else {
-			return ResponseMsg.fail("删除图书失败！");
+			return ResponseMsg.fail("删除纪念品失败！");
 		}
 	}
 

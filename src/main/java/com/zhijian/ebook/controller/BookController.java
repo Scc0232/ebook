@@ -1,7 +1,5 @@
 package com.zhijian.ebook.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
 import com.zhijian.ebook.entity.Book;
-import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.service.BookService;
 
 /**
