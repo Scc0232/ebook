@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -225,6 +226,43 @@ public class SouvenirServiceImpl implements SouvenirService {
 		}
 		
 		return diary;
+	}
+
+	@Override
+	public EasyuiPagination<Souvenir> findSouvenirPagination(Souvenir souvenir, Integer page, Integer rows) {
+		SouvenirExample souvenirExample = new SouvenirExample();
+		SouvenirExample.Criteria criteria = souvenirExample.createCriteria();
+		if (StringUtils.isNotBlank(souvenir.getName())) {
+			criteria.andNameEqualTo(souvenir.getName());
+		}
+		criteria.andIsValidEqualTo(true);
+		souvenirExample.setOrderByClause("create_time desc ");
+		List<Souvenir> list = souvenirMapper.findPaginationList(new Page(page, rows),souvenirExample);
+		return new EasyuiPagination<Souvenir>(list.size(), list);
+	}
+
+	@Override
+	public Souvenir findSouvenirById(String souvenirid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int addSouvenir(Souvenir souvenir) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int modifySouvenir(Souvenir souvenir) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int removeSouvenirById(String id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

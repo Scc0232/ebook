@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Souvenir;
 import com.zhijian.ebook.entity.SouvenirExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface SouvenirMapper {
     int updateByPrimaryKeySelective(Souvenir record);
 
     int updateByPrimaryKey(Souvenir record);
+
+	List<Souvenir> findPaginationList(@Param("page")Page page, @Param("example")SouvenirExample example);
 }

@@ -18,14 +18,14 @@ $(function(){
             editable: false,
 				
             onLoadSuccess: function (data) {
-            	$('#classidCombobox').combobox('setValue','${book.classId}');
+            	$('#classidCombobox').combobox('setValue','${souvenir.classId}');
             }
 		});
 		
 	$("book-fm").form('clear');
 	$("#bookModify-saveBtn").click(function(){
 		 $("#book-fm").form('submit', { 
-			 url : '${basePath}manager/book/modifyBook.do', 
+			 url : '${basePath}manager/book/modifySouvenir.do', 
 			 onSubmit : function() {
             loading();
             if (!$('#book-fm').form('validate')) {

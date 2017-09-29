@@ -32,5 +32,15 @@ public interface SouvenirService {
 
 	Diary findDiaryDetail(String diaryId) throws Exception;
 
+	EasyuiPagination<Souvenir> findSouvenirPagination(Souvenir souvenir, Integer page, Integer rows);
+
+	Souvenir findSouvenirById(String souvenirid);
+
+	int addSouvenir(Souvenir souvenir);
+
+	int modifySouvenir(Souvenir souvenir);
+
+	int removeSouvenirById(String id);
+
 
 }

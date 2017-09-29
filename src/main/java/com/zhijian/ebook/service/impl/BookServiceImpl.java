@@ -522,8 +522,8 @@ public class BookServiceImpl implements BookService {
 		criteria.andOrderNoEqualTo(orderNo);
 		criteria.andIsValidEqualTo(true);
 		list = orderMapper.selectByExample(example);
-		int value = 0;
-		int prevalue = 0;
+		double value = 0;
+		double prevalue = 0;
 		for(Order order : list) {
 			value += (order.getDepPrice()+order.getDesposit()+order.getProductPrice()) * order.getCount();
 			if (order.getProductType()==1) {
