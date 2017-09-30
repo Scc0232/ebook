@@ -20,6 +20,7 @@
 		<result column="SEX" property="sex" jdbcType="VARCHAR" />
 		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
 		<result column="PET_NAME" property="petName" jdbcType="VARCHAR" />
+		<result column="BLANCE" property="blance" jdbcType="DOUBLE" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -81,7 +82,8 @@
 	</sql>
 	<sql id="Base_Column_List">
 		ID, USERNAME, PASSWORD, NAME, PHONE, EMAIL, ICON, USER_TYPE, IS_VALID, CREATE_PERSON_ID,
-		CREATE_TIME, MODIFY_PERSON_ID, MODIFY_TIME, REMARK, ACCREDIT, SEX, ADDRESS, PET_NAME
+		CREATE_TIME, MODIFY_PERSON_ID, MODIFY_TIME, REMARK, ACCREDIT, SEX, ADDRESS, PET_NAME,
+		BLANCE
 	</sql>
 	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.UserExample">
 		select
@@ -120,15 +122,17 @@
 		ICON, USER_TYPE, IS_VALID,
 		CREATE_PERSON_ID, CREATE_TIME, MODIFY_PERSON_ID,
 		MODIFY_TIME, REMARK, ACCREDIT,
-		SEX, ADDRESS, PET_NAME
-		)
-		values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		SEX, ADDRESS, PET_NAME,
+		BLANCE)
+		values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
 		#{icon,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT},
-		#{createPersonId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyPersonId,jdbcType=VARCHAR},
+		#{createPersonId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{modifyPersonId,jdbcType=VARCHAR},
 		#{modifyTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{accredit,jdbcType=INTEGER},
-		#{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR}
-		)
+		#{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR},
+		#{blance,jdbcType=DOUBLE})
 	</insert>
 	<insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.User">
 		insert into t_user
@@ -187,6 +191,9 @@
 			<if test="petName != null">
 				PET_NAME,
 			</if>
+			<if test="blance != null">
+				BLANCE,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -242,6 +249,9 @@
 			</if>
 			<if test="petName != null">
 				#{petName,jdbcType=VARCHAR},
+			</if>
+			<if test="blance != null">
+				#{blance,jdbcType=DOUBLE},
 			</if>
 		</trim>
 	</insert>
@@ -308,6 +318,9 @@
 			<if test="record.petName != null">
 				PET_NAME = #{record.petName,jdbcType=VARCHAR},
 			</if>
+			<if test="record.blance != null">
+				BLANCE = #{record.blance,jdbcType=DOUBLE},
+			</if>
 		</set>
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
@@ -321,7 +334,8 @@
 		NAME = #{record.name,jdbcType=VARCHAR},
 		PHONE = #{record.phone,jdbcType=VARCHAR},
 		EMAIL = #{record.email,jdbcType=VARCHAR},
-		ICON = #{record.icon,jdbcType=VARCHAR},
+		ICON =
+		#{record.icon,jdbcType=VARCHAR},
 		USER_TYPE = #{record.userType,jdbcType=VARCHAR},
 		IS_VALID = #{record.isValid,jdbcType=BIT},
 		CREATE_PERSON_ID = #{record.createPersonId,jdbcType=VARCHAR},
@@ -332,7 +346,9 @@
 		ACCREDIT = #{record.accredit,jdbcType=INTEGER},
 		SEX = #{record.sex,jdbcType=VARCHAR},
 		ADDRESS = #{record.address,jdbcType=VARCHAR},
-		PET_NAME = #{record.petName,jdbcType=VARCHAR}
+		PET_NAME = #{record.petName,jdbcType=VARCHAR},
+		BLANCE =
+		#{record.blance,jdbcType=DOUBLE}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -391,6 +407,9 @@
 			<if test="petName != null">
 				PET_NAME = #{petName,jdbcType=VARCHAR},
 			</if>
+			<if test="blance != null">
+				BLANCE = #{blance,jdbcType=DOUBLE},
+			</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 	</update>
@@ -402,17 +421,20 @@
 		PHONE = #{phone,jdbcType=VARCHAR},
 		EMAIL = #{email,jdbcType=VARCHAR},
 		ICON = #{icon,jdbcType=VARCHAR},
-		USER_TYPE = #{userType,jdbcType=VARCHAR},
+		USER_TYPE =
+		#{userType,jdbcType=VARCHAR},
 		IS_VALID = #{isValid,jdbcType=BIT},
 		CREATE_PERSON_ID = #{createPersonId,jdbcType=VARCHAR},
 		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
 		MODIFY_PERSON_ID = #{modifyPersonId,jdbcType=VARCHAR},
 		MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
-		REMARK = #{remark,jdbcType=VARCHAR},
+		REMARK =
+		#{remark,jdbcType=VARCHAR},
 		ACCREDIT = #{accredit,jdbcType=INTEGER},
 		SEX = #{sex,jdbcType=VARCHAR},
 		ADDRESS = #{address,jdbcType=VARCHAR},
-		PET_NAME = #{petName,jdbcType=VARCHAR}
+		PET_NAME = #{petName,jdbcType=VARCHAR},
+		BLANCE = #{blance,jdbcType=DOUBLE}
 		where ID = #{id,jdbcType=VARCHAR}
 	</update>
 

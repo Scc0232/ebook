@@ -38,6 +38,8 @@ public class User {
     private String address;
 
     private String petName;
+    
+    private Double blance;
 
     public String getId() {
         return id;
@@ -182,4 +184,12 @@ public class User {
     public void setPetName(String petName) {
         this.petName = petName == null ? null : petName.trim();
     }
+
+	public Double getBlance() {
+		return blance;
+	}
+
+	public void setBlance(Double blance) {
+		this.blance = blance;
+	}
 }

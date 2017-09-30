@@ -17,6 +17,7 @@ import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.dao.AddressMapper;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
+import com.zhijian.ebook.dao.BookShelfMapper;
 import com.zhijian.ebook.dao.CollectMapper;
 import com.zhijian.ebook.dao.DonationMapper;
 import com.zhijian.ebook.dao.FlatMapper;
@@ -28,6 +29,8 @@ import com.zhijian.ebook.entity.AddressExample;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookExample;
+import com.zhijian.ebook.entity.BookShelf;
+import com.zhijian.ebook.entity.BookShelfExample;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
 import com.zhijian.ebook.entity.Donation;
@@ -73,6 +76,9 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private DonationMapper donationMapper;
+	
+	@Autowired
+	private BookShelfMapper bookShelfMapper;
 
 	@Override
 	public List<Book> selectHotBook(String grade, String classid) {
@@ -536,6 +542,16 @@ public class BookServiceImpl implements BookService {
 		map.put("prevalue", prevalue+"");
 		map.put("orderNo", orderNo);
 		return map;
+	}
+
+	@Override
+	public List<BookShelf> selectFromShelfByISBN(String isbn) {
+		List<BookShelf> list = null;
+		BookShelfExample example = new BookShelfExample();
+		BookShelfExample.Criteria criteria = example.createCriteria();
+		criteria.andIsbnEqualTo(isbn);
+		list = bookShelfMapper.selectByExample(example);
+		return list;
 	}
 
 }

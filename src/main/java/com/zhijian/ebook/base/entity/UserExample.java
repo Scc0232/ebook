@@ -1324,6 +1324,66 @@ public class UserExample {
             addCriterion("PET_NAME not between", value1, value2, "petName");
             return (Criteria) this;
         }
+
+        public Criteria andBlanceIsNull() {
+            addCriterion("BLANCE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceIsNotNull() {
+            addCriterion("BLANCE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceEqualTo(Double value) {
+            addCriterion("BLANCE =", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceNotEqualTo(Double value) {
+            addCriterion("BLANCE <>", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceGreaterThan(Double value) {
+            addCriterion("BLANCE >", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceGreaterThanOrEqualTo(Double value) {
+            addCriterion("BLANCE >=", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceLessThan(Double value) {
+            addCriterion("BLANCE <", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceLessThanOrEqualTo(Double value) {
+            addCriterion("BLANCE <=", value, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceIn(List<Double> values) {
+            addCriterion("BLANCE in", values, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceNotIn(List<Double> values) {
+            addCriterion("BLANCE not in", values, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceBetween(Double value1, Double value2) {
+            addCriterion("BLANCE between", value1, value2, "blance");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlanceNotBetween(Double value1, Double value2) {
+            addCriterion("BLANCE not between", value1, value2, "blance");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

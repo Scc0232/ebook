@@ -7,6 +7,7 @@ import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookClass;
+import com.zhijian.ebook.entity.BookShelf;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Donation;
 import com.zhijian.ebook.entity.Order;
@@ -77,5 +78,7 @@ public interface BookService {
 	List<BookClass> findClassNameList();
 
 	Map<String, String> computePrice(String orderNo);
+
+	List<BookShelf> selectFromShelfByISBN(String isbn);
 
 }

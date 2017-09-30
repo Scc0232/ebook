@@ -35,6 +35,7 @@ import com.zhijian.ebook.bean.SMSCaptcha;
 import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Book;
+import com.zhijian.ebook.entity.BookShelf;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryComment;
@@ -195,6 +196,34 @@ public class BookInterface {
 		return ResponseEntity.ok(list);
 	}
 
+	/**
+	 * 图书搜索
+	 * 
+	 * @return ResponseEntity 返回图书实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/scanCode", method = RequestMethod.GET)
+	public ResponseEntity scanCode(String isbn) {
+		// String username = UserContextHelper.getUsername();
+		if (isbn != null) {
+			isbn = isbn.trim();
+		} else {
+			return ResponseEntity.ok(new ArrayList<>(), "isbn为空");
+		}
+		List<BookShelf> list = null;
+		Pattern pattern = Pattern.compile("[0-9]*");
+		if (pattern.matcher(isbn).matches()) {
+			list = bookService.selectFromShelfByISBN(isbn);
+			if (list == null || list.isEmpty()) {
+				return ResponseEntity.ok(new ArrayList<>(), "请输入正确的ISBN号");
+			}
+		} else {
+					return ResponseEntity.ok(new ArrayList<>(), "无信息");
+			}
+		return ResponseEntity.ok(list);
+		}
+	
+	
 	/**
 	 * 查看图书详情
 	 * 

@@ -1,6 +1,5 @@
 package com.zhijian.ebook.service.impl;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +45,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserMapper userMapper;
 
@@ -66,9 +65,16 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Override
 	public int addNewDiary(Diary diary) {
+		String userid = null;
+		try {
+			userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (diary.getVisibility() == null) {
 			diary.setVisibility(true);
 		}
+		diary.setUserid(userid);
 		diary.setBrowsedTimes(0);
 		diary.setCommentTimes(0);
 		diary.setLikedTimes(0);
@@ -90,7 +96,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 		}
 		list = diaryMapper.selectDiaryByExample(example, pag);
 		addBrowsed(list, userid);
-		for(Diary diary : list) {
+		for (Diary diary : list) {
 			DiaryLikeExample likeExample = new DiaryLikeExample();
 			DiaryLikeExample.Criteria criteria2 = likeExample.createCriteria();
 			criteria2.andUseridEqualTo(userid);
@@ -98,11 +104,11 @@ public class SouvenirServiceImpl implements SouvenirService {
 			User userEntity = userMapper.selectByPrimaryKey(diary.getUserid());
 			diary.setUsername(userEntity.getPetName());
 			diary.setUsericon(userEntity.getIcon());
-			
+
 			int counts = diaryLikeMapper.countByExample(likeExample);
-			if(counts>0) {
+			if (counts > 0) {
 				diary.setIsLiked(true);
-			}else {
+			} else {
 				diary.setIsLiked(false);
 			}
 		}
@@ -136,9 +142,9 @@ public class SouvenirServiceImpl implements SouvenirService {
 	public int removeDiaryLike(String diaryId) throws Exception {
 		String userId = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
 		Diary diary = diaryMapper.selectByPrimaryKey(diaryId);
-		diary.setLikedTimes(diary.getLikedTimes()-1);
+		diary.setLikedTimes(diary.getLikedTimes() - 1);
 		diaryMapper.updateByPrimaryKeySelective(diary);
-		
+
 		DiaryLikeExample example = new DiaryLikeExample();
 		DiaryLikeExample.Criteria criteria = example.createCriteria();
 		criteria.andDiaryIdEqualTo(diaryId);
@@ -184,8 +190,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 	}
 
 	@Override
-	public EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows)
-			throws Exception {
+	public EasyuiPagination<DiaryComment> findDiaryComments(String diaryid, Integer page, Integer rows) throws Exception {
 		List<DiaryComment> list = new ArrayList<>();
 		DiaryCommentExample example = new DiaryCommentExample();
 		DiaryCommentExample.Criteria criteria = example.createCriteria();
@@ -196,12 +201,12 @@ public class SouvenirServiceImpl implements SouvenirService {
 			pa = new Page(1, 10);
 		}
 		list = diaryCommentMapper.slectCommentsByExample(example, pa);
-		for(DiaryComment comment : list) {
+		for (DiaryComment comment : list) {
 			User userEntity = userMapper.selectByPrimaryKey(comment.getUserid());
 			comment.setUsername(userEntity.getPetName());
 			comment.setUsericon(userEntity.getIcon());
 		}
-		
+
 		return new EasyuiPagination<>(list.size(), list);
 	}
 
@@ -212,19 +217,19 @@ public class SouvenirServiceImpl implements SouvenirService {
 		User userEntity = userMapper.selectByPrimaryKey(diary.getUserid());
 		diary.setUsername(userEntity.getPetName());
 		diary.setUsericon(userEntity.getIcon());
-		
+
 		DiaryLikeExample likeExample = new DiaryLikeExample();
 		DiaryLikeExample.Criteria criteria = likeExample.createCriteria();
 		criteria.andUseridEqualTo(userid);
 		criteria.andDiaryIdEqualTo(diaryId);
 		criteria.andIsValidEqualTo(true);
 		int counts = diaryLikeMapper.countByExample(likeExample);
-		if (counts>0) {
+		if (counts > 0) {
 			diary.setIsLiked(true);
-		}else {
+		} else {
 			diary.setIsLiked(false);
 		}
-		
+
 		return diary;
 	}
 
@@ -235,12 +240,12 @@ public class SouvenirServiceImpl implements SouvenirService {
 		if (StringUtils.isNotBlank(souvenir.getName())) {
 			criteria.andNameEqualTo(souvenir.getName());
 		}
-		if(StringUtils.isNotBlank(souvenir.getType()+"")) {
+		if (StringUtils.isNotBlank(souvenir.getType() + "")) {
 			criteria.andTypeEqualTo(souvenir.getType());
 		}
 		criteria.andIsValidEqualTo(true);
 		souvenirExample.setOrderByClause("create_time desc ");
-		List<Souvenir> list = souvenirMapper.findPaginationList(new Page(page, rows),souvenirExample);
+		List<Souvenir> list = souvenirMapper.findPaginationList(new Page(page, rows), souvenirExample);
 		return new EasyuiPagination<Souvenir>(list.size(), list);
 	}
 
