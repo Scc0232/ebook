@@ -955,6 +955,186 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andValueIsNull() {
+            addCriterion("value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueIsNotNull() {
+            addCriterion("value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueEqualTo(Double value) {
+            addCriterion("value =", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueNotEqualTo(Double value) {
+            addCriterion("value <>", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueGreaterThan(Double value) {
+            addCriterion("value >", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueGreaterThanOrEqualTo(Double value) {
+            addCriterion("value >=", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueLessThan(Double value) {
+            addCriterion("value <", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueLessThanOrEqualTo(Double value) {
+            addCriterion("value <=", value, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueIn(List<Double> values) {
+            addCriterion("value in", values, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueNotIn(List<Double> values) {
+            addCriterion("value not in", values, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueBetween(Double value1, Double value2) {
+            addCriterion("value between", value1, value2, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueNotBetween(Double value1, Double value2) {
+            addCriterion("value not between", value1, value2, "value");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueIsNull() {
+            addCriterion("pre_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueIsNotNull() {
+            addCriterion("pre_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueEqualTo(Double value) {
+            addCriterion("pre_value =", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueNotEqualTo(Double value) {
+            addCriterion("pre_value <>", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueGreaterThan(Double value) {
+            addCriterion("pre_value >", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueGreaterThanOrEqualTo(Double value) {
+            addCriterion("pre_value >=", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueLessThan(Double value) {
+            addCriterion("pre_value <", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueLessThanOrEqualTo(Double value) {
+            addCriterion("pre_value <=", value, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueIn(List<Double> values) {
+            addCriterion("pre_value in", values, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueNotIn(List<Double> values) {
+            addCriterion("pre_value not in", values, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueBetween(Double value1, Double value2) {
+            addCriterion("pre_value between", value1, value2, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreValueNotBetween(Double value1, Double value2) {
+            addCriterion("pre_value not between", value1, value2, "preValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueIsNull() {
+            addCriterion("pay_evalue is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueIsNotNull() {
+            addCriterion("pay_evalue is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueEqualTo(Double value) {
+            addCriterion("pay_evalue =", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueNotEqualTo(Double value) {
+            addCriterion("pay_evalue <>", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueGreaterThan(Double value) {
+            addCriterion("pay_evalue >", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueGreaterThanOrEqualTo(Double value) {
+            addCriterion("pay_evalue >=", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueLessThan(Double value) {
+            addCriterion("pay_evalue <", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueLessThanOrEqualTo(Double value) {
+            addCriterion("pay_evalue <=", value, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueIn(List<Double> values) {
+            addCriterion("pay_evalue in", values, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueNotIn(List<Double> values) {
+            addCriterion("pay_evalue not in", values, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueBetween(Double value1, Double value2) {
+            addCriterion("pay_evalue between", value1, value2, "payEvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayEvalueNotBetween(Double value1, Double value2) {
+            addCriterion("pay_evalue not between", value1, value2, "payEvalue");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

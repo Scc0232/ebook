@@ -77,8 +77,10 @@ public interface BookService {
 
 	List<BookClass> findClassNameList();
 
-	Map<String, String> computePrice(String orderNo);
+	Map<String, String> computePrice(String orderNo, String enumbers);
 
 	List<BookShelf> selectFromShelfByISBN(String isbn);
+
+	Map<String, String> preComputePrice(String productids);
 
 }

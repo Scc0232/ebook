@@ -59,6 +59,12 @@ public class Book {
 
     private Integer hotValue;
 
+    private Double initCost;
+
+    private Double otherCost;
+
+    private Double saveCose;
+
     public String getId() {
         return id;
     }
@@ -281,5 +287,29 @@ public class Book {
 
     public void setHotValue(Integer hotValue) {
         this.hotValue = hotValue;
+    }
+
+    public Double getInitCost() {
+        return initCost;
+    }
+
+    public void setInitCost(Double initCost) {
+        this.initCost = initCost;
+    }
+
+    public Double getOtherCost() {
+        return otherCost;
+    }
+
+    public void setOtherCost(Double otherCost) {
+        this.otherCost = otherCost;
+    }
+
+    public Double getSaveCose() {
+        return saveCose;
+    }
+
+    public void setSaveCose(Double saveCose) {
+        this.saveCose = saveCose;
     }
 }

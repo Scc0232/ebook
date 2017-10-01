@@ -15,6 +15,9 @@
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="count" property="count" jdbcType="INTEGER" />
     <result column="address_id" property="addressId" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="DOUBLE" />
+    <result column="pre_value" property="preValue" jdbcType="DOUBLE" />
+    <result column="pay_evalue" property="payEvalue" jdbcType="DOUBLE" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="message" property="message" jdbcType="VARCHAR" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
@@ -79,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, order_no, order_status, product_id, product_type, dep_price, desposit, product_name, 
-    product_price, product_icon, userid, count, address_id, create_time, message, is_valid
+    product_price, product_icon, userid, count, address_id, value, pre_value, pay_evalue, 
+    create_time, message, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.OrderExample" >
     select
@@ -113,20 +117,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Order" >
-  <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
     insert into e_order (id, order_no, order_status, 
       product_id, product_type, dep_price, 
       desposit, product_name, product_price, 
       product_icon, userid, count, 
-      address_id, create_time, message, 
+      address_id, value, pre_value, 
+      pay_evalue, create_time, message, 
       is_valid)
     values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, 
       #{productId,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, #{depPrice,jdbcType=DOUBLE}, 
       #{desposit,jdbcType=DOUBLE}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, 
       #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
-      #{addressId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{message,jdbcType=VARCHAR}, 
+      #{addressId,jdbcType=VARCHAR}, #{value,jdbcType=DOUBLE}, #{preValue,jdbcType=DOUBLE}, 
+      #{payEvalue,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{message,jdbcType=VARCHAR}, 
       #{isValid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Order" >
@@ -170,6 +176,15 @@
       </if>
       <if test="addressId != null" >
         address_id,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+      <if test="preValue != null" >
+        pre_value,
+      </if>
+      <if test="payEvalue != null" >
+        pay_evalue,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -220,6 +235,15 @@
       </if>
       <if test="addressId != null" >
         #{addressId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=DOUBLE},
+      </if>
+      <if test="preValue != null" >
+        #{preValue,jdbcType=DOUBLE},
+      </if>
+      <if test="payEvalue != null" >
+        #{payEvalue,jdbcType=DOUBLE},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -280,6 +304,15 @@
       <if test="record.addressId != null" >
         address_id = #{record.addressId,jdbcType=VARCHAR},
       </if>
+      <if test="record.value != null" >
+        value = #{record.value,jdbcType=DOUBLE},
+      </if>
+      <if test="record.preValue != null" >
+        pre_value = #{record.preValue,jdbcType=DOUBLE},
+      </if>
+      <if test="record.payEvalue != null" >
+        pay_evalue = #{record.payEvalue,jdbcType=DOUBLE},
+      </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -309,6 +342,9 @@
       userid = #{record.userid,jdbcType=VARCHAR},
       count = #{record.count,jdbcType=INTEGER},
       address_id = #{record.addressId,jdbcType=VARCHAR},
+      value = #{record.value,jdbcType=DOUBLE},
+      pre_value = #{record.preValue,jdbcType=DOUBLE},
+      pay_evalue = #{record.payEvalue,jdbcType=DOUBLE},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       message = #{record.message,jdbcType=VARCHAR},
       is_valid = #{record.isValid,jdbcType=BIT}
@@ -355,6 +391,15 @@
       <if test="addressId != null" >
         address_id = #{addressId,jdbcType=VARCHAR},
       </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=DOUBLE},
+      </if>
+      <if test="preValue != null" >
+        pre_value = #{preValue,jdbcType=DOUBLE},
+      </if>
+      <if test="payEvalue != null" >
+        pay_evalue = #{payEvalue,jdbcType=DOUBLE},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -381,6 +426,9 @@
       userid = #{userid,jdbcType=VARCHAR},
       count = #{count,jdbcType=INTEGER},
       address_id = #{addressId,jdbcType=VARCHAR},
+      value = #{value,jdbcType=DOUBLE},
+      pre_value = #{preValue,jdbcType=DOUBLE},
+      pay_evalue = #{payEvalue,jdbcType=DOUBLE},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       message = #{message,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=BIT}

@@ -11,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhijian.ebook.base.dao.UserMapper;
+import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
@@ -73,12 +75,15 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private FlatMapper flatMapper;
-	
+
 	@Autowired
 	private DonationMapper donationMapper;
-	
+
 	@Autowired
 	private BookShelfMapper bookShelfMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public List<Book> selectHotBook(String grade, String classid) {
@@ -277,12 +282,12 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int dirSubmitOrder(String productid, int nums, String addressid , String orderNo) throws Exception {
+	public int dirSubmitOrder(String productid, int nums, String addressid, String orderNo) throws Exception {
 		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
-		if (orderNo==null) {
+		if (orderNo == null) {
 			orderNo = getRandomOrderNO();
 		}
-		
+
 		Order order = new Order();
 		Book book = bookMapper.selectByPrimaryKey(productid);
 		Souvenir souvenir = null;
@@ -334,7 +339,7 @@ public class BookServiceImpl implements BookService {
 		address.setUserid(userid);
 		if (StringUtils.isNotBlank(address.getId())) {
 			address.setIsDefault(addressMapper.selectByPrimaryKey(address.getId()).getIsDefault());
-			
+
 			return addressMapper.updateByPrimaryKey(address);
 		}
 		AddressExample example = new AddressExample();
@@ -428,18 +433,18 @@ public class BookServiceImpl implements BookService {
 		Book book = bookMapper.selectByPrimaryKey(donation.getBookId());
 		Address address = addressMapper.selectByPrimaryKey(donation.getAddressId());
 		if (book != null && address != null) {
-				donation.setAuthor(book.getAuthor());
-				donation.setBookIcon(book.getIcon());
-				donation.setBookName(book.getTitle());
-				donation.setCreateTime(new Date());
-				donation.seteValue(book.getePrice());
-				donation.setIsbn(book.getIsbn());
-				donation.setIsValid(true);
-				donation.setPublisher(book.getPublisher());
-				donation.setStatus(0);
-				donation.setUserid(userid);
-				donationMapper.insert(donation);
-				return 1;
+			donation.setAuthor(book.getAuthor());
+			donation.setBookIcon(book.getIcon());
+			donation.setBookName(book.getTitle());
+			donation.setCreateTime(new Date());
+			donation.seteValue(book.getePrice());
+			donation.setIsbn(book.getIsbn());
+			donation.setIsValid(true);
+			donation.setPublisher(book.getPublisher());
+			donation.setStatus(0);
+			donation.setUserid(userid);
+			donationMapper.insert(donation);
+			return 1;
 		}
 
 		return 0;
@@ -473,7 +478,7 @@ public class BookServiceImpl implements BookService {
 		BookExample bookExample = new BookExample();
 		BookExample.Criteria criteria = bookExample.createCriteria();
 		if (StringUtils.isNotBlank(book.getTitle())) {
-			criteria.andTitleLike("%"+book.getTitle()+"%");
+			criteria.andTitleLike("%" + book.getTitle() + "%");
 		}
 		if (StringUtils.isNotBlank(book.getIsbn())) {
 			criteria.andIsbn10EqualTo(book.getIsbn());
@@ -485,12 +490,12 @@ public class BookServiceImpl implements BookService {
 			criteria.andGradeEqualTo(book.getGrade());
 		}
 		if (StringUtils.isNotBlank(book.getAuthor())) {
-			criteria.andAuthorEqualTo("%"+book.getAuthor()+"%");
+			criteria.andAuthorEqualTo("%" + book.getAuthor() + "%");
 		}
 		bookExample.setOrderByClause("hot_value desc");
-		List<Book> list = bookMapper.findPaginationList(new Page(page, rows),bookExample);
-		
-		return new EasyuiPagination<Book>(list.size(),list);
+		List<Book> list = bookMapper.findPaginationList(new Page(page, rows), bookExample);
+
+		return new EasyuiPagination<Book>(list.size(), list);
 	}
 
 	@Override
@@ -515,32 +520,57 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<BookClass> findClassNameList() {
-		
+
 		return bookClassMapper.selectByExample(null);
 	}
 
 	@Override
-	public Map<String, String> computePrice(String orderNo) {
+	public Map<String, String> computePrice(String orderNo, String enumbers) {
+		User user = null;
+		if (StringUtils.isBlank(enumbers)) {
+			enumbers = "0";
+		}
+		try {
+			user = userService.findUserByUsername(UserContextHelper.getUsername());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Map<String, String> map = new HashMap<>();
 		List<Order> list = null;
 		OrderExample example = new OrderExample();
 		OrderExample.Criteria criteria = example.createCriteria();
 		criteria.andOrderNoEqualTo(orderNo);
+		criteria.andUseridEqualTo(user.getId());
 		criteria.andIsValidEqualTo(true);
 		list = orderMapper.selectByExample(example);
 		double value = 0;
 		double prevalue = 0;
-		for(Order order : list) {
-			value += (order.getDepPrice()+order.getDesposit()+order.getProductPrice()) * order.getCount();
-			if (order.getProductType()==1) {
+		double eamount = 0;
+		double enumber = Double.parseDouble(enumbers);
+		for (Order order : list) {
+			value += (order.getDepPrice() + order.getDesposit() + order.getProductPrice()) * order.getCount();
+			eamount += order.getProductPrice();
+			if (order.getProductType() == 1) {
 				prevalue += order.getDepPrice() * order.getCount();
-			}else {
-				prevalue += 2* order.getCount();
+			} else {
+				prevalue += 2 * order.getCount();
 			}
 		}
-		map.put("value", value+"");
-		map.put("prevalue", prevalue+"");
+		if (enumber > 0) {
+			if (enumber > eamount || enumber > user.getBlance()) {
+				enumber = eamount > user.getBlance() ? user.getBlance() : eamount;
+			}
+			user.setBlance(user.getBlance() - enumber);
+			userMapper.updateByPrimaryKeySelective(user);
+		}
+		map.put("value", (value - enumber) + "");
+		map.put("prevalue", prevalue + "");
 		map.put("orderNo", orderNo);
+		Order order = new Order();
+		order.setValue(value);
+		order.setPreValue(prevalue);
+		order.setPayEvalue(enumber);
+		orderMapper.updateByExampleSelective(order, example);
 		return map;
 	}
 
@@ -552,6 +582,36 @@ public class BookServiceImpl implements BookService {
 		criteria.andIsbnEqualTo(isbn);
 		list = bookShelfMapper.selectByExample(example);
 		return list;
+	}
+
+	@Override
+	public Map<String, String> preComputePrice(String productids) {
+		Map<String, String> map = new HashMap<>();
+		double zujin = 0;
+		double zhejiu = 0;
+		double yajin = 0;
+		String[] product = productids.split(";");
+		for (String productidnum : product) {
+			String productid = StringUtils.substringBefore(productidnum, StringConsts.COMMA);
+			int nums = Integer.parseInt(StringUtils.substringAfter(productidnum, StringConsts.COMMA));
+			Book book = bookMapper.selectByPrimaryKey(productid);
+			if (book != null) {
+				zujin += book.getePrice() * nums;
+				zhejiu += book.getDepPrice() * nums;
+				yajin += book.getDeposit() * nums;
+			} else {
+				Souvenir souvenir = souvenirMapper.selectByPrimaryKey(productid);
+				zujin += souvenir.getPrice() * nums;
+			}
+
+			// dirSubmitOrder(productid, nums, addressid, orderNo);
+		}
+
+		map.put("zujin", zujin + "");
+		map.put("zhejiu", zhejiu + "");
+		map.put("yajin", yajin + "");
+		map.put("amount", zujin + zhejiu + yajin+"");
+		return map;
 	}
 
 }

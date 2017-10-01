@@ -218,12 +218,11 @@ public class BookInterface {
 				return ResponseEntity.ok(new ArrayList<>(), "请输入正确的ISBN号");
 			}
 		} else {
-					return ResponseEntity.ok(new ArrayList<>(), "无信息");
-			}
-		return ResponseEntity.ok(list);
+			return ResponseEntity.ok(new ArrayList<>(), "无信息");
 		}
-	
-	
+		return ResponseEntity.ok(list);
+	}
+
 	/**
 	 * 查看图书详情
 	 * 
@@ -565,17 +564,35 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/submitOrder", method = RequestMethod.POST)
-	public ResponseEntity submitOrder(String productids, String addressid) {
+	public ResponseEntity submitOrder(String productids, String addressid, String enumbers) {
 		Map<String, String> map = null;
 		try {
 
 			String orderNo = bookService.submitOrder(productids, addressid);
 			if (orderNo != null) {
-				map = bookService.computePrice(orderNo);
+				map = bookService.computePrice(orderNo, enumbers);
 				return ResponseEntity.ok(map);
 			} else {
 				return ResponseEntity.serverError("提交订单失败");
 			}
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+
+	/**
+	 * 计算价格
+	 * 
+	 * @return ResponseEntity 返回状态
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/computePrice", method = RequestMethod.POST)
+	public ResponseEntity computePrice(String productids) {
+		Map<String, String> map = null;
+		try {
+			map = bookService.preComputePrice(productids);
+			return ResponseEntity.ok(map);
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -826,7 +843,7 @@ public class BookInterface {
 					return WechatCore.mapToXml(resultMap);
 				} else {
 					Map<String, String> paramMap = WechatCore.xmlToMap(result);
-					log.info("paramMap回传参数:" + paramMap);
+					log.info("paramMap回传参数:>>>>>>" + paramMap);
 					String return_code = paramMap.get("return_code");
 					if (return_code.equals("SUCCESS")) {
 						// 校验签名
@@ -846,7 +863,9 @@ public class BookInterface {
 							OrderExample.Criteria criteria = orderExample.createCriteria();
 							criteria.andOrderNoEqualTo(id);
 							int counts = orderMapper.countByExample(orderExample);
-							List<Order> orders = orderMapper.selectByExample(orderExample);
+							log.info("counts:"+counts);
+							List<Order> orders = orderMapper.selectByExample(orderExample);							
+							log.info("orders:"+orders);
 							if (counts < 1) {
 								resultMap.put("return_code", "FAIL");
 								resultMap.put("return_msg", "支付订单不存在！");
@@ -858,13 +877,35 @@ public class BookInterface {
 								resultMap.put("return_msg", "已支付的订单");
 							}
 							String attach = paramMap.get("attach");
+							String total_fee = paramMap.get("total_fee");
+							Integer total = Integer.parseInt(total_fee);
+							log.info("total:<<<<<<<"+total);
+							Order order = orders.get(0);
 							if (Integer.parseInt(attach) == 2) {
-								for (Order or : orders) {
-									or.setOrderStatus(1);
-									orderMapper.updateByPrimaryKeySelective(or);
+								if (total == (int)Math.round(order.getValue() * 100)) {
+									Order order2 = new Order();
+									order2.setOrderStatus(1);
+									orderMapper.updateByExampleSelective(order2, orderExample);
+								} else if (total == (int)Math.round(order.getPreValue() * 100)) {
+									Order order2 = new Order();
+									order2.setOrderStatus(3);
+									orderMapper.updateByExampleSelective(order2, orderExample);
+								} else if (total == 1) {
+									Order order2 = new Order();
+									order2.setOrderStatus(4);
+									orderMapper.updateByExampleSelective(order2, orderExample);
+								} else {
+									Order order2 = new Order();
+									order2.setOrderStatus(5);
+									orderMapper.updateByExampleSelective(order2, orderExample);
 								}
+								// for (Order or : orders) {
+								// or.setOrderStatus(1);
+								// orderMapper.updateByPrimaryKeySelective(or);
+								// }
 								resultMap.put("return_code", "SUCCESS");
 								resultMap.put("return_msg", "OK");
+								log.info("resultMap:"+resultMap);
 								return WechatCore.mapToXml(resultMap);
 							}
 						}
@@ -873,6 +914,7 @@ public class BookInterface {
 			}
 			resultMap.put("return_code", "FAIL");
 			resultMap.put("return_msg", "系统错误");
+			log.info("resultMap:"+resultMap);
 			return WechatCore.mapToXml(resultMap);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -932,8 +974,7 @@ public class BookInterface {
 		}
 
 	}
-	
-	
+
 	/**
 	 * 绑定手机号
 	 *
@@ -963,12 +1004,12 @@ public class BookInterface {
 			Boolean flag = captchaService.validateSMSCaptcha(sms, session);
 			if (flag) {
 				int rows = userService.bindMoidle(phoneNumber);
-				if (rows>0) {
+				if (rows > 0) {
 					log.info("{} 手机号绑定成功！", phoneNumber);
 					return ResponseEntity.ok();
 				}
 				return ResponseEntity.serverError();
-			}else {
+			} else {
 				return ResponseEntity.serverError("验证码错误！");
 			}
 		} catch (Exception e) {
@@ -976,7 +1017,7 @@ public class BookInterface {
 		}
 
 	}
-	
+
 	/**
 	 * 获取签名
 	 * 
@@ -996,10 +1037,10 @@ public class BookInterface {
 
 		return ResponseEntity.ok(obj);
 	}
-	
-	
+
 	/**
 	 * 上传图片
+	 * 
 	 * @param request
 	 * @return
 	 */

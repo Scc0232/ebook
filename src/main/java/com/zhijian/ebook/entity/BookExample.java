@@ -1994,6 +1994,186 @@ public class BookExample {
             addCriterion("hot_value not between", value1, value2, "hotValue");
             return (Criteria) this;
         }
+
+        public Criteria andInitCostIsNull() {
+            addCriterion("init_cost is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostIsNotNull() {
+            addCriterion("init_cost is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostEqualTo(Double value) {
+            addCriterion("init_cost =", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostNotEqualTo(Double value) {
+            addCriterion("init_cost <>", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostGreaterThan(Double value) {
+            addCriterion("init_cost >", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostGreaterThanOrEqualTo(Double value) {
+            addCriterion("init_cost >=", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostLessThan(Double value) {
+            addCriterion("init_cost <", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostLessThanOrEqualTo(Double value) {
+            addCriterion("init_cost <=", value, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostIn(List<Double> values) {
+            addCriterion("init_cost in", values, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostNotIn(List<Double> values) {
+            addCriterion("init_cost not in", values, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostBetween(Double value1, Double value2) {
+            addCriterion("init_cost between", value1, value2, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitCostNotBetween(Double value1, Double value2) {
+            addCriterion("init_cost not between", value1, value2, "initCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostIsNull() {
+            addCriterion("other_cost is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostIsNotNull() {
+            addCriterion("other_cost is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostEqualTo(Double value) {
+            addCriterion("other_cost =", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostNotEqualTo(Double value) {
+            addCriterion("other_cost <>", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostGreaterThan(Double value) {
+            addCriterion("other_cost >", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostGreaterThanOrEqualTo(Double value) {
+            addCriterion("other_cost >=", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostLessThan(Double value) {
+            addCriterion("other_cost <", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostLessThanOrEqualTo(Double value) {
+            addCriterion("other_cost <=", value, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostIn(List<Double> values) {
+            addCriterion("other_cost in", values, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostNotIn(List<Double> values) {
+            addCriterion("other_cost not in", values, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostBetween(Double value1, Double value2) {
+            addCriterion("other_cost between", value1, value2, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherCostNotBetween(Double value1, Double value2) {
+            addCriterion("other_cost not between", value1, value2, "otherCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseIsNull() {
+            addCriterion("save_cose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseIsNotNull() {
+            addCriterion("save_cose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseEqualTo(Double value) {
+            addCriterion("save_cose =", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseNotEqualTo(Double value) {
+            addCriterion("save_cose <>", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseGreaterThan(Double value) {
+            addCriterion("save_cose >", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseGreaterThanOrEqualTo(Double value) {
+            addCriterion("save_cose >=", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseLessThan(Double value) {
+            addCriterion("save_cose <", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseLessThanOrEqualTo(Double value) {
+            addCriterion("save_cose <=", value, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseIn(List<Double> values) {
+            addCriterion("save_cose in", values, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseNotIn(List<Double> values) {
+            addCriterion("save_cose not in", values, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseBetween(Double value1, Double value2) {
+            addCriterion("save_cose between", value1, value2, "saveCose");
+            return (Criteria) this;
+        }
+
+        public Criteria andSaveCoseNotBetween(Double value1, Double value2) {
+            addCriterion("save_cose not between", value1, value2, "saveCose");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

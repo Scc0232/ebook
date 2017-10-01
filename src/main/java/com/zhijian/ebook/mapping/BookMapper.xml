@@ -30,6 +30,9 @@
     <result column="college" property="college" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="hot_value" property="hotValue" jdbcType="INTEGER" />
+    <result column="init_cost" property="initCost" jdbcType="DOUBLE" />
+    <result column="other_cost" property="otherCost" jdbcType="DOUBLE" />
+    <result column="save_cose" property="saveCose" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -92,7 +95,8 @@
   <sql id="Base_Column_List" >
     id, isbn, isbn10, title, subtitle, icon, author, summary, publisher, pubplace, pubdate, 
     page, dep_price, deposit, e_price, is_note, degree, binding, keyword, edition, impression, 
-    language, format, class_id, class_name, college, grade, hot_value
+    language, format, class_id, class_name, college, grade, hot_value, init_cost, other_cost, 
+    save_cose
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.BookExample" >
     select
@@ -138,7 +142,8 @@
       keyword, edition, impression, 
       language, format, class_id, 
       class_name, college, grade, 
-      hot_value)
+      hot_value, init_cost, other_cost, 
+      save_cose)
     values (#{id,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, #{isbn10,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{author,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, 
@@ -148,7 +153,8 @@
       #{keyword,jdbcType=VARCHAR}, #{edition,jdbcType=VARCHAR}, #{impression,jdbcType=VARCHAR}, 
       #{language,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, #{classId,jdbcType=VARCHAR}, 
       #{className,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
-      #{hotValue,jdbcType=INTEGER})
+      #{hotValue,jdbcType=INTEGER}, #{initCost,jdbcType=DOUBLE}, #{otherCost,jdbcType=DOUBLE}, 
+      #{saveCose,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Book" >
     insert into e_book
@@ -237,6 +243,15 @@
       <if test="hotValue != null" >
         hot_value,
       </if>
+      <if test="initCost != null" >
+        init_cost,
+      </if>
+      <if test="otherCost != null" >
+        other_cost,
+      </if>
+      <if test="saveCose != null" >
+        save_cose,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -322,6 +337,15 @@
       </if>
       <if test="hotValue != null" >
         #{hotValue,jdbcType=INTEGER},
+      </if>
+      <if test="initCost != null" >
+        #{initCost,jdbcType=DOUBLE},
+      </if>
+      <if test="otherCost != null" >
+        #{otherCost,jdbcType=DOUBLE},
+      </if>
+      <if test="saveCose != null" >
+        #{saveCose,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -418,6 +442,15 @@
       <if test="record.hotValue != null" >
         hot_value = #{record.hotValue,jdbcType=INTEGER},
       </if>
+      <if test="record.initCost != null" >
+        init_cost = #{record.initCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.otherCost != null" >
+        other_cost = #{record.otherCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.saveCose != null" >
+        save_cose = #{record.saveCose,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -452,7 +485,10 @@
       class_name = #{record.className,jdbcType=VARCHAR},
       college = #{record.college,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
-      hot_value = #{record.hotValue,jdbcType=INTEGER}
+      hot_value = #{record.hotValue,jdbcType=INTEGER},
+      init_cost = #{record.initCost,jdbcType=DOUBLE},
+      other_cost = #{record.otherCost,jdbcType=DOUBLE},
+      save_cose = #{record.saveCose,jdbcType=DOUBLE}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -541,6 +577,15 @@
       <if test="hotValue != null" >
         hot_value = #{hotValue,jdbcType=INTEGER},
       </if>
+      <if test="initCost != null" >
+        init_cost = #{initCost,jdbcType=DOUBLE},
+      </if>
+      <if test="otherCost != null" >
+        other_cost = #{otherCost,jdbcType=DOUBLE},
+      </if>
+      <if test="saveCose != null" >
+        save_cose = #{saveCose,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -572,10 +617,12 @@
       class_name = #{className,jdbcType=VARCHAR},
       college = #{college,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
-      hot_value = #{hotValue,jdbcType=INTEGER}
+      hot_value = #{hotValue,jdbcType=INTEGER},
+      init_cost = #{initCost,jdbcType=DOUBLE},
+      other_cost = #{otherCost,jdbcType=DOUBLE},
+      save_cose = #{saveCose,jdbcType=DOUBLE}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  
   <!-- 自定义 -->
   <select id="findPaginationList" resultMap="BaseResultMap">
 		select

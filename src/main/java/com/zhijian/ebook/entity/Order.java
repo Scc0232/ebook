@@ -29,6 +29,12 @@ public class Order {
 
     private String addressId;
 
+    private Double value;
+
+    private Double preValue;
+
+    private Double payEvalue;
+
     private Date createTime;
 
     private String message;
@@ -137,6 +143,30 @@ public class Order {
 
     public void setAddressId(String addressId) {
         this.addressId = addressId == null ? null : addressId.trim();
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public Double getPreValue() {
+        return preValue;
+    }
+
+    public void setPreValue(Double preValue) {
+        this.preValue = preValue;
+    }
+
+    public Double getPayEvalue() {
+        return payEvalue;
+    }
+
+    public void setPayEvalue(Double payEvalue) {
+        this.payEvalue = payEvalue;
     }
 
     public Date getCreateTime() {
