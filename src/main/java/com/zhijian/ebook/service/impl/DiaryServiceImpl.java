@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.dao.DiaryMapper;
@@ -13,12 +14,14 @@ import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryExample;
 import com.zhijian.ebook.service.DiaryService;
 
-
 @Service
 public class DiaryServiceImpl implements DiaryService {
-	
+
 	@Autowired
 	private DiaryMapper diaryMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public EasyuiPagination<Diary> findDiaryPagination(Diary diary, Integer page, Integer rows) {
@@ -27,10 +30,17 @@ public class DiaryServiceImpl implements DiaryService {
 		if (StringUtils.isNotBlank(diary.getTitle())) {
 			criteria.andTitleLike("%" + diary.getTitle() + "%");
 		}
-		diaryExample.setOrderByClause("username desc, create_time desc");
+		diaryExample.setOrderByClause("create_time desc");
 		List<Diary> list = diaryMapper.findPaginationList(new Page(page, rows), diaryExample);
-
-		return new EasyuiPagination<Diary>(list.size(), list);
+		for (Diary di : list) {
+			String userid = di.getUserid();
+			String username = userMapper.selectByPrimaryKey(userid).getPetName();
+			if (StringUtils.isNotBlank(username)) {
+				di.setUsername(username);
+			}
+		}
+		int counts = diaryMapper.countByExample(diaryExample);
+		return new EasyuiPagination<Diary>(counts, list);
 	}
 
 	@Override

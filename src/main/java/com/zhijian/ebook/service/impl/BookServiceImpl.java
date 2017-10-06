@@ -494,8 +494,8 @@ public class BookServiceImpl implements BookService {
 		}
 		bookExample.setOrderByClause("hot_value desc");
 		List<Book> list = bookMapper.findPaginationList(new Page(page, rows), bookExample);
-
-		return new EasyuiPagination<Book>(list.size(), list);
+		int counts = bookMapper.countByExample(bookExample);
+		return new EasyuiPagination<Book>(counts, list);
 	}
 
 	@Override

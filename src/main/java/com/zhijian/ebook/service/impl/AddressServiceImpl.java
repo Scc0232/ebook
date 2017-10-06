@@ -35,8 +35,8 @@ public class AddressServiceImpl implements AddressService {
 		}
 		addressExample.setOrderByClause("username desc, create_time desc");
 		List<Address> list = addressMapper.findPaginationList(new Page(page, rows), addressExample);
-
-		return new EasyuiPagination<Address>(list.size(), list);
+		int counts = addressMapper.countByExample(addressExample);
+		return new EasyuiPagination<Address>(counts, list);
 	}
 
 	@Override

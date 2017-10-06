@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.OrderExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+	List<Order> findPaginationList(@Param("page") Page page, @Param("example") OrderExample example);
 }

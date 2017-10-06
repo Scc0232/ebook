@@ -14,13 +14,12 @@ import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
 import com.zhijian.ebook.service.CollectService;
 
-
 @Service
 public class CollectServiceImpl implements CollectService {
-	
+
 	@Autowired
 	private CollectMapper collectMapper;
-	
+
 	@Autowired
 	private UserMapper userMapper;
 
@@ -31,14 +30,18 @@ public class CollectServiceImpl implements CollectService {
 		if (StringUtils.isNotBlank(collect.getBookName())) {
 			criteria.andBookNameLike("%" + collect.getBookName() + "%");
 		}
-		
+
 		collectExample.setOrderByClause("book_name desc, create_time desc");
 		List<Collect> list = collectMapper.findPaginationList(new Page(page, rows), collectExample);
-		for(Collect col : list) {
+		for (Collect col : list) {
 			String userid = col.getUserid();
-			col.setUsername(userMapper.selectByPrimaryKey(userid).getPetName());
+			String username = userMapper.selectByPrimaryKey(userid).getPetName();
+			if (StringUtils.isNotBlank(username)) {
+				col.setUsername(username);
+			}
 		}
-		return new EasyuiPagination<Collect>(list.size(), list);
+		int counts = collectMapper.countByExample(collectExample);
+		return new EasyuiPagination<Collect>(counts, list);
 	}
 
 	@Override

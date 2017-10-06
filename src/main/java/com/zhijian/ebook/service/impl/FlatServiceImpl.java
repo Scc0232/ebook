@@ -30,7 +30,8 @@ public class FlatServiceImpl implements FlatService {
 		criteria.andIsValidEqualTo(true);
 		flatExample.setOrderByClause("create_time desc");
 		List<Flat> list = flatMapper.findPaginationList(new Page(page, rows), flatExample);
-		return new EasyuiPagination<>(list.size(), list);
+		int counts = flatMapper.countByExample(flatExample);
+		return new EasyuiPagination<>(counts, list);
 	}
 
 	@Override

@@ -40,6 +40,8 @@ public class Order {
     private String message;
 
     private Boolean isValid;
+    
+    private String username;
 
     public String getId() {
         return id;
@@ -192,4 +194,12 @@ public class Order {
     public void setIsValid(Boolean isValid) {
         this.isValid = isValid;
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

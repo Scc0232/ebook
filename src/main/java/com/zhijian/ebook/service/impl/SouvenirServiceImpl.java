@@ -206,7 +206,6 @@ public class SouvenirServiceImpl implements SouvenirService {
 			comment.setUsername(userEntity.getPetName());
 			comment.setUsericon(userEntity.getIcon());
 		}
-
 		return new EasyuiPagination<>(list.size(), list);
 	}
 
@@ -246,7 +245,8 @@ public class SouvenirServiceImpl implements SouvenirService {
 		criteria.andIsValidEqualTo(true);
 		souvenirExample.setOrderByClause("create_time desc ");
 		List<Souvenir> list = souvenirMapper.findPaginationList(new Page(page, rows), souvenirExample);
-		return new EasyuiPagination<Souvenir>(list.size(), list);
+		int counts = souvenirMapper.countByExample(souvenirExample);
+		return new EasyuiPagination<Souvenir>(counts, list);
 	}
 
 	@Override
