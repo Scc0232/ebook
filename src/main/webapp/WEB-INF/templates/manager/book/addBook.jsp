@@ -84,8 +84,17 @@
 			        	<option value="four">四年级</option>
     		</select> 
 	</div>
-	<div>
-		<label align="left">图片URL :</label><input name="icon" class="easyui-textbox"  style="width: 380px; height: 26px;">
+	<div class="fitem" style="margin-top: 20px;">
+		<label align="right">原价 :</label> 
+		<input name="initCost" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">其他平台 :</label>
+		<input name="otherCost" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;">
+	</div>
+	<div class="fitem" style="margin-top: 20px;">
+	    <label  align="right">节省 :</label>
+		<input name="saveCose" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;">
+		<label style="margin-left: 20px" align="right">图片URL : </label>
+		<input name="icon"  maxlength='100'  class="easyui-textbox"  style="width: 180px; height: 26px;">
 	</div>
 </form>
 <p align="center" style="margin-top: 50px;">

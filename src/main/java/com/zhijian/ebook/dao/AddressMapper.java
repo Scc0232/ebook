@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.AddressExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface AddressMapper {
     int updateByPrimaryKeySelective(Address record);
 
     int updateByPrimaryKey(Address record);
+
+	List<Address> findPaginationList(@Param("page") Page page, @Param("example") AddressExample example);
 }

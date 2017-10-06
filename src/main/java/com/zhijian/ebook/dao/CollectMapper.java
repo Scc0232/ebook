@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface CollectMapper {
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);
+
+	List<Collect> findPaginationList(@Param("page") Page page,@Param("example")  CollectExample example);
 }

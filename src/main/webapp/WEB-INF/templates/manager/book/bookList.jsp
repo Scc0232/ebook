@@ -67,11 +67,23 @@
 				}
 			}, {
 				field : 'pubdate',
-				title : '创建时间',
+				title : '出版时间',
 				width : '150px',
 				formatter : function(val) {
 					return formatDate(val);
 				}
+			}, {
+				field : 'initCost',
+				title : '原价',
+				width : '120px'
+			}, {
+				field : 'otherCost',
+				title : '其他平台',
+				width : '120px'
+			}, {
+				field : 'saveCose',
+				title : '节省',
+				width : '120px'
 			} ] ],
 			// 工具栏
 			toolbar : '#book-tool',

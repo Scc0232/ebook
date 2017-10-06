@@ -2,12 +2,12 @@
 
 <script>
 	(function() {
-		var dg = $('#souvenir-grid');// 数据网格
-		var search = $('#souvenir-search');// 搜索div
-		var searchBtn = $('#souvenir-searchBtn');// 搜索按钮
-		var saveBtn = $('#souvenir-addBtn');//增加按钮
-		var removeBtn = $('#souvenir-removeBtn');//删除按钮
-		var modifyBtn = $('#souvenir-modifyBtn');//修改按钮
+		var dg = $('#flat-grid');// 数据网格
+		var search = $('#flat-search');// 搜索div
+		var searchBtn = $('#flat-searchBtn');// 搜索按钮
+		var saveBtn = $('#flat-addBtn');//增加按钮
+		var removeBtn = $('#flat-removeBtn');//删除按钮
+		var modifyBtn = $('#flat-modifyBtn');//修改按钮
 		var url;// 提交url
 
 		// 数据网格首选项
@@ -15,46 +15,30 @@
 			collapsible : true,
 			pagination : true,// 分页
 			singleSelect : true,// 单选
-			url : '${basePath}manager/souvenir/findSouvenirPagination.do',// 数据来源地址
+			url : '${basePath}manager/flat/findFlatPagination.do',// 数据来源地址
 			selectOnCheck : true,
 			columns : [ [ {
 				field : 'id',
 				title : '选择',
 				checkbox : true
 			}, {
-				field : 'type',
-				title : '类型',
-				width : '160px',
-				formatter : function(val) {
-					if (val == '1') {
-						return '校园文创';
-					} else {
-						return '文化';
-					} 
-
-				}
-			}, {
-				field : 'name',
-				title : '名称',
+				field : 'collegeName',
+				title : '校区',
 				width : '160px'
 			}, {
-				field : 'introduce',
-				title : '简介',
+				field : 'flatName',
+				title : '宿舍楼名称',
 				width : '160px'
-			}, {
-				field : 'icon',
-				title : '图片',
-				width : '260px'
 			}, {
 				field : 'createTime',
 				title : '创建时间',
-				width : '160px',
+				width : '150px',
 				formatter : function(val) {
 					return formatDate(val);
 				}
 			} ] ],
 			// 工具栏
-			toolbar : '#souvenir-tool',
+			toolbar : '#flat-tool',
 			fit : true,
 			fitColumns : true
 		};
@@ -67,13 +51,13 @@
 
 		//添加方法
 		$(saveBtn).bind('click', function() {
-			$('#souvenir-add').dialog({
-				title : '增加纪念品',
+			$('#flat-add').dialog({
+				title : '增加宿舍',
 				width : 600,
-				height : 320,
+				height : 220,
 				closed : false,
 				cache : false,
-				href : '${basePath}manager/souvenir/addSouvenirView.do',
+				href : '${basePath}manager/flat/addFlatView.do',
 				modal : true
 			});
 		});
@@ -89,7 +73,7 @@
 								$.messager
 										.confirm(
 												'温馨提示',
-												'确认删除此纪念品?',
+												'确认删除此宿舍?',
 												function(r) {
 													if (!r) {
 														return;
@@ -97,7 +81,7 @@
 													$
 															.ajax({
 																type : "POST",
-																url : '${basePath}manager/souvenir/removeSouvenir.do?id='
+																url : '${basePath}manager/flat/removeFlat.do?id='
 																		+ rows.id,
 																async : "false",
 																success : function(
@@ -106,7 +90,7 @@
 																	if (data) {//保存成功
 																		//  $(dlg).dialog('close');// 关闭回话框
 																		$(
-																				"#souvenir-grid")
+																				"#flat-grid")
 																				.datagrid(
 																						'reload'); // 刷新数据网格
 																	}
@@ -126,16 +110,16 @@
 						function() {
 							var row = $(dg).datagrid('getSelected');
 							if (row) {
-								$('#souvenir-add')
+								$('#flat-add')
 										.dialog(
 												{
-													title : '修改纪念品',
+													title : '修改宿舍',
 													width : 600,
-													height : 320,
+													height : 220,
 													closed : false,
 													cache : false,
 													type : "GET",
-													href : '${basePath}manager/souvenir/modifySouvenirView.do?souvenirid='
+													href : '${basePath}manager/flat/modifyFlatView.do?flatid='
 															+ row.id,
 													modal : true
 												});
@@ -149,26 +133,16 @@
 	})();
 </script>
 
-<div id="souvenir-tool">
-	<div id="souvenir-search" style="padding-top: 10px;">
-			<label style="padding-left: 10px;">名称:</label> <input name="name" class="easyui-textbox" style="height: 26px;"> 
-			<label style="padding-left: 10px;">类型:
-			<select  class="easyui-combobox" name="type" style="width:74px;" editable="false" panelHeight="auto">
-			        	<option value=" " > </option>
-			        	<option value=" " > </option>
-			        	<option value="1">校园文创</option>
-			        	<option value="2">文化</option>
-    		</select> 
-    		
-    		
-    		
-			<a id="souvenir-searchBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+<div id="flat-tool">
+	<div id="flat-search" style="padding-top: 10px;">
+			<label style="padding-left: 10px;">学校:</label> <input name="collegeName" class="easyui-textbox" style="height: 26px;"> 
+			<a id="flat-searchBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
 	</div>
 	<div style="padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">
-		<a id="souvenir-addBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-add'">增加纪念品</a> <a id="souvenir-modifyBtn"
-			href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-user_gray'">修改纪念品</a> <a id="souvenir-removeBtn" href="#"
-			class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-edit_remove'">删除纪念品</a>
+		<a id="flat-addBtn" href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-add'">增加宿舍</a> <a id="flat-modifyBtn"
+			href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-user_gray'">修改宿舍</a> <a id="flat-removeBtn" href="#"
+			class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-edit_remove'">删除宿舍</a>
 	</div>
 </div>
-<div id="souvenir-grid"></div>
-<div id="souvenir-add"></div>
+<div id="flat-grid"></div>
+<div id="flat-add"></div>

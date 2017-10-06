@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhijian.ebook.dao.FlatMapper" >
   <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Flat" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="college_name" property="collegeName" jdbcType="VARCHAR" />
     <result column="flat_name" property="flatName" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -84,6 +84,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from e_flat
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from e_flat
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.FlatExample" >
     delete from e_flat
     <if test="_parameter != null" >
@@ -91,7 +101,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Flat" >
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
     insert into e_flat (id, college_name, flat_name, 
@@ -176,6 +186,32 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Flat" >
+    update e_flat
+    <set >
+      <if test="collegeName != null" >
+        college_name = #{collegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="flatName != null" >
+        flat_name = #{flatName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Flat" >
+    update e_flat
+    set college_name = #{collegeName,jdbcType=VARCHAR},
+      flat_name = #{flatName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_valid = #{isValid,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
   
   <select id="selectCollege"  resultType="java.lang.String">
 		select distinct college_name from e_flat order by college_name desc
@@ -188,4 +224,25 @@
 		</if>
 		 order by flat_name desc
 	</select>
+	
+	 <!-- 自定义 -->
+  <select id="findPaginationList" resultMap="BaseResultMap">
+		select
+		<if test="example.distinct">
+			#{example.distinct}
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from e_flat
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="example.orderByClause != null">
+			order by ${example.orderByClause}
+		</if>
+		<if test="page != null">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
+	
 </mapper>

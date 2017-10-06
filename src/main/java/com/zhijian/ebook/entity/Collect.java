@@ -16,6 +16,8 @@ public class Collect {
     private String userid;
 
     private Date createTime;
+    
+    private String username;
 
     private Boolean isValid;
 
@@ -82,4 +84,12 @@ public class Collect {
     public void setIsValid(Boolean isValid) {
         this.isValid = isValid;
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

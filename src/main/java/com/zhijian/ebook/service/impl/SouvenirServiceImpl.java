@@ -240,7 +240,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 		if (StringUtils.isNotBlank(souvenir.getName())) {
 			criteria.andNameEqualTo(souvenir.getName());
 		}
-		if (StringUtils.isNotBlank(souvenir.getType() + "")) {
+		if (souvenir.getType()!=null) {
 			criteria.andTypeEqualTo(souvenir.getType());
 		}
 		criteria.andIsValidEqualTo(true);
@@ -256,6 +256,8 @@ public class SouvenirServiceImpl implements SouvenirService {
 
 	@Override
 	public int addSouvenir(Souvenir souvenir) {
+		souvenir.setIsValid(true);
+		souvenir.setCreateTime(new Date());
 		return souvenirMapper.insert(souvenir);
 	}
 

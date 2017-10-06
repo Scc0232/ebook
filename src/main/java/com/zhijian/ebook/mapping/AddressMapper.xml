@@ -291,4 +291,25 @@
       is_default = #{isDefault,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+   <!-- 自定义 -->
+  <select id="findPaginationList" resultMap="BaseResultMap">
+		select
+		<if test="example.distinct">
+			#{example.distinct}
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from e_address
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="example.orderByClause != null">
+			order by ${example.orderByClause}
+		</if>
+		<if test="page != null">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
+  
 </mapper>

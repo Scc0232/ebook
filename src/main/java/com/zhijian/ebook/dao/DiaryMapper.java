@@ -30,4 +30,6 @@ public interface DiaryMapper {
     int updateByPrimaryKey(Diary record);
 
 	List<Diary> selectDiaryByExample(@Param("example") DiaryExample example,@Param("page") Page page);
+
+	List<Diary> findPaginationList(@Param("page") Page page, @Param("example") DiaryExample example);
 }

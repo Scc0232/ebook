@@ -109,10 +109,19 @@ $(function(){
 			        	<option value="four">大四</option>
     		</select> 
 	</div>
-	<div>
-		<label align="left">图片URL :</label><input name="icon" class="easyui-textbox"  style="width: 380px; height: 26px;" value="${book.icon}">
+	<div class="fitem" style="margin-top: 20px;">
+		<label align="right">原价 :</label> 
+		<input name="initCost" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.initCost}">
+	   <label style="margin-left: 20px" align="right">其他平台 :</label>
+		<input name="otherCost" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.otherCost}">
+	</div>
+	<div class="fitem" style="margin-top: 20px;">
+	    <label  align="right">节省 :</label>
+		<input name="saveCose" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.saveCose}">
+		<label style="margin-left: 20px" align="right">图片URL : </label>
+		<input name="icon"  maxlength='100'  class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.icon}">
 	</div>
 </form>
-<p align="center">
+<p align="center" style="margin-top: 50px;">
 	<a id="bookModify-saveBtn" class="easyui-linkbutton"><font size="2">提&nbsp;&nbsp;交</font></a>
 </p>
