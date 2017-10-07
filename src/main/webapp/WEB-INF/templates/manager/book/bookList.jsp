@@ -42,10 +42,6 @@
 				title : 'e币价格',
 				width : '120px'
 			}, {
-				field : 'author',
-				title : '作者',
-				width : '120px'
-			}, {
 				field : 'className',
 				title : '分类',
 				width : '120px'

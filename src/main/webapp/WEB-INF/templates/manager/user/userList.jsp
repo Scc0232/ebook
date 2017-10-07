@@ -19,7 +19,7 @@
 			url : '${basePath}manager/user/findUserPagination.do',// 数据来源地址
 			selectOnCheck : true,
 			columns : [ [ { field : 'id', title : '选择', checkbox : true },
-			        { field : 'username', title : '用户名', width:'120px' },
+			        { field : 'petName', title : '用户名', width:'120px' },
 			        { field : 'name', title : '姓名', width:'90px' },
 			        { field : 'phone', title : '电话', width:'120px' },
 			        { field : 'email', title : '邮箱', width:'120px' },
