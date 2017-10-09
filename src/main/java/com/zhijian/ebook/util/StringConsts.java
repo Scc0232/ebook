@@ -8,7 +8,7 @@ public class StringConsts {
 	
 	public static String PASSWORD_ENCRYPTION_WAY = "MD5";
 	
-	public static String EBOOK_URL = "http://www.ebenshu.cn";
+	public static String EBOOK_URL = "www.ebenshu.cn/gallery/";
 	
 	 /** 上传图片 存放图片的文件夹路径名 */
     public static final String TO_PATH_IMG = "img/";

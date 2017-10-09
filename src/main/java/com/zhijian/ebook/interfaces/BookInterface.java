@@ -1047,6 +1047,8 @@ public class BookInterface {
 	@ResponseBody
 	@RequestMapping(value = "login/uploadImg", method = RequestMethod.POST)
 	public ResponseEntity uploadImg(HttpServletRequest request) {
+		String contentType = request.getContentType();
+		System.out.println(contentType);
 		String userName = UserContextHelper.getUsername();
 		if (StringUtils.isBlank(userName)) {
 			return ResponseEntity.serverError("请先登录");
@@ -1084,8 +1086,8 @@ public class BookInterface {
 					return ResponseEntity.serverError("没有要上传的图片");
 				}
 				String PATH = "/var/ebook/image/";
-				String imgPath = PATH + "gallery";
-				String bigPath = PATH + "biggallery";
+				String imgPath = PATH + "gallery/";
+				String bigPath = PATH + "biggallery/";
 				List<String> imglist = new ArrayList<>();
 				for (MultipartFile file : valueList) {
 					String newFileName = StringConsts.randomFileName().substring(15);
