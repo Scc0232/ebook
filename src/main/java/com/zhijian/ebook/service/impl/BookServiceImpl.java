@@ -429,7 +429,8 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public int addDonation(Donation donation) throws Exception {
-		String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
+		User user = userService.findUserByUsername(UserContextHelper.getUsername());
+		String userid = user.getId();
 		Book book = bookMapper.selectByPrimaryKey(donation.getBookId());
 		Address address = addressMapper.selectByPrimaryKey(donation.getAddressId());
 		if (book != null && address != null) {
@@ -444,6 +445,8 @@ public class BookServiceImpl implements BookService {
 			donation.setStatus(0);
 			donation.setUserid(userid);
 			donationMapper.insert(donation);
+			user.setBlance(user.getBlance()+book.getePrice());
+			userMapper.updateByPrimaryKeySelective(user);
 			return 1;
 		}
 
