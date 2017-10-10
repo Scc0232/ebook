@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <script>
     $(function () {
-        var saveBtn = $('#book-saveBtn');
+/*         var saveBtn = $('#book-saveBtn');
         var form = $('#bookAdd-fm');
         $(saveBtn).bind('click', function () {
           
@@ -26,10 +26,42 @@
                 }
             });
         });
-    });
+    }); */
+    var saveBtn = $('#book-saveBtn');
+    
+    $("#bookAdd-fm").form({
+                onSubmit: function(){
+                        if(! $("#bookAdd-fm").form('validate')){
+                                layer.msg("请添加必填项!");
+                                return false;
+                        }
+                        loading();
+                        return true;
+                },
+                success: function(data){                                
+                        var map = $.parseJSON(data);
+                        if(map.flag == "success"){
+                                parent.$('#book-add').dialog('close');
+                        }
+                        closeLoading();
+                        layer.msg(map.msg);
+                        if(map.flag == "success"){
+                                $("#book-grid").datagrid('reload');
+                        }
+                }                       
+        });
+        
+    $(saveBtn).bind('click', function () {
+        $("#bookAdd-fm").submit();
+    }); 
+    
+    
+    
+});
+    
     
 </script>
-<form id="bookAdd-fm" method="post" novalidate style="margin-top: 50px;">
+<form id="bookAdd-fm" method="post" enctype="multipart/form-data"  action="${basePath}manager/book/addBook.do">
 	<div class="fitem" style="margin-top: 20px;">
 		<label align="right">ISBN：</label> 
 		<input name="isbn" validtype="length[5,20]" missingMessage="不能为空" invalidMessage="有效长度5-20"   class="easyui-textbox" required="true" style="width: 180px; height: 26px;">
@@ -94,7 +126,7 @@
 	    <label  align="right">节省 :</label>
 		<input name="saveCose" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;">
 		<label style="margin-left: 20px" align="right">图片URL : </label>
-		<input name="icon"  maxlength='100'  class="easyui-textbox"  style="width: 180px; height: 26px;">
+		<input id="icons" name="icons"  maxlength='200' class="easyui-filebox" style="width: 180px; height: 26px;">
 	</div>
 </form>
 <p align="center" style="margin-top: 50px;">

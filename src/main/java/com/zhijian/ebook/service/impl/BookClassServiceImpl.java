@@ -70,6 +70,7 @@ public class BookClassServiceImpl implements BookClassService {
 		map.put("bookclass", classlist);
 		BookExample bookExample = new BookExample();
 		BookExample.Criteria criteria = bookExample.createCriteria();
+		String classid = classlist.get(0).getId();
 		criteria.andClassIdEqualTo(classlist.get(0).getId());
 		List<Book> booklist = bookMapper.selectByExample(bookExample);
 		map.put("kaoyan", booklist);
@@ -95,12 +96,12 @@ public class BookClassServiceImpl implements BookClassService {
 			e2.printStackTrace();
 		}
 		String openId = user.getUsername();
-//		OrderExample example = new OrderExample();
-//		OrderExample.Criteria criteria = example.createCriteria();
-//		criteria.andOrderNoEqualTo(orderNo);
-//		criteria.andUseridEqualTo(user.getId());
-//		criteria.andIsValidEqualTo(true);
-//		List<Order> listOrder = orderMapper.selectByExample(example);
+		// OrderExample example = new OrderExample();
+		// OrderExample.Criteria criteria = example.createCriteria();
+		// criteria.andOrderNoEqualTo(orderNo);
+		// criteria.andUseridEqualTo(user.getId());
+		// criteria.andIsValidEqualTo(true);
+		// List<Order> listOrder = orderMapper.selectByExample(example);
 
 		Map<String, String> resultsMap = new HashMap<String, String>();
 		Map<String, String> paramMap = new HashMap<String, String>();
@@ -192,11 +193,11 @@ public class BookClassServiceImpl implements BookClassService {
 	@Override
 	public Object findSign(String targetUrl) {
 		int index = targetUrl.indexOf("#");
-        if (index > 0) {
-            targetUrl = targetUrl.substring(0, index);
-            //targetUrl = targetUrl.toLowerCase();
-            log.info("targetUrl：" + targetUrl);
-        }
+		if (index > 0) {
+			targetUrl = targetUrl.substring(0, index);
+			// targetUrl = targetUrl.toLowerCase();
+			log.info("targetUrl：" + targetUrl);
+		}
 		String accessToken = weixinServer.getAccessToken();
 		String appid = WechatConfig.APPID;
 		Map<String, String> params = new HashMap<String, String>();
@@ -220,7 +221,7 @@ public class BookClassServiceImpl implements BookClassService {
 
 		String noncestr = UUID.randomUUID().toString();
 		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-//		url = "http://www.ebenshu.cn";
+		// url = "http://www.ebenshu.cn";
 		String signature = null;
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("noncestr", noncestr);

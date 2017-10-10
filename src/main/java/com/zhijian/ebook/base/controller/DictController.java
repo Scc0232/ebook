@@ -119,8 +119,15 @@ public class DictController {
 	 */
 	@ResponseBody
 	@RequestMapping("modifyDict")
-	public ResponseMsg modifyDict(Dict dict) {
-		int row = dictService.modifyDict(dict);
+	public ResponseMsg modifyDict(Dict dict, HttpServletRequest request) {
+		int row = 0;
+		String icon = uploadImg(request);
+		if (icon != null) {
+			dict.setIcon(icon);
+		} else {
+			dict.setIcon("img/test.jpg");
+		}
+		row = dictService.modifyDict(dict);
 		if (row > 0) {
 			return ResponseMsg.success("修改字典成功！");
 		} else {
@@ -148,6 +155,7 @@ public class DictController {
 
 	/**
 	 * 图片上传
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -162,7 +170,8 @@ public class DictController {
 			imgSufferList.add("bmp");
 			imgSufferList.add("jpeg");
 
-			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+					request.getSession().getServletContext());
 			if (multipartResolver.isMultipart(request)) {
 				Long newFileName = null;
 
@@ -175,7 +184,8 @@ public class DictController {
 						throw new Exception();
 					}
 					newFileName = Long.valueOf(StringConsts.getUUID16Id());
-					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG, newFileName.toString(), false);
+					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG,
+							newFileName.toString(), false);
 				}
 			}
 		} catch (Exception e) {
@@ -184,7 +194,7 @@ public class DictController {
 		if (org.springframework.util.StringUtils.isEmpty(uploadFilePath)) {
 			return null;
 		}
-		return StringConsts.TO_PATH_IMG + uploadFilePath;
+		return uploadFilePath;
 	}
 
 }

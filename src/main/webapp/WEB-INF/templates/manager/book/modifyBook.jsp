@@ -52,7 +52,7 @@ $(function(){
 
 </script>
 
-<form id="book-fm" method="post" novalidate style="margin-top: 50px;">
+<form id="book-fm" method="post" enctype="multipart/form-data"  action="${basePath}manager/book/modifyBook.do">
     <div>
         <input id="id" name="id" type="hidden" value="${book.id}"/>
     </div>
@@ -119,7 +119,7 @@ $(function(){
 	    <label  align="right">节省 :</label>
 		<input name="saveCose" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.saveCose}">
 		<label style="margin-left: 20px" align="right">图片URL : </label>
-		<input name="icon"  maxlength='100'  class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.icon}">
+		<input id="icons" name="icons"  maxlength='200' class="easyui-filebox" style="width: 180px; height: 26px;"  value="${book.icon}">
 	</div>
 </form>
 <p align="center" style="margin-top: 50px;">

@@ -34,17 +34,17 @@ $(function(){
 	});
 });
 </script>
-	<form id="dict-fm" method="post" novalidate>
+	<form id="dict-fm" method="post"  enctype="multipart/form-data" action="${basePath}manager/dict/modifyDict.do">
 	   <table class="am_table_1">
 	       <tr style="height: 15px;"></tr>
 	       <input id="id" name="id" type="hidden" value="${dict.id}"/>
 	       <tr>
 	           <th>字典名称 ：</th>
-	           <td><input name="dictName" maxlength='50' data-options="required:true,validType:'CHS'" class="easyui-textbox" style="width: 180px; height: 26px;" value="${dict.dictName}"></td>
+	           <td><input name="dictName" maxlength='50'   class="easyui-textbox" style="width: 180px; height: 26px;" value="${dict.dictName}"></td>
 	       </tr>
 	       <tr>
                <th>字典类型 ：</th>
-               <td><input name="dictType" maxlength='50' class="easyui-textbox" required="true" style="width: 180px; height: 26px;" value="${dict.dictType}"></td>
+               <td><input name="dictType" maxlength='50' class="easyui-textbox"   style="width: 180px; height: 26px;" value="${dict.dictType}"></td>
            </tr>
            <tr>
                <th>字典编码：</th>
@@ -56,7 +56,7 @@ $(function(){
            </tr>
            <tr>
                <th>菜单图片URL ：</th>
-               <td><input name="icon"  maxlength='200' class="easyui-textbox" style="width: 180px; height: 26px;" value = "${dict.icon}"></td>
+               <td><input id="icons" name="icons"  maxlength='200' class="easyui-filebox" style="width: 180px; height: 26px;" value = "${dict.icon}"></td>
            </tr>
 	   </table>
 	</form>

@@ -111,6 +111,8 @@ public class UserServiceImpl implements UserService {
 		if(StringUtils.isEmpty(password)){
 			password = user.getUsername();
 		}
+		String userid = StringConsts.randomFileName();
+		user.setId(userid);
         String md5 = md5Mncoder.encode(password);
         user.setPassword(md5);
         user.setIsValid(true);
