@@ -11,7 +11,7 @@ public class StringConsts {
 	public static String EBOOK_URL = "www.ebenshu.cn/gallery/";
 	
 	 /** 上传图片 存放图片的文件夹路径名 */
-    public static final String TO_PATH_IMG = "img/";
+    public static final String TO_PATH_IMG = "gallery/";
     
     /**
      * 上传票据---小图片保存地址
@@ -82,5 +82,10 @@ public class StringConsts {
     public static String randomFileName() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
-    
+    public static long getUUID16Id()
+    {
+      UUID16maker uuid16maker = new UUID16maker(1L);
+      long l = uuid16maker.nextId();
+      return l;
+    }
 }

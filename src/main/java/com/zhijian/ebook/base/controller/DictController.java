@@ -1,17 +1,25 @@
 package com.zhijian.ebook.base.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.zhijian.ebook.base.entity.Dict;
 import com.zhijian.ebook.base.service.DictService;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
+import com.zhijian.ebook.util.FileUpLoadUtils;
+import com.zhijian.ebook.util.StringConsts;
 
 /**
  * 
@@ -79,15 +87,22 @@ public class DictController {
 	 */
 	@ResponseBody
 	@RequestMapping("addDict")
-	public ResponseMsg addDict(Dict dict) {
-		int row = dictService.addDict(dict);
+	public ResponseMsg addDict(Dict dict, HttpServletRequest request) {
+		int row = 0;
+		String icon = uploadImg(request);
+		if (icon != null) {
+			dict.setIcon(icon);
+		} else {
+			dict.setIcon("img/test.jpg");
+		}
+		row = dictService.addDict(dict);
 		if (row > 0) {
 			return ResponseMsg.success("添加字典成功！");
 		} else {
 			return ResponseMsg.fail("添加字典失败！");
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("findDictType")
 	public List<Dict> findDictType(String dictType) {
@@ -131,5 +146,45 @@ public class DictController {
 		}
 	}
 
-	
+	/**
+	 * 图片上传
+	 * @param request
+	 * @return
+	 */
+	public String uploadImg(HttpServletRequest request) {
+		String uploadFilePath = null;
+		try {
+			List<String> imgSufferList = new ArrayList<String>();
+
+			imgSufferList.add("jpg");
+			imgSufferList.add("png");
+			imgSufferList.add("gif");
+			imgSufferList.add("bmp");
+			imgSufferList.add("jpeg");
+
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+			if (multipartResolver.isMultipart(request)) {
+				Long newFileName = null;
+
+				MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+				MultipartFile headImg = multiRequest.getFile("icons");
+				String suffer = null;
+				if ((headImg != null) && (headImg.getSize() > 0L)) {
+					suffer = FileUpLoadUtils.getFileSuffix(headImg);
+					if (!imgSufferList.contains(suffer.toLowerCase())) {
+						throw new Exception();
+					}
+					newFileName = Long.valueOf(StringConsts.getUUID16Id());
+					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG, newFileName.toString(), false);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (org.springframework.util.StringUtils.isEmpty(uploadFilePath)) {
+			return null;
+		}
+		return StringConsts.TO_PATH_IMG + uploadFilePath;
+	}
+
 }

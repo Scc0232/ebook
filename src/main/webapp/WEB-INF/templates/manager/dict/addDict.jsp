@@ -27,14 +27,14 @@ $(function () {
     });
 });
 </script>
-	<form id="dict-fm" method="post" novalidate>
+	<form id="dict-fm" method="post" enctype="multipart/form-data" action="${basePath}manager/dict/addDict.do">
 	   <table class="am_table_1">
 	       <tr style="height: 15px;"></tr>
 	        <tr>
 	           <th>字典名称 ：</th>
 	           <td><input name="dictName" maxlength='50' data-options="required:true,validType:'CHS'"  class="easyui-textbox" style="width: 180px; height: 26px;" ></td>
 	       </tr>
-	       <tr>
+           <tr>
                <th>字典类型 ：</th>
                <td><input name="dictType" maxlength='50' class="easyui-textbox" data-options="required:true" style="width: 180px; height: 26px;"></td>
            </tr>
@@ -47,8 +47,8 @@ $(function () {
                <td><input name="dictDescribe"  maxlength='200' class="easyui-textbox" data-options="required:true" style="width: 180px; height: 26px;"></td>
            </tr>
            <tr>
-               <th>菜单图片URL ：</th>
-               <td><input name="icon"  maxlength='200' class="easyui-textbox" style="width: 180px; height: 26px;"></td>
+               <th>上传图片：</th>
+               <td><input id="icons" name="icons"  maxlength='200' class="easyui-filebox" style="width: 180px; height: 26px;"></td>
            </tr>
 	   </table>
 	</form>
