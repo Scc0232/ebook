@@ -2,9 +2,11 @@ package com.zhijian.ebook.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.dao.DonationMapper;
@@ -17,19 +19,29 @@ public class DonationServiceImpl implements DonationService {
 
 	@Autowired
 	private DonationMapper donationMapper;
+	
+	@Autowired
+	private UserMapper userMapper;
 
 
 	@Override
 	public EasyuiPagination<Donation> findDonationPagination(Donation donation, Integer page, Integer rows) {
 		DonationExample donationExample = new DonationExample();
-//		DonationExample.Criteria criteria = donationExample.createCriteria();
+		DonationExample.Criteria criteria = donationExample.createCriteria();
+		if (StringUtils.isNotBlank(donation.getBookName())) {
+			criteria.andBookNameLike("%"+donation.getBookName()+"%");
+		}
+		if (donation.getStatus()!=null) {
+			criteria.andStatusEqualTo(donation.getStatus());
+		}
+		donationExample.setOrderByClause("status desc, create_time asc");
 		List<Donation> list = donationMapper.findPaginationList(new Page(page, rows), donationExample);
-//		for (Donation sCart : list) {
-//			String username = userMapper.selectByPrimaryKey(sCart.getUserid()).getPetName();
-//			if (StringUtils.isNotBlank(username)) {
-//				sCart.setUsername(username);
-//			}
-//		}
+		for (Donation sCart : list) {
+			String username = userMapper.selectByPrimaryKey(sCart.getUserid()).getPetName();
+			if (StringUtils.isNotBlank(username)) {
+				sCart.setUsername(username);
+			}
+		}
 		int counts = donationMapper.countByExample(donationExample);
 		return new EasyuiPagination<Donation>(counts, list);
 	}

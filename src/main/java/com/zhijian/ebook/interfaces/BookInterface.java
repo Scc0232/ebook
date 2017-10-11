@@ -49,6 +49,7 @@ import com.zhijian.ebook.enums.GradeLevel;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
+import com.zhijian.ebook.service.DiaryService;
 import com.zhijian.ebook.service.SouvenirService;
 import com.zhijian.ebook.util.CaptchaUtils;
 import com.zhijian.ebook.util.FileUpLoadUtils;
@@ -90,6 +91,9 @@ public class BookInterface {
 
 	@Autowired
 	private CaptchaService captchaService;
+	
+	@Autowired
+	private DiaryService diaryService;
 
 	/**
 	 * 获取轮播图
@@ -287,6 +291,26 @@ public class BookInterface {
 		}
 	}
 
+	/**
+	 * 删除日记
+	 * 
+	 * @return ResponseEntity 返回图书分类实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/delDiary", method = RequestMethod.POST)
+	public ResponseEntity delDiary(String id) {
+		if (StringUtils.isBlank(id)) {
+			return ResponseEntity.illegalParam("参数为空!");
+		}
+		try {
+			diaryService.removeDiaryById(id);
+			return ResponseEntity.ok("删除日记成功");
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+	}
+	
 	/**
 	 * 查看全部可见日记
 	 * 

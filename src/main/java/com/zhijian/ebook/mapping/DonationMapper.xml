@@ -379,7 +379,7 @@
 		</if>
 		'true' as QUERYID,
 		<include refid="Base_Column_List" />
-		from e_order
+		from e_donation
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
