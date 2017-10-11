@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhijian.ebook.base.dao.UserMapper;
+import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.dao.DonationMapper;
@@ -58,6 +59,10 @@ public class DonationServiceImpl implements DonationService {
 
 	@Override
 	public int modifyDonation(Donation donation) {
+		Donation donation2 = donationMapper.selectByPrimaryKey(donation.getId());
+		User user = userMapper.selectByPrimaryKey(donation2.getUserid());
+		user.setBlance(user.getBlance()+donation2.geteValue());
+		userMapper.updateByPrimaryKeySelective(user);
 		return donationMapper.updateByPrimaryKeySelective(donation);
 	}
 
