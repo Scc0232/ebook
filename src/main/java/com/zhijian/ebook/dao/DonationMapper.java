@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Donation;
 import com.zhijian.ebook.entity.DonationExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface DonationMapper {
     int updateByPrimaryKeySelective(Donation record);
 
     int updateByPrimaryKey(Donation record);
+
+	List<Donation> findPaginationList(@Param("page")Page page,@Param("example") DonationExample donationExample);
 }

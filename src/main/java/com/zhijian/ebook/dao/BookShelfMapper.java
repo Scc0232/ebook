@@ -1,5 +1,7 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
+import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookShelf;
 import com.zhijian.ebook.entity.BookShelfExample;
 import java.util.List;
@@ -27,4 +29,6 @@ public interface BookShelfMapper {
     int updateByPrimaryKeySelective(BookShelf record);
 
     int updateByPrimaryKey(BookShelf record);
+
+	List<BookShelf> findPaginationList(@Param("page")Page page,@Param("example") BookShelfExample example);
 }

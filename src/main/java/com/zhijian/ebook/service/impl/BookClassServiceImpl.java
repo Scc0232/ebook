@@ -70,7 +70,6 @@ public class BookClassServiceImpl implements BookClassService {
 		map.put("bookclass", classlist);
 		BookExample bookExample = new BookExample();
 		BookExample.Criteria criteria = bookExample.createCriteria();
-		String classid = classlist.get(0).getId();
 		criteria.andClassIdEqualTo(classlist.get(0).getId());
 		List<Book> booklist = bookMapper.selectByExample(bookExample);
 		map.put("kaoyan", booklist);

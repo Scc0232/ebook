@@ -1,374 +1,393 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhijian.ebook.dao.DonationMapper" >
-  <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Donation" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="book_id" property="bookId" jdbcType="VARCHAR" />
-    <result column="book_name" property="bookName" jdbcType="VARCHAR" />
-    <result column="e_value" property="eValue" jdbcType="DOUBLE" />
-    <result column="book_icon" property="bookIcon" jdbcType="VARCHAR" />
-    <result column="ISBN" property="isbn" jdbcType="VARCHAR" />
-    <result column="author" property="author" jdbcType="VARCHAR" />
-    <result column="publisher" property="publisher" jdbcType="VARCHAR" />
-    <result column="is_note" property="isNote" jdbcType="BIT" />
-    <result column="degree" property="degree" jdbcType="VARCHAR" />
-    <result column="userid" property="userid" jdbcType="VARCHAR" />
-    <result column="address_id" property="addressId" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="is_valid" property="isValid" jdbcType="BIT" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    id, book_id, book_name, e_value, book_icon, ISBN, author, publisher, is_note, degree, 
-    userid, address_id, create_time, status, is_valid
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.DonationExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    'true' as QUERYID,
-    <include refid="Base_Column_List" />
-    from e_donation
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from e_donation
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from e_donation
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.DonationExample" >
-    delete from e_donation
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.zhijian.ebook.entity.Donation" >
-  <selectKey keyProperty="id" resultType="String" order="BEFORE">
-        SELECT REPLACE(UUID(),'-','')
-    </selectKey>
-    insert into e_donation (id, book_id, book_name, 
-      e_value, book_icon, ISBN, 
-      author, publisher, is_note, 
-      degree, userid, address_id, 
-      create_time, status, is_valid
-      )
-    values (#{id,jdbcType=VARCHAR}, #{bookId,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR}, 
-      #{eValue,jdbcType=DOUBLE}, #{bookIcon,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, 
-      #{author,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{isNote,jdbcType=BIT}, 
-      #{degree,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{addressId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{isValid,jdbcType=BIT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Donation" >
-    insert into e_donation
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="bookId != null" >
-        book_id,
-      </if>
-      <if test="bookName != null" >
-        book_name,
-      </if>
-      <if test="eValue != null" >
-        e_value,
-      </if>
-      <if test="bookIcon != null" >
-        book_icon,
-      </if>
-      <if test="isbn != null" >
-        ISBN,
-      </if>
-      <if test="author != null" >
-        author,
-      </if>
-      <if test="publisher != null" >
-        publisher,
-      </if>
-      <if test="isNote != null" >
-        is_note,
-      </if>
-      <if test="degree != null" >
-        degree,
-      </if>
-      <if test="userid != null" >
-        userid,
-      </if>
-      <if test="addressId != null" >
-        address_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="isValid != null" >
-        is_valid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="bookId != null" >
-        #{bookId,jdbcType=VARCHAR},
-      </if>
-      <if test="bookName != null" >
-        #{bookName,jdbcType=VARCHAR},
-      </if>
-      <if test="eValue != null" >
-        #{eValue,jdbcType=DOUBLE},
-      </if>
-      <if test="bookIcon != null" >
-        #{bookIcon,jdbcType=VARCHAR},
-      </if>
-      <if test="isbn != null" >
-        #{isbn,jdbcType=VARCHAR},
-      </if>
-      <if test="author != null" >
-        #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="publisher != null" >
-        #{publisher,jdbcType=VARCHAR},
-      </if>
-      <if test="isNote != null" >
-        #{isNote,jdbcType=BIT},
-      </if>
-      <if test="degree != null" >
-        #{degree,jdbcType=VARCHAR},
-      </if>
-      <if test="userid != null" >
-        #{userid,jdbcType=VARCHAR},
-      </if>
-      <if test="addressId != null" >
-        #{addressId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="isValid != null" >
-        #{isValid,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.zhijian.ebook.entity.DonationExample" resultType="java.lang.Integer" >
-    select count(*) from e_donation
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update e_donation
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bookId != null" >
-        book_id = #{record.bookId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bookName != null" >
-        book_name = #{record.bookName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.eValue != null" >
-        e_value = #{record.eValue,jdbcType=DOUBLE},
-      </if>
-      <if test="record.bookIcon != null" >
-        book_icon = #{record.bookIcon,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isbn != null" >
-        ISBN = #{record.isbn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.author != null" >
-        author = #{record.author,jdbcType=VARCHAR},
-      </if>
-      <if test="record.publisher != null" >
-        publisher = #{record.publisher,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isNote != null" >
-        is_note = #{record.isNote,jdbcType=BIT},
-      </if>
-      <if test="record.degree != null" >
-        degree = #{record.degree,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userid != null" >
-        userid = #{record.userid,jdbcType=VARCHAR},
-      </if>
-      <if test="record.addressId != null" >
-        address_id = #{record.addressId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.isValid != null" >
-        is_valid = #{record.isValid,jdbcType=BIT},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update e_donation
-    set id = #{record.id,jdbcType=VARCHAR},
-      book_id = #{record.bookId,jdbcType=VARCHAR},
-      book_name = #{record.bookName,jdbcType=VARCHAR},
-      e_value = #{record.eValue,jdbcType=DOUBLE},
-      book_icon = #{record.bookIcon,jdbcType=VARCHAR},
-      ISBN = #{record.isbn,jdbcType=VARCHAR},
-      author = #{record.author,jdbcType=VARCHAR},
-      publisher = #{record.publisher,jdbcType=VARCHAR},
-      is_note = #{record.isNote,jdbcType=BIT},
-      degree = #{record.degree,jdbcType=VARCHAR},
-      userid = #{record.userid,jdbcType=VARCHAR},
-      address_id = #{record.addressId,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=INTEGER},
-      is_valid = #{record.isValid,jdbcType=BIT}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Donation" >
-    update e_donation
-    <set >
-      <if test="bookId != null" >
-        book_id = #{bookId,jdbcType=VARCHAR},
-      </if>
-      <if test="bookName != null" >
-        book_name = #{bookName,jdbcType=VARCHAR},
-      </if>
-      <if test="eValue != null" >
-        e_value = #{eValue,jdbcType=DOUBLE},
-      </if>
-      <if test="bookIcon != null" >
-        book_icon = #{bookIcon,jdbcType=VARCHAR},
-      </if>
-      <if test="isbn != null" >
-        ISBN = #{isbn,jdbcType=VARCHAR},
-      </if>
-      <if test="author != null" >
-        author = #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="publisher != null" >
-        publisher = #{publisher,jdbcType=VARCHAR},
-      </if>
-      <if test="isNote != null" >
-        is_note = #{isNote,jdbcType=BIT},
-      </if>
-      <if test="degree != null" >
-        degree = #{degree,jdbcType=VARCHAR},
-      </if>
-      <if test="userid != null" >
-        userid = #{userid,jdbcType=VARCHAR},
-      </if>
-      <if test="addressId != null" >
-        address_id = #{addressId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="isValid != null" >
-        is_valid = #{isValid,jdbcType=BIT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Donation" >
-    update e_donation
-    set book_id = #{bookId,jdbcType=VARCHAR},
-      book_name = #{bookName,jdbcType=VARCHAR},
-      e_value = #{eValue,jdbcType=DOUBLE},
-      book_icon = #{bookIcon,jdbcType=VARCHAR},
-      ISBN = #{isbn,jdbcType=VARCHAR},
-      author = #{author,jdbcType=VARCHAR},
-      publisher = #{publisher,jdbcType=VARCHAR},
-      is_note = #{isNote,jdbcType=BIT},
-      degree = #{degree,jdbcType=VARCHAR},
-      userid = #{userid,jdbcType=VARCHAR},
-      address_id = #{addressId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      is_valid = #{isValid,jdbcType=BIT}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+<mapper namespace="com.zhijian.ebook.dao.DonationMapper">
+	<resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Donation">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="book_id" property="bookId" jdbcType="VARCHAR" />
+		<result column="book_name" property="bookName" jdbcType="VARCHAR" />
+		<result column="e_value" property="eValue" jdbcType="DOUBLE" />
+		<result column="book_icon" property="bookIcon" jdbcType="VARCHAR" />
+		<result column="ISBN" property="isbn" jdbcType="VARCHAR" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="publisher" property="publisher" jdbcType="VARCHAR" />
+		<result column="is_note" property="isNote" jdbcType="BIT" />
+		<result column="degree" property="degree" jdbcType="VARCHAR" />
+		<result column="userid" property="userid" jdbcType="VARCHAR" />
+		<result column="address_id" property="addressId" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="is_valid" property="isValid" jdbcType="BIT" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, book_id, book_name, e_value, book_icon, ISBN, author, publisher, is_note, degree,
+		userid, address_id, create_time, status, is_valid
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.DonationExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from e_donation
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from e_donation
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from e_donation
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.DonationExample">
+		delete from e_donation
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.zhijian.ebook.entity.Donation">
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">
+			SELECT REPLACE(UUID(),'-','')
+		</selectKey>
+		insert into e_donation (id, book_id, book_name,
+		e_value, book_icon, ISBN,
+		author, publisher, is_note,
+		degree, userid, address_id,
+		create_time, status, is_valid
+		)
+		values (#{id,jdbcType=VARCHAR}, #{bookId,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR},
+		#{eValue,jdbcType=DOUBLE}, #{bookIcon,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR},
+		#{author,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{isNote,jdbcType=BIT},
+		#{degree,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{addressId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{isValid,jdbcType=BIT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Donation">
+		insert into e_donation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="bookId != null">
+				book_id,
+			</if>
+			<if test="bookName != null">
+				book_name,
+			</if>
+			<if test="eValue != null">
+				e_value,
+			</if>
+			<if test="bookIcon != null">
+				book_icon,
+			</if>
+			<if test="isbn != null">
+				ISBN,
+			</if>
+			<if test="author != null">
+				author,
+			</if>
+			<if test="publisher != null">
+				publisher,
+			</if>
+			<if test="isNote != null">
+				is_note,
+			</if>
+			<if test="degree != null">
+				degree,
+			</if>
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="addressId != null">
+				address_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="isValid != null">
+				is_valid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="bookId != null">
+				#{bookId,jdbcType=VARCHAR},
+			</if>
+			<if test="bookName != null">
+				#{bookName,jdbcType=VARCHAR},
+			</if>
+			<if test="eValue != null">
+				#{eValue,jdbcType=DOUBLE},
+			</if>
+			<if test="bookIcon != null">
+				#{bookIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="isbn != null">
+				#{isbn,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				#{author,jdbcType=VARCHAR},
+			</if>
+			<if test="publisher != null">
+				#{publisher,jdbcType=VARCHAR},
+			</if>
+			<if test="isNote != null">
+				#{isNote,jdbcType=BIT},
+			</if>
+			<if test="degree != null">
+				#{degree,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=VARCHAR},
+			</if>
+			<if test="addressId != null">
+				#{addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="isValid != null">
+				#{isValid,jdbcType=BIT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.zhijian.ebook.entity.DonationExample" resultType="java.lang.Integer">
+		select count(*) from e_donation
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update e_donation
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=VARCHAR},
+			</if>
+			<if test="record.bookId != null">
+				book_id = #{record.bookId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.bookName != null">
+				book_name = #{record.bookName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.eValue != null">
+				e_value = #{record.eValue,jdbcType=DOUBLE},
+			</if>
+			<if test="record.bookIcon != null">
+				book_icon = #{record.bookIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isbn != null">
+				ISBN = #{record.isbn,jdbcType=VARCHAR},
+			</if>
+			<if test="record.author != null">
+				author = #{record.author,jdbcType=VARCHAR},
+			</if>
+			<if test="record.publisher != null">
+				publisher = #{record.publisher,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isNote != null">
+				is_note = #{record.isNote,jdbcType=BIT},
+			</if>
+			<if test="record.degree != null">
+				degree = #{record.degree,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userid != null">
+				userid = #{record.userid,jdbcType=VARCHAR},
+			</if>
+			<if test="record.addressId != null">
+				address_id = #{record.addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=INTEGER},
+			</if>
+			<if test="record.isValid != null">
+				is_valid = #{record.isValid,jdbcType=BIT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update e_donation
+		set id = #{record.id,jdbcType=VARCHAR},
+		book_id = #{record.bookId,jdbcType=VARCHAR},
+		book_name = #{record.bookName,jdbcType=VARCHAR},
+		e_value = #{record.eValue,jdbcType=DOUBLE},
+		book_icon = #{record.bookIcon,jdbcType=VARCHAR},
+		ISBN = #{record.isbn,jdbcType=VARCHAR},
+		author = #{record.author,jdbcType=VARCHAR},
+		publisher = #{record.publisher,jdbcType=VARCHAR},
+		is_note = #{record.isNote,jdbcType=BIT},
+		degree = #{record.degree,jdbcType=VARCHAR},
+		userid = #{record.userid,jdbcType=VARCHAR},
+		address_id = #{record.addressId,jdbcType=VARCHAR},
+		create_time = #{record.createTime,jdbcType=TIMESTAMP},
+		status = #{record.status,jdbcType=INTEGER},
+		is_valid = #{record.isValid,jdbcType=BIT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Donation">
+		update e_donation
+		<set>
+			<if test="bookId != null">
+				book_id = #{bookId,jdbcType=VARCHAR},
+			</if>
+			<if test="bookName != null">
+				book_name = #{bookName,jdbcType=VARCHAR},
+			</if>
+			<if test="eValue != null">
+				e_value = #{eValue,jdbcType=DOUBLE},
+			</if>
+			<if test="bookIcon != null">
+				book_icon = #{bookIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="isbn != null">
+				ISBN = #{isbn,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				author = #{author,jdbcType=VARCHAR},
+			</if>
+			<if test="publisher != null">
+				publisher = #{publisher,jdbcType=VARCHAR},
+			</if>
+			<if test="isNote != null">
+				is_note = #{isNote,jdbcType=BIT},
+			</if>
+			<if test="degree != null">
+				degree = #{degree,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=VARCHAR},
+			</if>
+			<if test="addressId != null">
+				address_id = #{addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="isValid != null">
+				is_valid = #{isValid,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Donation">
+		update e_donation
+		set book_id = #{bookId,jdbcType=VARCHAR},
+		book_name = #{bookName,jdbcType=VARCHAR},
+		e_value = #{eValue,jdbcType=DOUBLE},
+		book_icon = #{bookIcon,jdbcType=VARCHAR},
+		ISBN = #{isbn,jdbcType=VARCHAR},
+		author = #{author,jdbcType=VARCHAR},
+		publisher = #{publisher,jdbcType=VARCHAR},
+		is_note = #{isNote,jdbcType=BIT},
+		degree = #{degree,jdbcType=VARCHAR},
+		userid = #{userid,jdbcType=VARCHAR},
+		address_id = #{addressId,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=INTEGER},
+		is_valid = #{isValid,jdbcType=BIT}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 自定义 -->
+	<select id="findPaginationList" resultMap="BaseResultMap">
+		select
+		<if test="example.distinct">
+			#{example.distinct}
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from e_order
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+		<if test="example.orderByClause != null">
+			order by ${example.orderByClause}
+		</if>
+		<if test="page != null">
+			limit #{page.startRow},#{page.endRow}
+		</if>
+	</select>
 </mapper>

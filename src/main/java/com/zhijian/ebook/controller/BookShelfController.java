@@ -18,8 +18,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
-import com.zhijian.ebook.entity.Book;
-import com.zhijian.ebook.service.BookService;
+import com.zhijian.ebook.entity.BookShelf;
+import com.zhijian.ebook.service.BookShelfService;
 import com.zhijian.ebook.util.FileUpLoadUtils;
 import com.zhijian.ebook.util.StringConsts;
 
@@ -31,13 +31,13 @@ import com.zhijian.ebook.util.StringConsts;
  *
  */
 @Controller
-@RequestMapping("manager/book")
-public class BookController {
+@RequestMapping("manager/bookShelf")
+public class BookShelfController {
 	private static final Logger logger = LogManager.getLogger();
 
 
 	@Autowired
-	private BookService bookService;
+	private BookShelfService bookShelfService;
 
 	/**
 	 * 图书列表界面
@@ -46,13 +46,13 @@ public class BookController {
 	 */
 	@RequestMapping("index")
 	public String index() {
-		return "manager/book/bookList";
+		return "manager/bookShelf/bookShelfList";
 	}
 
 	/**
 	 * 获取图书分页数据
 	 * 
-	 * @param Book
+	 * @param BookShelf
 	 *            图书实体
 	 * @param page
 	 *            页数
@@ -61,10 +61,10 @@ public class BookController {
 	 * @return 分页数据
 	 */
 	@ResponseBody
-	@RequestMapping("findBookPagination")
-	public EasyuiPagination<Book> findBookPagination(Book book, Integer page, Integer rows) {
+	@RequestMapping("findBookShelfPagination")
+	public EasyuiPagination<BookShelf> findBookShelfPagination(BookShelf bookShelf, Integer page, Integer rows) {
 
-		return bookService.findBookPagination(book, page, rows);
+		return bookShelfService.findBookShelfPagination(bookShelf, page, rows);
 	}
 
 	/**
@@ -72,9 +72,9 @@ public class BookController {
 	 * 
 	 * @return 添加图书路径
 	 */
-	@RequestMapping("addBookView")
-	public String addBookView() {
-		return "manager/book/addBook";
+	@RequestMapping("addBookShelfView")
+	public String addBookShelfView() {
+		return "manager/bookShelf/addBookShelf";
 	}
 
 	/**
@@ -82,45 +82,46 @@ public class BookController {
 	 * 
 	 * @param map
 	 *            图书信息
-	 * @param BookId
+	 * @param BookShelfId
 	 *            图书ID
 	 * @return 修改图书路径
 	 */
-	@RequestMapping("modifyBookView")
-	public String modifyBookView(ModelMap map, String bookid) {
-		Book book = bookService.findBookById(bookid);
-		// if (BookMap.getBindMobileCount() == null) {
-		// BookMap.setBindMobileCount(0);
+	@RequestMapping("modifyBookShelfView")
+	public String modifyBookShelfView(ModelMap map, String bookShelfid) {
+		BookShelf bookShelf = bookShelfService.findBookShelfById(bookShelfid);
+		// if (BookShelfMap.getBindMobileCount() == null) {
+		// BookShelfMap.setBindMobileCount(0);
 		// }
-		map.put("book", book);
-		return "manager/book/modifyBook";
+		map.put("bookShelf", bookShelf);
+		return "manager/bookShelf/modifyBookShelf";
 	}
 
 	/**
 	 * 添加图书
 	 * 
-	 * @param Book
+	 * @param BookShelf
 	 *            图书信息
 	 * @return 添加图书情况
 	 */
 	@ResponseBody
-	@RequestMapping("addBook")
-	public ResponseMsg addBook(Book book, HttpServletRequest request) {
+	@RequestMapping("addBookShelf")
+	public ResponseMsg addBookShelf(BookShelf bookShelf, HttpServletRequest request) {
 		try {
-			// if (Book.getBindMobileCount() == null || Book.getBindMobileCount() == 0) {
+			// if (BookShelf.getBindMobileCount() == null || BookShelf.getBindMobileCount()
+			// == 0) {
 			// String countStr =
 			// ReadPropertiesFileUtils.getInstance().getPropValueByKey("default_bind_mobile_phone_count");
 			// //设置手机可更换绑定次数(配置文件配置，如特殊需要修改，图书需联系管理员从管理平台修改)
-			// Book.setBindMobileCount(StringUtils.isBlank(countStr)?0:Integer.valueOf(countStr));
+			// BookShelf.setBindMobileCount(StringUtils.isBlank(countStr)?0:Integer.valueOf(countStr));
 			// }
 			int row = 0;
 			String icon = uploadImg(request);
 			if (icon != null) {
-				book.setIcon(icon);
+				bookShelf.setIcon(icon);
 			} else {
-				book.setIcon("img/test.jpg");
+				bookShelf.setIcon("img/test.jpg");
 			}
-			row = bookService.addBook(book);
+			row = bookShelfService.addBookShelf(bookShelf);
 			if (row > 0) {
 				return ResponseMsg.success("添加图书成功！");
 			} else {
@@ -136,27 +137,27 @@ public class BookController {
 	/**
 	 * 修改图书
 	 * 
-	 * @param Book
+	 * @param BookShelf
 	 *            图书信息
 	 * @return 修改图书情况
 	 */
 	@ResponseBody
-	@RequestMapping("modifyBook")
-	public ResponseMsg modifyBook(Book book, HttpServletRequest request) {
-		// BookMap.setQq(qq);
-		// BookMap.setCompanyName(companyName);
-		// BookMap.setCompanyPhone(companyPhone);
-		// BookMap.setCompanyAddr(companyAddr);
-		// BookMap.setMyReferralCode(myReferralCode);
-		// BookMap.setBindMobileCount(bindMobileCount);
+	@RequestMapping("modifyBookShelf")
+	public ResponseMsg modifyBookShelf(BookShelf bookShelf, HttpServletRequest request) {
+		// BookShelfMap.setQq(qq);
+		// BookShelfMap.setCompanyName(companyName);
+		// BookShelfMap.setCompanyPhone(companyPhone);
+		// BookShelfMap.setCompanyAddr(companyAddr);
+		// BookShelfMap.setMyReferralCode(myReferralCode);
+		// BookShelfMap.setBindMobileCount(bindMobileCount);
 		int row = 0;
 		String icon = uploadImg(request);
 		if (icon != null) {
-			book.setIcon(icon);
+			bookShelf.setIcon(icon);
 		} else {
-			book.setIcon("img/test.jpg");
+			bookShelf.setIcon("img/test.jpg");
 		}
-		row = bookService.modifyBook(book);
+		row = bookShelfService.modifyBookShelf(bookShelf);
 		if (row > 0) {
 			return ResponseMsg.success("修改图书成功！");
 		} else {
@@ -172,17 +173,16 @@ public class BookController {
 	 * @return 删除图书情况
 	 */
 	@ResponseBody
-	@RequestMapping("removeBook")
-	public ResponseMsg removeBookById(String id) {
-		int row = bookService.removeBookById(id);
+	@RequestMapping("removeBookShelf")
+	public ResponseMsg removeBookShelfById(String id) {
+		int row = bookShelfService.removeBookShelfById(id);
 		if (row > 0) {
 			return ResponseMsg.success("删除图书成功！");
 		} else {
 			return ResponseMsg.fail("删除图书失败！");
 		}
 	}
-	
-	
+
 	/**
 	 * 图片上传
 	 * 
@@ -200,8 +200,7 @@ public class BookController {
 			imgSufferList.add("bmp");
 			imgSufferList.add("jpeg");
 
-			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-					request.getSession().getServletContext());
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 			if (multipartResolver.isMultipart(request)) {
 				Long newFileName = null;
 
@@ -214,8 +213,7 @@ public class BookController {
 						throw new Exception();
 					}
 					newFileName = Long.valueOf(StringConsts.getUUID16Id());
-					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG,
-							newFileName.toString(), false);
+					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG, newFileName.toString(), false);
 				}
 			}
 		} catch (Exception e) {

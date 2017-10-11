@@ -445,8 +445,8 @@ public class BookServiceImpl implements BookService {
 			donation.setStatus(0);
 			donation.setUserid(userid);
 			donationMapper.insert(donation);
-			user.setBlance(user.getBlance()+book.getePrice());
-			userMapper.updateByPrimaryKeySelective(user);
+//			user.setBlance(user.getBlance()+book.getePrice());
+//			userMapper.updateByPrimaryKeySelective(user);
 			return 1;
 		}
 

@@ -86,7 +86,7 @@ public class ImageUtil {
 		if (width / height > w / h) {
 			return new ByteArrayInputStream(resizeByWidth(w));
 		} else {
-			return new ByteArrayInputStream(resizeByWidth(h));
+			return new ByteArrayInputStream(resizeByHeight(h));
 		}
 	}
 

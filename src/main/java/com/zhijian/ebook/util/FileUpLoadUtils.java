@@ -209,7 +209,7 @@ public class FileUpLoadUtils {
 				ImageUtil.init(file.getInputStream());
 				int width = ImageUtil.getWidth();
 				int height = ImageUtil.getHeight();
-				float multiples = width / COMPRESS_IMAGE_WIDTH;
+				double multiples = width * 1.0 / COMPRESS_IMAGE_WIDTH;
 				if (multiples > 1.0f) {
 					width = (int) (width / multiples);
 					height = (int) (height / multiples);
@@ -223,7 +223,7 @@ public class FileUpLoadUtils {
 			// file.transferTo(localFile);
 			filePath = saveFileName;
 		}
-		return StringConsts.EBOOK_URL+filePath;
+		return StringConsts.EBOOK_URL + filePath;
 	}
 
 	/**
