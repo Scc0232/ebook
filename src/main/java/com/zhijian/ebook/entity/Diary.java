@@ -32,6 +32,8 @@ public class Diary {
     private Boolean isValid;
     
     private Boolean isLiked;
+    
+    private String[] icons;
 
     public String getId() {
         return id;
@@ -151,5 +153,13 @@ public class Diary {
 
 	public void setUsericon(String usericon) {
 		this.usericon = usericon;
+	}
+
+	public String[] getIcons() {
+		return icons;
+	}
+
+	public void setIcons(String[] icons) {
+		this.icons = icons;
 	}
 }
