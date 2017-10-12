@@ -503,6 +503,8 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public int addBook(Book book) {
+		BookClass bookClass = bookClassMapper.selectByPrimaryKey(book.getClassId());
+		book.setClassName(bookClass.getName());
 		return bookMapper.insert(book);
 	}
 
@@ -518,6 +520,10 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public int modifyBook(Book book) {
+		if (StringUtils.isNotBlank(book.getClassId())) {
+			BookClass bookClass = bookClassMapper.selectByPrimaryKey(book.getClassId());
+			book.setClassName(bookClass.getName());
+		}
 		return bookMapper.updateByPrimaryKeySelective(book);
 	}
 

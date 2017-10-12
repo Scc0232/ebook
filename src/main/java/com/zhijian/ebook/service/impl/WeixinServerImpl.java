@@ -1,6 +1,7 @@
 package com.zhijian.ebook.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -97,8 +98,14 @@ public class WeixinServerImpl implements WeixinServer {
 
 	@Override
 	public String getAccessToken() {
-		String token = accessTokenMapper.selectByExample(null).get(0).getToken();
-		if (StringUtils.isBlank(token)) {
+		List<AccessToken> list = accessTokenMapper.selectByExample(null);
+		if (list == null || list.size() == 0) {
+			refreshToken();
+		}
+		AccessToken accessToken = list.get(0);
+		String token = accessToken.getToken();
+		long distance = (new Date().getTime() - accessToken.getUpdateTime().getTime()) / 1000;
+		if (StringUtils.isBlank(token) || distance < accessToken.getExpiresin()) {
 			refreshToken();
 			token = accessTokenMapper.selectByExample(null).get(0).getToken();
 		}
@@ -122,7 +129,7 @@ public class WeixinServerImpl implements WeixinServer {
 				String nickname = jsonObject.getString("nickname").toString();
 				if (StringUtils.isNotBlank(nickname)) {
 					user.setPetName(jsonObject.getString("nickname").toString());
-				}else {
+				} else {
 					user.setPetName("");
 				}
 				user.setSex(jsonObject.getString("sex").toString());
@@ -131,6 +138,7 @@ public class WeixinServerImpl implements WeixinServer {
 				user.setModifyTime(new Date());
 				user.setIsValid(Boolean.TRUE);
 				user.setAccredit(1);
+				user.setBlance((double) 0);
 				userService.addUser(user, StringConsts.USER_ROLE_ID);
 			} catch (Exception e) {
 				// 获取userinfo失败
