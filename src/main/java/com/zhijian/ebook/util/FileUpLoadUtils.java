@@ -38,7 +38,7 @@ public class FileUpLoadUtils {
 	/**
 	 * 压缩图片宽度至
 	 */
-	private static final int COMPRESS_IMAGE_WIDTH = 222;
+	private static final int COMPRESS_IMAGE_WIDTH = 400;
 
 	/**
 	 * 压缩图片高度至

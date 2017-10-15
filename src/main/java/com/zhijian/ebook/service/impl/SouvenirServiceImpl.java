@@ -111,7 +111,10 @@ public class SouvenirServiceImpl implements SouvenirService {
 			} else {
 				diary.setIsLiked(false);
 			}
-			diary.setIcons(diary.getIcon().split(";"));
+			if (StringUtils.isNotBlank(diary.getIcon())) {
+				diary.setIcons(diary.getIcon().split(";"));
+			}
+
 		}
 		return new EasyuiPagination<>(list.size(), list);
 	}
@@ -177,8 +180,10 @@ public class SouvenirServiceImpl implements SouvenirService {
 			pag = new Page(1, 10);
 		}
 		list = diaryMapper.selectDiaryByExample(example, pag);
-		for(Diary diary : list) {
-			diary.setIcons(diary.getIcon().split(";"));
+		for (Diary diary : list) {
+			if (StringUtils.isNotBlank(diary.getIcon())) {
+				diary.setIcons(diary.getIcon().split(";"));
+			}
 		}
 		return new EasyuiPagination<>(list.size(), list);
 	}
@@ -232,8 +237,9 @@ public class SouvenirServiceImpl implements SouvenirService {
 		} else {
 			diary.setIsLiked(false);
 		}
-		diary.setIcons(diary.getIcon().split(";"));
-
+		if (StringUtils.isNotBlank(diary.getIcon())) {
+			diary.setIcons(diary.getIcon().split(";"));
+		}
 		return diary;
 	}
 
@@ -244,7 +250,7 @@ public class SouvenirServiceImpl implements SouvenirService {
 		if (StringUtils.isNotBlank(souvenir.getName())) {
 			criteria.andNameEqualTo(souvenir.getName());
 		}
-		if (souvenir.getType()!=null) {
+		if (souvenir.getType() != null) {
 			criteria.andTypeEqualTo(souvenir.getType());
 		}
 		criteria.andIsValidEqualTo(true);
