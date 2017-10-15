@@ -52,6 +52,8 @@ public class Book {
     private String classId;
 
     private String className;
+    
+    private String majorId;
 
     private String college;
 
@@ -312,4 +314,12 @@ public class Book {
     public void setSaveCose(Double saveCose) {
         this.saveCose = saveCose;
     }
+
+	public String getMajorId() {
+		return majorId;
+	}
+
+	public void setMajorId(String majorId) {
+		this.majorId = majorId;
+	}
 }
