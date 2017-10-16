@@ -58,10 +58,6 @@ import com.zhijian.ebook.util.SMSUtils;
 import com.zhijian.ebook.util.StringConsts;
 import com.zhijian.ebook.util.WechatCore;
 import com.zhijian.ebook.util.WechatUtils;
-import com.zhijian.ebook.util.CLSMS.ChuangLanSmsUtil;
-import com.zhijian.ebook.util.CLSMS.SMSType;
-import com.zhijian.ebook.util.CLSMS.SmsBalanceResponse;
-import com.zhijian.ebook.util.CLSMS.SmsSendResponse;
 
 /**
  * 图书接口
