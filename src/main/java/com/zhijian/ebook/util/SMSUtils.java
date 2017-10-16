@@ -58,7 +58,7 @@ public class SMSUtils {
     /**
      * 验证码超时时间(分)
      */
-    private static final String CAPTCHA_TIME_OUT = "5";
+    private static final String CAPTCHA_TIME_OUT = "5分钟";
     
     
     /**
