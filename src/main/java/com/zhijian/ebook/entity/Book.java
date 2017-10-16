@@ -3,9 +3,9 @@ package com.zhijian.ebook.entity;
 import java.util.Date;
 
 public class Book {
-    private String id;
-
     private String isbn;
+
+    private String id;
 
     private String isbn10;
 
@@ -52,7 +52,7 @@ public class Book {
     private String classId;
 
     private String className;
-    
+
     private String majorId;
 
     private String college;
@@ -61,19 +61,15 @@ public class Book {
 
     private Integer hotValue;
 
+    private String profession;
+
+    private String academy;
+
     private Double initCost;
 
     private Double otherCost;
 
     private Double saveCose;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     public String getIsbn() {
         return isbn;
@@ -81,6 +77,14 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn == null ? null : isbn.trim();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getIsbn10() {
@@ -267,6 +271,14 @@ public class Book {
         this.className = className == null ? null : className.trim();
     }
 
+    public String getMajorId() {
+        return majorId;
+    }
+
+    public void setMajorId(String majorId) {
+        this.majorId = majorId == null ? null : majorId.trim();
+    }
+
     public String getCollege() {
         return college;
     }
@@ -289,6 +301,22 @@ public class Book {
 
     public void setHotValue(Integer hotValue) {
         this.hotValue = hotValue;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession == null ? null : profession.trim();
+    }
+
+    public String getAcademy() {
+        return academy;
+    }
+
+    public void setAcademy(String academy) {
+        this.academy = academy == null ? null : academy.trim();
     }
 
     public Double getInitCost() {
@@ -314,12 +342,4 @@ public class Book {
     public void setSaveCose(Double saveCose) {
         this.saveCose = saveCose;
     }
-
-	public String getMajorId() {
-		return majorId;
-	}
-
-	public void setMajorId(String majorId) {
-		this.majorId = majorId;
-	}
 }

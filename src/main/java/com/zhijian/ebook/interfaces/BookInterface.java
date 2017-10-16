@@ -1003,8 +1003,8 @@ public class BookInterface {
 		if (StringUtils.isBlank(phoneNumber)) {
 			return ResponseEntity.serverError("手机号为空！");
 		}
-		if (!userService.isBindThisMobile(phoneNumber)) {
-			return ResponseEntity.ok("该手机号已被绑定,请更换手机!");
+		if (userService.isBindThisMobile(phoneNumber)) {
+			return ResponseEntity.serverError("该手机号已被绑定,请更换手机!");
 		}
 		try {
 			String userid = userService.findUserByUsername(UserContextHelper.getUsername()).getId();
@@ -1053,7 +1053,7 @@ public class BookInterface {
 		if (StringUtils.isBlank(phoneNumber)) {
 			return ResponseEntity.serverError("手机号为空！");
 		}
-		if (!userService.isBindThisMobile(phoneNumber)) {
+		if (userService.isBindThisMobile(phoneNumber)) {
 			return ResponseEntity.ok("该手机号已被绑定,请更换手机!");
 		}
 		try {
