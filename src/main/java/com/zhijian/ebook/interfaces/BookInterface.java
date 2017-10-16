@@ -41,18 +41,20 @@ import com.zhijian.ebook.entity.Diary;
 import com.zhijian.ebook.entity.DiaryComment;
 import com.zhijian.ebook.entity.DiaryLike;
 import com.zhijian.ebook.entity.Donation;
+import com.zhijian.ebook.entity.Major;
 import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.entity.ShoppingCart;
 import com.zhijian.ebook.entity.Souvenir;
-import com.zhijian.ebook.enums.GradeLevel;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.service.DiaryService;
+import com.zhijian.ebook.service.MajorService;
 import com.zhijian.ebook.service.SouvenirService;
 import com.zhijian.ebook.util.CaptchaUtils;
 import com.zhijian.ebook.util.FileUpLoadUtils;
+import com.zhijian.ebook.util.SMSUtils;
 import com.zhijian.ebook.util.StringConsts;
 import com.zhijian.ebook.util.WechatCore;
 import com.zhijian.ebook.util.WechatUtils;
@@ -91,9 +93,12 @@ public class BookInterface {
 
 	@Autowired
 	private CaptchaService captchaService;
-	
+
 	@Autowired
 	private DiaryService diaryService;
+
+	@Autowired
+	private MajorService majorService;
 
 	/**
 	 * 获取轮播图
@@ -145,20 +150,56 @@ public class BookInterface {
 	@RequestMapping(value = "login/selectHotBook", method = RequestMethod.GET)
 	public ResponseEntity selectHotBook(String grade, String classid) {
 		List<Book> list = null;
-		if (grade != null) {
-			grade = grade.trim();
-		}
-		if (classid != null) {
-			classid = classid.trim();
-		}
 		try {
-			if ((grade != null) && (grade.equals(GradeLevel.ONE_LEVEL.getLevel()) || grade.equals(GradeLevel.TWO_LEVEL.getLevel()) || grade.equals(GradeLevel.THREE_LEVEL.getLevel()) || grade.equals(GradeLevel.FOUR_LEVEL.getLevel()))) {
-				list = bookService.selectHotBook(grade, null);
-			} else if (classid != null) {
-				list = bookService.selectHotBook(null, classid);
+			if (StringUtils.isNotBlank(grade)) {
+				list = bookService.selectHotBook(null, null, null, grade, null);
+			} else if (StringUtils.isNotBlank(classid)) {
+				list = bookService.selectHotBook(null, null, null, null, classid);
 			} else {
-				list = bookService.selectHotBook(null, null);
+				list = bookService.selectHotBook(null, null, null, null, null);
 			}
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+
+		return ResponseEntity.ok(list);
+	}
+
+	/**
+	 * 获取专业图书
+	 * 
+	 * @return ResponseEntity 返回图书实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/selectMajorBook", method = RequestMethod.GET)
+	public ResponseEntity selectMajorBook(String collegeName, String academyName, String professionName, String grade, String classid) {
+		List<Book> list = null;
+		try {
+			if (StringUtils.isBlank(collegeName) || StringUtils.isBlank(academyName) || StringUtils.isBlank(professionName)) {
+				return ResponseEntity.illegalParam("参数为空!");
+			} else {
+				list = bookService.selectHotBook(collegeName, academyName, professionName, grade, classid);
+			}
+		} catch (Exception e) {
+			log.error("", e);
+			return ResponseEntity.serverError("操作失败");
+		}
+
+		return ResponseEntity.ok(list);
+	}
+
+	/**
+	 * 获取院校专业信息
+	 * 
+	 * @return ResponseEntity 返回图书实体
+	 */
+	@ResponseBody
+	@RequestMapping(value = "login/findCollege", method = RequestMethod.GET)
+	public ResponseEntity selectCollege() {
+		List<Major> list = null;
+		try {
+			list = majorService.findCollegeList();
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -310,7 +351,7 @@ public class BookInterface {
 			return ResponseEntity.serverError("操作失败");
 		}
 	}
-	
+
 	/**
 	 * 查看全部可见日记
 	 * 
@@ -887,9 +928,9 @@ public class BookInterface {
 							OrderExample.Criteria criteria = orderExample.createCriteria();
 							criteria.andOrderNoEqualTo(id);
 							int counts = orderMapper.countByExample(orderExample);
-							log.info("counts:"+counts);
-							List<Order> orders = orderMapper.selectByExample(orderExample);							
-							log.info("orders:"+orders);
+							log.info("counts:" + counts);
+							List<Order> orders = orderMapper.selectByExample(orderExample);
+							log.info("orders:" + orders);
 							if (counts < 1) {
 								resultMap.put("return_code", "FAIL");
 								resultMap.put("return_msg", "支付订单不存在！");
@@ -903,14 +944,14 @@ public class BookInterface {
 							String attach = paramMap.get("attach");
 							String total_fee = paramMap.get("total_fee");
 							Integer total = Integer.parseInt(total_fee);
-							log.info("total:<<<<<<<"+total);
+							log.info("total:<<<<<<<" + total);
 							Order order = orders.get(0);
 							if (Integer.parseInt(attach) == 2) {
-								if (total == (int)Math.round(order.getValue() * 100)) {
+								if (total == (int) Math.round(order.getValue() * 100)) {
 									Order order2 = new Order();
 									order2.setOrderStatus(1);
 									orderMapper.updateByExampleSelective(order2, orderExample);
-								} else if (total == (int)Math.round(order.getPreValue() * 100)) {
+								} else if (total == (int) Math.round(order.getPreValue() * 100)) {
 									Order order2 = new Order();
 									order2.setOrderStatus(3);
 									orderMapper.updateByExampleSelective(order2, orderExample);
@@ -929,7 +970,7 @@ public class BookInterface {
 								// }
 								resultMap.put("return_code", "SUCCESS");
 								resultMap.put("return_msg", "OK");
-								log.info("resultMap:"+resultMap);
+								log.info("resultMap:" + resultMap);
 								return WechatCore.mapToXml(resultMap);
 							}
 						}
@@ -938,7 +979,7 @@ public class BookInterface {
 			}
 			resultMap.put("return_code", "FAIL");
 			resultMap.put("return_msg", "系统错误");
-			log.info("resultMap:"+resultMap);
+			log.info("resultMap:" + resultMap);
 			return WechatCore.mapToXml(resultMap);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -974,28 +1015,24 @@ public class BookInterface {
 			ResponseEntity result = captchaService.isCanSend(userid, phoneNumber, false);
 			if (result == null) {
 				String captcha = CaptchaUtils.generate();
-				SmsSendResponse res = ChuangLanSmsUtil.sendMessage(SMSType.templateSMS(SMSType.EB_TITLE, captcha), phoneNumber);
-				log.info("响应状态:" + res);
-				if (res.getCode().equals("0")) {
-					SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
-					captchaService.setSMSCaptchaToSession(sms, session);
-					log.info("发送短信验证码完成！{}", sms);
-					return ResponseEntity.ok();
-				} else {
-					SmsBalanceResponse smsbalance = ChuangLanSmsUtil.selectBlance();
-					log.info(smsbalance);
-					log.info("余额状态:" + smsbalance.getBalance());
-					if (Integer.parseInt(smsbalance.getBalance()) == 0) {
-						return ResponseEntity.serverError("余额不足");
-					}
-					return ResponseEntity.serverError(res.getErrorMsg());
-				}
+				log.info("phoneNumber={},captcha={}", phoneNumber, captcha);
+				 Map<String, Object> smsResult = SMSUtils.sendCaptchaSMS(
+				 phoneNumber, captcha);
+				 log.info(smsResult);
+				 // 实例化SMSCaptcha, 并放入Session中
+				 SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
+				 captchaService.setSMSCaptchaToSession(sms, session);
+				 log.info("发送短信验证码完成！{}", sms);
+				 return ResponseEntity.ok();
 			} else {
 				return result;
 			}
-		} catch (Exception e) {
-			return ResponseEntity.serverError();
-		}
+		}catch(
+
+	Exception e)
+	{
+		return ResponseEntity.serverError();
+	}
 
 	}
 

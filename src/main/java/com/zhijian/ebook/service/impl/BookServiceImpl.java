@@ -1,6 +1,7 @@
 package com.zhijian.ebook.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,14 +87,33 @@ public class BookServiceImpl implements BookService {
 	private UserMapper userMapper;
 
 	@Override
-	public List<Book> selectHotBook(String grade, String classid) {
+	public List<Book> selectHotBook(String collegeName, String academyName, String professionName,String grade, String classid) {
+		Calendar calendar = Calendar.getInstance();
+		// 获得当前时间的月份，月份从0开始所以结果要加1
+		int month = calendar.get(Calendar.MONTH) + 1;
 		List<Book> list = null;
 		BookExample example = new BookExample();
 		BookExample.Criteria criteria = example.createCriteria();
-		if (grade != null) {
+		if (StringUtils.isNotBlank(collegeName)) {
+			criteria.andCollegeEqualTo(collegeName);
+		}
+		if (StringUtils.isNotBlank(academyName)) {
+			criteria.andAcademyEqualTo(academyName);
+		}
+		if (StringUtils.isNotBlank(professionName)) {
+			criteria.andProfessionEqualTo(professionName);
+		}
+		if (StringUtils.isNotBlank(grade)) {
+			if (grade.indexOf("上") == -1 || grade.indexOf("下") == -1) {
+				if (month > 7) {
+					grade = grade + "上";
+				} else {
+					grade = grade + "下";
+				}
+			}
 			criteria.andGradeEqualTo(grade);
 		}
-		if (classid != null) {
+		if (StringUtils.isNotBlank(classid)) {
 			BookClass bookClass = bookClassMapper.selectByPrimaryKey(classid);
 			if (bookClass != null) {
 				criteria.andClassIdEqualTo(classid);
@@ -445,8 +465,8 @@ public class BookServiceImpl implements BookService {
 			donation.setStatus(0);
 			donation.setUserid(userid);
 			donationMapper.insert(donation);
-//			user.setBlance(user.getBlance()+book.getePrice());
-//			userMapper.updateByPrimaryKeySelective(user);
+			// user.setBlance(user.getBlance()+book.getePrice());
+			// userMapper.updateByPrimaryKeySelective(user);
 			return 1;
 		}
 
@@ -619,7 +639,7 @@ public class BookServiceImpl implements BookService {
 		map.put("zujin", zujin + "");
 		map.put("zhejiu", zhejiu + "");
 		map.put("yajin", yajin + "");
-		map.put("amount", zujin + zhejiu + yajin+"");
+		map.put("amount", zujin + zhejiu + yajin + "");
 		return map;
 	}
 

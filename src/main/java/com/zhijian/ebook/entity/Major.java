@@ -1,6 +1,8 @@
 package com.zhijian.ebook.entity;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Major {
     private String id;
@@ -8,6 +10,8 @@ public class Major {
     private String collegeName;
 
     private String academyName;
+    
+    private Map<String, List<String>> academyList;
 
     private String professionName;
 
@@ -52,4 +56,14 @@ public class Major {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Map<String, List<String>> getAcademyList() {
+		return academyList;
+	}
+
+	public void setAcademyList(Map<String, List<String>> academyList) {
+		this.academyList = academyList;
+	}
+
+	
 }

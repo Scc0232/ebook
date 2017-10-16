@@ -15,7 +15,7 @@ import com.zhijian.ebook.entity.ShoppingCart;
 
 public interface BookService {
 
-	List<Book> selectHotBook(String grade, String classid);
+	List<Book> selectHotBook(String collegeName, String academyName, String professionName,String grade, String classid);
 
 	List<Book> selectByISBN(String content);
 
