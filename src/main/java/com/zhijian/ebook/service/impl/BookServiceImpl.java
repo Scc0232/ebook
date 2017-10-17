@@ -104,7 +104,7 @@ public class BookServiceImpl implements BookService {
 			criteria.andProfessionEqualTo(professionName);
 		}
 		if (StringUtils.isNotBlank(grade)) {
-			if (grade.indexOf("上") == -1 || grade.indexOf("下") == -1) {
+			if (grade.indexOf("上") == -1 && grade.indexOf("下") == -1) {
 				if (month > 7) {
 					grade = grade + "上";
 				} else {
