@@ -36,10 +36,34 @@
         editable: false,
 		onLoadSuccess: function (data) {
             if (data) {
-                $('#collegeCombobox').combobox('setValue',data[0].id);
-            }
+                $('#collegeCombobox').combobox('setValue',data[0].collegeName);
+/*                 $("#collegeCombobox").combobox('select', types[0].Value);
+ */            }
         }
 	});
+/*     var coll = $("#collegeCombobox").combobox("getData");
+    alert(coll); */
+    $('#academyCombobox').combobox({
+		url:'${basePath}manager/book/findAcademy.do?collegeName='+$("#collegeCombobox").combobox("getText"),
+		valueField:'academyName',
+		textField:'academyName',
+		panelHeight: "auto",
+        editable: false,
+        onLoadSuccess: function (data) {
+        	var types = $("#collegeCombobox").combobox('getData');
+        	$("#collegeCombobox").combobox('select', types[0].Value);
+            if (data) {
+                $('#academyCombobox').combobox('setValue',data.Value);
+            }
+        },
+        onSelect: function(record){ 
+            var url ='${basePath}manager/book/findAcademy.do?collegeName=' + record.Value;
+            $("#combobox_one").combobox('reload', url);
+          }
+		
+	});
+    
+    
     var saveBtn = $('#book-saveBtn');
     
     $("#bookAdd-fm").form({
@@ -121,7 +145,7 @@
 		<label align="right">学校 :</label> 
 		<input id="collegeCombobox" name="collegeName" class="easyui-textbox"  style="width: 180px; height: 26px;" >
 	   <label style="margin-left: 20px" align="right">学院 :</label>
-	   <input name="academy" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" >
+	   <input  id="academyCombobox" name="academy" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" >
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 		<label align="right">年级 :</label> 
