@@ -10,6 +10,7 @@ import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookShelf;
 import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.Donation;
+import com.zhijian.ebook.entity.Major;
 import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.ShoppingCart;
 
@@ -82,5 +83,11 @@ public interface BookService {
 	List<BookShelf> selectFromShelfByISBN(String isbn);
 
 	Map<String, String> preComputePrice(String productids);
+
+	List<String> findAcademy(String collegeName);
+
+	List<Major> findCollegeList();
+
+	List<String> findProfession(String collegeName, String academyName);
 
 }

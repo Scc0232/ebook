@@ -27,6 +27,19 @@
             });
         });
     }); */
+    
+    $('#collegeCombobox').combobox({
+		url:'${basePath}manager/book/findCollegeList.do',
+		valueField:'collegeName',
+		textField:'collegeName',
+		panelHeight: "auto",
+        editable: false,
+		onLoadSuccess: function (data) {
+            if (data) {
+                $('#collegeCombobox').combobox('setValue',data[0].id);
+            }
+        }
+	});
     var saveBtn = $('#book-saveBtn');
     
     $("#bookAdd-fm").form({
@@ -106,15 +119,15 @@
 	</div>
 		<div class="fitem" style="margin-top: 20px;">
 		<label align="right">学校 :</label> 
-		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;">
-	   <label style="margin-left: 20px" align="right">年级 :</label>
-	   <select  class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto">
-			        	<option value=" " > </option>
-			        	<option value="one">一年级</option>
-			        	<option value="two">二年级</option>
-			        	<option value="three">三年级</option>
-			        	<option value="four">四年级</option>
-    		</select> 
+		<input id="collegeCombobox" name="collegeName" class="easyui-textbox"  style="width: 180px; height: 26px;" >
+	   <label style="margin-left: 20px" align="right">学院 :</label>
+	   <input name="academy" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" >
+	</div>
+	<div class="fitem" style="margin-top: 20px;">
+		<label align="right">年级 :</label> 
+		<input name="grade" class="easyui-textbox"  style="width: 180px; height: 26px;">
+	   <label style="margin-left: 20px" align="right">专业 :</label>
+	   <input name="profession" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" >
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 		<label align="right">原价 :</label> 

@@ -93,7 +93,7 @@ $(function(){
 			        	<option value="6">政史类</option>
 			        	<option value="7">计算机类</option>
 			        	<option value="8">英语类</option>
-			        	<option value="9">经管类机类</option>
+			        	<option value="9">经管类</option>
 			        	<option value="10">语言类</option>
 			        	<option value="11">其他</option>
     		</select> 
@@ -102,12 +102,7 @@ $(function(){
 		<label align="right">学校 :</label> 
 		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.college}">
 	   <label style="margin-left: 20px" align="right">年级 :</label>
-	   <select id="gradeCombobox" class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto" value="${book.grade}" selected="true">
-			        	<option value="one">大一</option>
-			        	<option value="two">大二</option>
-			        	<option value="three">大三</option>
-			        	<option value="four">大四</option>
-    		</select> 
+	   <input name="grade" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;" value="${book.grade}">
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 		<label align="right">原价 :</label> 

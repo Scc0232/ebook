@@ -24,6 +24,7 @@ import com.zhijian.ebook.dao.BookShelfMapper;
 import com.zhijian.ebook.dao.CollectMapper;
 import com.zhijian.ebook.dao.DonationMapper;
 import com.zhijian.ebook.dao.FlatMapper;
+import com.zhijian.ebook.dao.MajorMapper;
 import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.dao.ShoppingCartMapper;
 import com.zhijian.ebook.dao.SouvenirMapper;
@@ -38,6 +39,7 @@ import com.zhijian.ebook.entity.Collect;
 import com.zhijian.ebook.entity.CollectExample;
 import com.zhijian.ebook.entity.Donation;
 import com.zhijian.ebook.entity.DonationExample;
+import com.zhijian.ebook.entity.Major;
 import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.entity.ShoppingCart;
@@ -85,6 +87,9 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private MajorMapper majorMapper;
 
 	@Override
 	public List<Book> selectHotBook(String collegeName, String academyName, String professionName,String grade, String classid) {
@@ -641,6 +646,21 @@ public class BookServiceImpl implements BookService {
 		map.put("yajin", yajin + "");
 		map.put("amount", zujin + zhejiu + yajin + "");
 		return map;
+	}
+
+	@Override
+	public List<String> findAcademy(String collegeName) {
+		return majorMapper.selectAcademyList(collegeName);
+	}
+
+	@Override
+	public List<Major> findCollegeList() {
+		return majorMapper.selectCollegeList();
+	}
+
+	@Override
+	public List<String> findProfession(String collegeName, String academyName) {
+		return majorMapper.selectProfessionList(academyName, collegeName);
 	}
 
 }

@@ -48,19 +48,7 @@
 			}, {
 				field : 'grade',
 				title : '年级',
-				width : '120px',
-				formatter : function(val) {
-					if (val == 'one') {
-						return '大一';
-					} else if (val == 'two') {
-						return '大二';
-					} else if (val == 'three') {
-						return '大三';
-					} else {
-						return '大四';
-					}
-
-				}
+				width : '120px'
 			}, {
 				field : 'pubdate',
 				title : '出版时间',
@@ -173,15 +161,7 @@
 	<div id="bookShelf-search" style="padding-top: 10px;">
 			<label style="padding-left: 10px;">书名:</label> <input name="title" class="easyui-textbox" style="height: 26px;"> 
 			<label style="padding-left: 10px;">作者:</label> <input name="author" class="easyui-textbox" style="height: 26px;">
-			<label style="padding-left: 10px;">年级:
-			<select  class="easyui-combobox" name="grade" style="width:74px;" editable="false" panelHeight="auto">
-			        	<option value=" " > </option>
-			        	<option value=" " > </option>
-			        	<option value="one">一年级</option>
-			        	<option value="two">二年级</option>
-			        	<option value="three">三年级</option>
-			        	<option value="four">四年级</option>
-    		</select> 
+			<label style="padding-left: 10px;">年级:</label><input name="grade" class="easyui-textbox" style="height: 26px;">
     		<label style="padding-left: 10px;">分类:
     		<select  class="easyui-combobox" name="classId" style="width:74px;" editable="false" panelHeight="auto">
 			        	<option value=" " ></option>

@@ -102,12 +102,7 @@ $(function(){
 		<label align="right">学校 :</label> 
 		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${bookShelf.college}">
 	   <label style="margin-left: 20px" align="right">年级 :</label>
-	   <select id="gradeCombobox" class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto" value="${bookShelf.grade}" selected="true">
-			        	<option value="one">大一</option>
-			        	<option value="two">大二</option>
-			        	<option value="three">大三</option>
-			        	<option value="four">大四</option>
-    		</select> 
+	   <input name="grade" class="easyui-textbox"  style="width: 180px; height: 26px;" value="${bookShelf.grade}">
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 	    <label  align="right">图片URL :</label>

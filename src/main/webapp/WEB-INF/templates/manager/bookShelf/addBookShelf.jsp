@@ -108,13 +108,7 @@
 		<label align="right">学校 :</label> 
 		<input name="college" class="easyui-textbox"  style="width: 180px; height: 26px;">
 	   <label style="margin-left: 20px" align="right">年级 :</label>
-	   <select  class="easyui-combobox" name="grade" style="width:180px;" editable="false" panelHeight="auto">
-			        	<option value=" " > </option>
-			        	<option value="one">一年级</option>
-			        	<option value="two">二年级</option>
-			        	<option value="three">三年级</option>
-			        	<option value="four">四年级</option>
-    		</select> 
+	   <input name="grade" maxlength='100' class="easyui-textbox"  style="width: 180px; height: 26px;">
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 	    <label  align="right">图片URL :</label>

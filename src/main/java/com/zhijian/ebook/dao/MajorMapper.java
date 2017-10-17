@@ -1,5 +1,6 @@
 package com.zhijian.ebook.dao;
 
+import com.zhijian.ebook.bean.Page;
 import com.zhijian.ebook.entity.Major;
 import com.zhijian.ebook.entity.MajorExample;
 import java.util.List;
@@ -37,5 +38,7 @@ public interface MajorMapper {
 
 	@Select("select distinct profession_name as profession_name from e_major  where academy_name = #{academyName} and college_name = #{collegeName} order by profession_name desc")
 	List<String> selectProfessionList(@Param("academyName")String academyName,@Param("collegeName")String collegeName);
+
+	List<Major> findPaginationList(@Param("page")Page page,@Param("example") MajorExample example);
 
 }

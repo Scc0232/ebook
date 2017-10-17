@@ -45,22 +45,22 @@
 				field : 'className',
 				title : '分类',
 				width : '120px'
+			},{
+				field : 'college',
+				title : '学校名称',
+				width : '120px'
 			}, {
+				field : 'academy',
+				title : '学院名称',
+				width : '120px'
+			}, {
+				field : 'profession',
+				title : '专业名称',
+				width : '120px'
+			},  {
 				field : 'grade',
 				title : '年级',
-				width : '120px',
-				formatter : function(val) {
-					if (val == 'one') {
-						return '大一';
-					} else if (val == 'two') {
-						return '大二';
-					} else if (val == 'three') {
-						return '大三';
-					} else {
-						return '大四';
-					}
-
-				}
+				width : '120px'
 			}, {
 				field : 'pubdate',
 				title : '出版时间',
@@ -71,10 +71,6 @@
 			}, {
 				field : 'initCost',
 				title : '原价',
-				width : '120px'
-			}, {
-				field : 'otherCost',
-				title : '其他平台',
 				width : '120px'
 			}, {
 				field : 'saveCose',
@@ -181,15 +177,7 @@
 	<div id="book-search" style="padding-top: 10px;">
 			<label style="padding-left: 10px;">书名:</label> <input name="title" class="easyui-textbox" style="height: 26px;"> 
 			<label style="padding-left: 10px;">作者:</label> <input name="author" class="easyui-textbox" style="height: 26px;">
-			<label style="padding-left: 10px;">年级:
-			<select  class="easyui-combobox" name="grade" style="width:74px;" editable="false" panelHeight="auto">
-			        	<option value=" " > </option>
-			        	<option value=" " > </option>
-			        	<option value="one">一年级</option>
-			        	<option value="two">二年级</option>
-			        	<option value="three">三年级</option>
-			        	<option value="four">四年级</option>
-    		</select> 
+			<label style="padding-left: 10px;">年级:</label><input name="grade" class="easyui-textbox" style="height: 26px;">
     		<label style="padding-left: 10px;">分类:
     		<select  class="easyui-combobox" name="classId" style="width:74px;" editable="false" panelHeight="auto">
 			        	<option value=" " ></option>

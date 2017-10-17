@@ -19,6 +19,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
 import com.zhijian.ebook.entity.Book;
+import com.zhijian.ebook.entity.Major;
 import com.zhijian.ebook.service.BookService;
 import com.zhijian.ebook.util.FileUpLoadUtils;
 import com.zhijian.ebook.util.StringConsts;
@@ -182,7 +183,38 @@ public class BookController {
 		}
 	}
 	
+	/**
+	 * 查询学校名称
+	 * @param id 风格id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("findCollegeList")
+	public List<Major> findCollegeList(){
+		return bookService.findCollegeList();
+	}
+
+	/**
+	 * 查询学院名称
+	 * @param id 风格id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("findAcademy")
+	public List<String> findAcademy(String collegeName){
+		return bookService.findAcademy(collegeName);
+	}
 	
+	/**
+	 * 查询专业名称
+	 * @param id 风格id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("findProfession")
+	public List<String> findProfession(String collegeName, String academyName){
+		return bookService.findProfession(collegeName, academyName);
+	}
 	/**
 	 * 图片上传
 	 * 
