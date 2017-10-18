@@ -89,7 +89,7 @@
 		$('#academy')
 				.combobox(
 						{
-							valueField : 'collegeName', //值字段
+							valueField : 'academyName', //值字段
 							textField : 'academyName', //显示的字段              
 							panelHeight : 'auto',
 							editable : false, //不可编辑，只能选择
