@@ -52,7 +52,7 @@
 	<div class="fitem" style="margin-top: 50px; margin-bottom: 50px"
 		align="center">
 		<label align="right" style="width:100px">机构ID ：</label> <input id="orgNamecombobox" name="orgId"
-			 class="easyui-combobox" 
+			 
 			style="width: 180px; height: 26px;" >
 	</div>
 	<div style="margin-bottom: 20px" align="center">

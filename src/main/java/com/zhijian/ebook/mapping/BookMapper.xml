@@ -17,6 +17,7 @@
     <result column="dep_price" property="depPrice" jdbcType="DOUBLE" />
     <result column="deposit" property="deposit" jdbcType="DOUBLE" />
     <result column="e_price" property="ePrice" jdbcType="DOUBLE" />
+    <result column="get_eprice" property="getEprice" jdbcType="DOUBLE" />
     <result column="is_note" property="isNote" jdbcType="BIT" />
     <result column="degree" property="degree" jdbcType="VARCHAR" />
     <result column="binding" property="binding" jdbcType="VARCHAR" />
@@ -97,9 +98,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, isbn, isbn10, title, subtitle, icon, author, summary, publisher, pubplace, pubdate, 
-    page, dep_price, deposit, e_price, is_note, degree, binding, keyword, edition, impression, 
-    language, format, class_id, class_name, major_id, college, grade, hot_value, profession, 
-    academy, init_cost, other_cost, save_cose
+    page, dep_price, deposit, e_price, get_eprice, is_note, degree, binding, keyword, 
+    edition, impression, language, format, class_id, class_name, major_id, college, grade, 
+    hot_value, profession, academy, init_cost, other_cost, save_cose
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.BookExample" >
     select
@@ -135,31 +136,31 @@
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Book" >
   <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
-    </selectKey>
-    insert into e_book (id, isbn, isbn10, 
+    </selectKey>   
+   insert into e_book (id, isbn, isbn10, 
       title, subtitle, icon, 
       author, summary, publisher, 
       pubplace, pubdate, page, 
       dep_price, deposit, e_price, 
-      is_note, degree, binding, 
-      keyword, edition, impression, 
-      language, format, class_id, 
-      class_name, major_id, college, 
-      grade, hot_value, profession, 
-      academy, init_cost, other_cost, 
-      save_cose)
+      get_eprice, is_note, degree, 
+      binding, keyword, edition, 
+      impression, language, format, 
+      class_id, class_name, major_id, 
+      college, grade, hot_value, 
+      profession, academy, init_cost, 
+      other_cost, save_cose)
     values (#{id,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, #{isbn10,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{author,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, 
       #{pubplace,jdbcType=VARCHAR}, #{pubdate,jdbcType=TIMESTAMP}, #{page,jdbcType=INTEGER}, 
       #{depPrice,jdbcType=DOUBLE}, #{deposit,jdbcType=DOUBLE}, #{ePrice,jdbcType=DOUBLE}, 
-      #{isNote,jdbcType=BIT}, #{degree,jdbcType=VARCHAR}, #{binding,jdbcType=VARCHAR}, 
-      #{keyword,jdbcType=VARCHAR}, #{edition,jdbcType=VARCHAR}, #{impression,jdbcType=VARCHAR}, 
-      #{language,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, #{classId,jdbcType=VARCHAR}, 
-      #{className,jdbcType=VARCHAR}, #{majorId,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, 
-      #{grade,jdbcType=VARCHAR}, #{hotValue,jdbcType=INTEGER}, #{profession,jdbcType=VARCHAR}, 
-      #{academy,jdbcType=VARCHAR}, #{initCost,jdbcType=DOUBLE}, #{otherCost,jdbcType=DOUBLE}, 
-      #{saveCose,jdbcType=DOUBLE})
+      #{getEprice,jdbcType=DOUBLE}, #{isNote,jdbcType=BIT}, #{degree,jdbcType=VARCHAR}, 
+      #{binding,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{edition,jdbcType=VARCHAR}, 
+      #{impression,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, 
+      #{classId,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{majorId,jdbcType=VARCHAR}, 
+      #{college,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{hotValue,jdbcType=INTEGER}, 
+      #{profession,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, #{initCost,jdbcType=DOUBLE}, 
+      #{otherCost,jdbcType=DOUBLE}, #{saveCose,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Book" >
     insert into e_book
@@ -208,6 +209,9 @@
       </if>
       <if test="ePrice != null" >
         e_price,
+      </if>
+      <if test="getEprice != null" >
+        get_eprice,
       </if>
       <if test="isNote != null" >
         is_note,
@@ -312,6 +316,9 @@
       </if>
       <if test="ePrice != null" >
         #{ePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="getEprice != null" >
+        #{getEprice,jdbcType=DOUBLE},
       </if>
       <if test="isNote != null" >
         #{isNote,jdbcType=BIT},
@@ -426,6 +433,9 @@
       <if test="record.ePrice != null" >
         e_price = #{record.ePrice,jdbcType=DOUBLE},
       </if>
+      <if test="record.getEprice != null" >
+        get_eprice = #{record.getEprice,jdbcType=DOUBLE},
+      </if>
       <if test="record.isNote != null" >
         is_note = #{record.isNote,jdbcType=BIT},
       </if>
@@ -505,6 +515,7 @@
       dep_price = #{record.depPrice,jdbcType=DOUBLE},
       deposit = #{record.deposit,jdbcType=DOUBLE},
       e_price = #{record.ePrice,jdbcType=DOUBLE},
+      get_eprice = #{record.getEprice,jdbcType=DOUBLE},
       is_note = #{record.isNote,jdbcType=BIT},
       degree = #{record.degree,jdbcType=VARCHAR},
       binding = #{record.binding,jdbcType=VARCHAR},
@@ -572,6 +583,9 @@
       </if>
       <if test="ePrice != null" >
         e_price = #{ePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="getEprice != null" >
+        get_eprice = #{getEprice,jdbcType=DOUBLE},
       </if>
       <if test="isNote != null" >
         is_note = #{isNote,jdbcType=BIT},
@@ -649,6 +663,7 @@
       dep_price = #{depPrice,jdbcType=DOUBLE},
       deposit = #{deposit,jdbcType=DOUBLE},
       e_price = #{ePrice,jdbcType=DOUBLE},
+      get_eprice = #{getEprice,jdbcType=DOUBLE},
       is_note = #{isNote,jdbcType=BIT},
       degree = #{degree,jdbcType=VARCHAR},
       binding = #{binding,jdbcType=VARCHAR},

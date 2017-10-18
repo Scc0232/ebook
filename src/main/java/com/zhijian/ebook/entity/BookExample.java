@@ -1105,6 +1105,66 @@ public class BookExample {
             return (Criteria) this;
         }
 
+        public Criteria andGetEpriceIsNull() {
+            addCriterion("get_eprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceIsNotNull() {
+            addCriterion("get_eprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceEqualTo(Double value) {
+            addCriterion("get_eprice =", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceNotEqualTo(Double value) {
+            addCriterion("get_eprice <>", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceGreaterThan(Double value) {
+            addCriterion("get_eprice >", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("get_eprice >=", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceLessThan(Double value) {
+            addCriterion("get_eprice <", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceLessThanOrEqualTo(Double value) {
+            addCriterion("get_eprice <=", value, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceIn(List<Double> values) {
+            addCriterion("get_eprice in", values, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceNotIn(List<Double> values) {
+            addCriterion("get_eprice not in", values, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceBetween(Double value1, Double value2) {
+            addCriterion("get_eprice between", value1, value2, "getEprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGetEpriceNotBetween(Double value1, Double value2) {
+            addCriterion("get_eprice not between", value1, value2, "getEprice");
+            return (Criteria) this;
+        }
+
         public Criteria andIsNoteIsNull() {
             addCriterion("is_note is null");
             return (Criteria) this;

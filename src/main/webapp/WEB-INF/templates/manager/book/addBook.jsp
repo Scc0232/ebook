@@ -178,7 +178,7 @@
 		</select>
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
-		<label align="right">学校 :</label> <input id="college" name="college" class="easyui-combobox" style="width: 180px; height: 26px;">
+		<label align="right">学校 :</label> <input id="college" name="college"  style="width: 180px; height: 26px;">
 		<label style="margin-left: 20px" align="right">学院 :</label> <input id="academy" name="academy" maxlength='100' class="easyui-combobox"
 			style="width: 180px; height: 26px;">
 	</div>

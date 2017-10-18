@@ -457,13 +457,14 @@ public class BookServiceImpl implements BookService {
 		User user = userService.findUserByUsername(UserContextHelper.getUsername());
 		String userid = user.getId();
 		Book book = bookMapper.selectByPrimaryKey(donation.getBookId());
+		BookShelf bookShelf = bookShelfMapper.selectByPrimaryKey(donation.getBookId());
 		Address address = addressMapper.selectByPrimaryKey(donation.getAddressId());
 		if (book != null && address != null) {
 			donation.setAuthor(book.getAuthor());
 			donation.setBookIcon(book.getIcon());
 			donation.setBookName(book.getTitle());
 			donation.setCreateTime(new Date());
-			donation.seteValue(book.getePrice());
+			donation.seteValue(book.getGetEprice());
 			donation.setIsbn(book.getIsbn());
 			donation.setIsValid(true);
 			donation.setPublisher(book.getPublisher());
@@ -473,6 +474,18 @@ public class BookServiceImpl implements BookService {
 			// user.setBlance(user.getBlance()+book.getePrice());
 			// userMapper.updateByPrimaryKeySelective(user);
 			return 1;
+		}else if (bookShelf != null && address != null) {
+			donation.setAuthor(bookShelf.getAuthor());
+			donation.setBookIcon(bookShelf.getIcon());
+			donation.setBookName(bookShelf.getTitle());
+			donation.setCreateTime(new Date());
+			donation.seteValue(bookShelf.getePrice());
+			donation.setIsbn(bookShelf.getIsbn());
+			donation.setIsValid(true);
+			donation.setPublisher(bookShelf.getPublisher());
+			donation.setStatus(0);
+			donation.setUserid(userid);
+			donationMapper.insert(donation);
 		}
 
 		return 0;

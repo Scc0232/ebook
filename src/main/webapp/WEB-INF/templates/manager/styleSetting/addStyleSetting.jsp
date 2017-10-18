@@ -46,7 +46,7 @@
 	<div class="fitem" style="margin-top: 50px;">
 		<div style="margin-bottom: 50px" align="center">
 			<label align="right" style="width:100px">机构ID ：</label> <input id="orgIdCombobox" name="orgId"
-				 class="easyui-combobox" editable="false" data-options="required:true,validType:'ORG_NAME'"
+				  editable="false" data-options="required:true,validType:'ORG_NAME'"
 				style="width: 180px; height: 26px;">
 
 		</div>

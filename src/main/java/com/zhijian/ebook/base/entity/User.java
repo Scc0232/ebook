@@ -40,6 +40,14 @@ public class User {
     private String petName;
     
     private Double blance;
+    
+    private String college;
+
+    private String academy;
+
+    private String profession;
+
+    private String grade;
 
     public String getId() {
         return id;
@@ -191,5 +199,37 @@ public class User {
 
 	public void setBlance(Double blance) {
 		this.blance = blance;
+	}
+
+	public String getCollege() {
+		return college;
+	}
+
+	public void setCollege(String college) {
+		this.college = college;
+	}
+
+	public String getAcademy() {
+		return academy;
+	}
+
+	public void setAcademy(String academy) {
+		this.academy = academy;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 }

@@ -3,9 +3,9 @@ package com.zhijian.ebook.entity;
 import java.util.Date;
 
 public class Book {
-    private String isbn;
-
     private String id;
+
+    private String isbn;
 
     private String isbn10;
 
@@ -32,6 +32,8 @@ public class Book {
     private Double deposit;
 
     private Double ePrice;
+
+    private Double getEprice;
 
     private Boolean isNote;
 
@@ -71,20 +73,20 @@ public class Book {
 
     private Double saveCose;
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn == null ? null : isbn.trim();
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
     }
 
     public String getIsbn10() {
@@ -189,6 +191,14 @@ public class Book {
 
     public void setePrice(Double ePrice) {
         this.ePrice = ePrice;
+    }
+
+    public Double getGetEprice() {
+        return getEprice;
+    }
+
+    public void setGetEprice(Double getEprice) {
+        this.getEprice = getEprice;
     }
 
     public Boolean getIsNote() {

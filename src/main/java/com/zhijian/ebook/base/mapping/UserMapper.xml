@@ -21,6 +21,10 @@
 		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
 		<result column="PET_NAME" property="petName" jdbcType="VARCHAR" />
 		<result column="BLANCE" property="blance" jdbcType="DOUBLE" />
+		<result column="college" property="college" jdbcType="VARCHAR" />
+    	<result column="academy" property="academy" jdbcType="VARCHAR" />
+    	<result column="profession" property="profession" jdbcType="VARCHAR" />
+    	<result column="grade" property="grade" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -83,7 +87,7 @@
 	<sql id="Base_Column_List">
 		ID, USERNAME, PASSWORD, NAME, PHONE, EMAIL, ICON, USER_TYPE, IS_VALID, CREATE_PERSON_ID,
 		CREATE_TIME, MODIFY_PERSON_ID, MODIFY_TIME, REMARK, ACCREDIT, SEX, ADDRESS, PET_NAME,
-		BLANCE
+		BLANCE, college, academy, profession, grade
 	</sql>
 	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.base.entity.UserExample">
 		select
@@ -123,7 +127,8 @@
 		CREATE_PERSON_ID, CREATE_TIME, MODIFY_PERSON_ID,
 		MODIFY_TIME, REMARK, ACCREDIT,
 		SEX, ADDRESS, PET_NAME,
-		BLANCE)
+		BLANCE, college, academy, 
+      profession, grade)
 		values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
@@ -132,7 +137,8 @@
 		#{createTime,jdbcType=TIMESTAMP}, #{modifyPersonId,jdbcType=VARCHAR},
 		#{modifyTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{accredit,jdbcType=INTEGER},
 		#{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR},
-		#{blance,jdbcType=DOUBLE})
+		#{blance,jdbcType=DOUBLE}, #{college,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, 
+        #{profession,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.zhijian.ebook.base.entity.User">
 		insert into t_user
@@ -194,6 +200,18 @@
 			<if test="blance != null">
 				BLANCE,
 			</if>
+			<if test="college != null" >
+		        college,
+		    </if>
+		    <if test="academy != null" >
+		        academy,
+		    </if>
+		    <if test="profession != null" >
+		        profession,
+		    </if>
+		    <if test="grade != null" >
+		        grade,
+		    </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -253,6 +271,18 @@
 			<if test="blance != null">
 				#{blance,jdbcType=DOUBLE},
 			</if>
+	      	<if test="college != null" >
+	       	 	#{college,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="academy != null" >
+	        	#{academy,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="profession != null" >
+	        	#{profession,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="grade != null" >
+	        	#{grade,jdbcType=VARCHAR},
+	      	</if>
 		</trim>
 	</insert>
 	<select id="countByExample" parameterType="com.zhijian.ebook.base.entity.UserExample" resultType="java.lang.Integer">
@@ -321,6 +351,18 @@
 			<if test="record.blance != null">
 				BLANCE = #{record.blance,jdbcType=DOUBLE},
 			</if>
+			<if test="record.college != null" >
+		        college = #{record.college,jdbcType=VARCHAR},
+		      </if>
+		      <if test="record.academy != null" >
+		        academy = #{record.academy,jdbcType=VARCHAR},
+		      </if>
+		      <if test="record.profession != null" >
+		        profession = #{record.profession,jdbcType=VARCHAR},
+		      </if>
+		      <if test="record.grade != null" >
+		        grade = #{record.grade,jdbcType=VARCHAR},
+		      </if>
 		</set>
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
@@ -347,8 +389,11 @@
 		SEX = #{record.sex,jdbcType=VARCHAR},
 		ADDRESS = #{record.address,jdbcType=VARCHAR},
 		PET_NAME = #{record.petName,jdbcType=VARCHAR},
-		BLANCE =
-		#{record.blance,jdbcType=DOUBLE}
+		BLANCE = #{record.blance,jdbcType=DOUBLE},
+	      college = #{record.college,jdbcType=VARCHAR},
+	      academy = #{record.academy,jdbcType=VARCHAR},
+	      profession = #{record.profession,jdbcType=VARCHAR},
+	      grade = #{record.grade,jdbcType=VARCHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -410,6 +455,18 @@
 			<if test="blance != null">
 				BLANCE = #{blance,jdbcType=DOUBLE},
 			</if>
+			<if test="college != null" >
+		        college = #{college,jdbcType=VARCHAR},
+		      </if>
+		      <if test="academy != null" >
+		        academy = #{academy,jdbcType=VARCHAR},
+		      </if>
+		      <if test="profession != null" >
+		        profession = #{profession,jdbcType=VARCHAR},
+		      </if>
+		      <if test="grade != null" >
+		        grade = #{grade,jdbcType=VARCHAR},
+		      </if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 	</update>
@@ -434,7 +491,11 @@
 		SEX = #{sex,jdbcType=VARCHAR},
 		ADDRESS = #{address,jdbcType=VARCHAR},
 		PET_NAME = #{petName,jdbcType=VARCHAR},
-		BLANCE = #{blance,jdbcType=DOUBLE}
+		BLANCE = #{blance,jdbcType=DOUBLE},
+      	college = #{college,jdbcType=VARCHAR},
+      	academy = #{academy,jdbcType=VARCHAR},
+      	profession = #{profession,jdbcType=VARCHAR},
+      	grade = #{grade,jdbcType=VARCHAR}
 		where ID = #{id,jdbcType=VARCHAR}
 	</update>
 
