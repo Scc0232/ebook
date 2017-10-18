@@ -38,6 +38,15 @@ public interface MajorMapper {
 
 	@Select("select distinct profession_name as profession_name from e_major  where academy_name = #{academyName} and college_name = #{collegeName} order by profession_name desc")
 	List<String> selectProfessionList(@Param("academyName")String academyName,@Param("collegeName")String collegeName);
+	
+	
+	
+	@Select("select distinct college_name as collegeName, academy_name as academyName from e_major  where college_name = #{collegeName} ")
+	List<Major> selectAcademy(String collegeName);
+
+	@Select("select distinct profession_name as professionName from e_major  where academy_name = #{academyName} and college_name = #{collegeName} ")
+	List<Major> selectProfession(@Param("academyName")String academyName,@Param("collegeName")String collegeName);
+	
 
 	List<Major> findPaginationList(@Param("page")Page page,@Param("example") MajorExample example);
 

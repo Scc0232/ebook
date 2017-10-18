@@ -94,7 +94,7 @@
 			$('#book-add').dialog({
 				title : '增加图书',
 				width : 600,
-				height : 520,
+				height : 540,
 				closed : false,
 				cache : false,
 				href : '${basePath}manager/book/addBookView.do',
@@ -155,7 +155,7 @@
 												{
 													title : '修改图书',
 													width : 600,
-													height : 520,
+													height : 540,
 													closed : false,
 													cache : false,
 													type : "GET",

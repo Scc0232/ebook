@@ -36,7 +36,6 @@ import com.zhijian.ebook.util.StringConsts;
 public class BookController {
 	private static final Logger logger = LogManager.getLogger();
 
-
 	@Autowired
 	private BookService bookService;
 
@@ -182,39 +181,48 @@ public class BookController {
 			return ResponseMsg.fail("删除图书失败！");
 		}
 	}
-	
+
 	/**
 	 * 查询学校名称
-	 * @param id 风格id
+	 * 
+	 * @param id
+	 *            风格id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("findCollegeList")
-	public List<Major> findCollegeList(){
+	public List<Major> findCollegeList() {
 		return bookService.findCollegeList();
 	}
 
 	/**
 	 * 查询学院名称
-	 * @param id 风格id
+	 * 
+	 * @param id
+	 *            风格id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("findAcademy")
-	public List<String> findAcademy(String collegeName){
-		return bookService.findAcademy(collegeName);
+	public List<Major> findAcademy(String collegeName) {
+		List<Major> list = bookService.findAcademy(collegeName);
+		return list;
 	}
-	
+
 	/**
 	 * 查询专业名称
-	 * @param id 风格id
+	 * 
+	 * @param id
+	 *            风格id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("findProfession")
-	public List<String> findProfession(String collegeName, String academyName){
-		return bookService.findProfession(collegeName, academyName);
+	public List<Major> findProfession(String collegeName, String academyName) {
+		List<Major> list = bookService.findProfession(collegeName, academyName);
+		return list;
 	}
+
 	/**
 	 * 图片上传
 	 * 
@@ -232,8 +240,7 @@ public class BookController {
 			imgSufferList.add("bmp");
 			imgSufferList.add("jpeg");
 
-			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-					request.getSession().getServletContext());
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 			if (multipartResolver.isMultipart(request)) {
 				Long newFileName = null;
 
@@ -246,8 +253,7 @@ public class BookController {
 						throw new Exception();
 					}
 					newFileName = Long.valueOf(StringConsts.getUUID16Id());
-					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG,
-							newFileName.toString(), false);
+					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG, newFileName.toString(), false);
 				}
 			}
 		} catch (Exception e) {

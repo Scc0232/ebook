@@ -649,8 +649,8 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<String> findAcademy(String collegeName) {
-		return majorMapper.selectAcademyList(collegeName);
+	public List<Major> findAcademy(String collegeName) {
+		return majorMapper.selectAcademy(collegeName);
 	}
 
 	@Override
@@ -659,8 +659,8 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<String> findProfession(String collegeName, String academyName) {
-		return majorMapper.selectProfessionList(academyName, collegeName);
+	public List<Major> findProfession(String collegeName, String academyName) {
+		return majorMapper.selectProfession(academyName, collegeName);
 	}
 
 }

@@ -84,10 +84,10 @@ public interface BookService {
 
 	Map<String, String> preComputePrice(String productids);
 
-	List<String> findAcademy(String collegeName);
+	List<Major> findAcademy(String collegeName);
 
 	List<Major> findCollegeList();
 
-	List<String> findProfession(String collegeName, String academyName);
+	List<Major> findProfession(String collegeName, String academyName);
 
 }

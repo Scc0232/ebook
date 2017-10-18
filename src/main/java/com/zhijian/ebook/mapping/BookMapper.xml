@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhijian.ebook.dao.BookMapper" >
   <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Book" >
-    <id column="isbn" property="isbn" jdbcType="VARCHAR" />
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="isbn" property="isbn" jdbcType="VARCHAR" />
     <result column="isbn10" property="isbn10" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
@@ -96,7 +96,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    isbn, id, isbn10, title, subtitle, icon, author, summary, publisher, pubplace, pubdate, 
+    id, isbn, isbn10, title, subtitle, icon, author, summary, publisher, pubplace, pubdate, 
     page, dep_price, deposit, e_price, is_note, degree, binding, keyword, edition, impression, 
     language, format, class_id, class_name, major_id, college, grade, hot_value, profession, 
     academy, init_cost, other_cost, save_cose
@@ -120,11 +120,11 @@
     select 
     <include refid="Base_Column_List" />
     from e_book
-    where isbn = #{isbn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from e_book
-    where isbn = #{isbn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.zhijian.ebook.entity.BookExample" >
     delete from e_book
@@ -136,7 +136,7 @@
   <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
-    insert into e_book (isbn, id, isbn10, 
+    insert into e_book (id, isbn, isbn10, 
       title, subtitle, icon, 
       author, summary, publisher, 
       pubplace, pubdate, page, 
@@ -148,7 +148,7 @@
       grade, hot_value, profession, 
       academy, init_cost, other_cost, 
       save_cose)
-    values (#{isbn,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{isbn10,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, #{isbn10,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{author,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, 
       #{pubplace,jdbcType=VARCHAR}, #{pubdate,jdbcType=TIMESTAMP}, #{page,jdbcType=INTEGER}, 
@@ -164,11 +164,11 @@
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Book" >
     insert into e_book
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="isbn != null" >
-        isbn,
-      </if>
       <if test="id != null" >
         id,
+      </if>
+      <if test="isbn != null" >
+        isbn,
       </if>
       <if test="isbn10 != null" >
         isbn10,
@@ -268,11 +268,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="isbn != null" >
-        #{isbn,jdbcType=VARCHAR},
-      </if>
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null" >
+        #{isbn,jdbcType=VARCHAR},
       </if>
       <if test="isbn10 != null" >
         #{isbn10,jdbcType=VARCHAR},
@@ -381,11 +381,11 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update e_book
     <set >
-      <if test="record.isbn != null" >
-        isbn = #{record.isbn,jdbcType=VARCHAR},
-      </if>
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isbn != null" >
+        isbn = #{record.isbn,jdbcType=VARCHAR},
       </if>
       <if test="record.isbn10 != null" >
         isbn10 = #{record.isbn10,jdbcType=VARCHAR},
@@ -490,8 +490,8 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update e_book
-    set isbn = #{record.isbn,jdbcType=VARCHAR},
-      id = #{record.id,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=VARCHAR},
+      isbn = #{record.isbn,jdbcType=VARCHAR},
       isbn10 = #{record.isbn10,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       subtitle = #{record.subtitle,jdbcType=VARCHAR},
@@ -531,8 +531,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.zhijian.ebook.entity.Book" >
     update e_book
     <set >
-      <if test="id != null" >
-        id = #{id,jdbcType=VARCHAR},
+      <if test="isbn != null" >
+        isbn = #{isbn,jdbcType=VARCHAR},
       </if>
       <if test="isbn10 != null" >
         isbn10 = #{isbn10,jdbcType=VARCHAR},
@@ -631,11 +631,11 @@
         save_cose = #{saveCose,jdbcType=DOUBLE},
       </if>
     </set>
-    where isbn = #{isbn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Book" >
     update e_book
-    set id = #{id,jdbcType=VARCHAR},
+    set isbn = #{isbn,jdbcType=VARCHAR},
       isbn10 = #{isbn10,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       subtitle = #{subtitle,jdbcType=VARCHAR},
@@ -668,7 +668,7 @@
       init_cost = #{initCost,jdbcType=DOUBLE},
       other_cost = #{otherCost,jdbcType=DOUBLE},
       save_cose = #{saveCose,jdbcType=DOUBLE}
-    where isbn = #{isbn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <!-- 自定义 -->
   <select id="findPaginationList" resultMap="BaseResultMap">
