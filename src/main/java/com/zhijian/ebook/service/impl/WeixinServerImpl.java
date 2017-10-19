@@ -101,6 +101,7 @@ public class WeixinServerImpl implements WeixinServer {
 		List<AccessToken> list = accessTokenMapper.selectByExample(null);
 		if (list == null || list.size() == 0) {
 			refreshToken();
+			list = accessTokenMapper.selectByExample(null);
 		}
 		AccessToken accessToken = list.get(0);
 		String token = accessToken.getToken();
