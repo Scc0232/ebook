@@ -654,10 +654,10 @@ public class BookServiceImpl implements BookService {
 			// dirSubmitOrder(productid, nums, addressid, orderNo);
 		}
 
-		map.put("zujin", zujin + "");
+		map.put("zujin", (int)(zujin*100)/100 + "");
 		map.put("zhejiu", zhejiu + "");
 		map.put("yajin", yajin + "");
-		map.put("amount", zujin + zhejiu + yajin + "");
+		map.put("amount", (int)((zujin + zhejiu + yajin)*100)/100 + "" );
 		return map;
 	}
 
