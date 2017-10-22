@@ -153,9 +153,7 @@ public class BookController {
 		String icon = uploadImg(request);
 		if (icon != null) {
 			book.setIcon(icon);
-		} else {
-			book.setIcon("img/test.jpg");
-		}
+		} 
 		row = bookService.modifyBook(book);
 		if (row > 0) {
 			return ResponseMsg.success("修改图书成功！");

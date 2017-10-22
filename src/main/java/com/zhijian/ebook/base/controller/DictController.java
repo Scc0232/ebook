@@ -124,8 +124,6 @@ public class DictController {
 		String icon = uploadImg(request);
 		if (icon != null) {
 			dict.setIcon(icon);
-		} else {
-			dict.setIcon("img/test.jpg");
 		}
 		row = dictService.modifyDict(dict);
 		if (row > 0) {

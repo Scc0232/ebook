@@ -154,9 +154,7 @@ public class BookShelfController {
 		String icon = uploadImg(request);
 		if (icon != null) {
 			bookShelf.setIcon(icon);
-		} else {
-			bookShelf.setIcon("img/test.jpg");
-		}
+		} 
 		row = bookShelfService.modifyBookShelf(bookShelf);
 		if (row > 0) {
 			return ResponseMsg.success("修改图书成功！");
