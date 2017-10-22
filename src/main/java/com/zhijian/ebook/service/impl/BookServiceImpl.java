@@ -590,33 +590,33 @@ public class BookServiceImpl implements BookService {
 		criteria.andUseridEqualTo(user.getId());
 		criteria.andIsValidEqualTo(true);
 		list = orderMapper.selectByExample(example);
-		double value = 0;
-		double prevalue = 0;
-		double eamount = 0;
-		double enumber = Double.parseDouble(enumbers);
+		int value = 0;
+		int prevalue = 0;
+		int eamount = 0;
+		int enumber = (int)Double.parseDouble(enumbers)*100;
 		for (Order order : list) {
-			value += (order.getDepPrice() + order.getDesposit() + order.getProductPrice()) * order.getCount();
-			eamount += order.getProductPrice();
+			value += ((int)(order.getDepPrice()*100) + (int)(order.getDesposit()*100) + (int)(order.getProductPrice()*100)) * order.getCount();
+			eamount += (int)(order.getProductPrice()*100);
 			if (order.getProductType() == 1) {
 				prevalue += order.getDepPrice() * order.getCount();
 			} else {
-				prevalue += 2 * order.getCount();
+				prevalue += 3 * order.getCount();
 			}
 		}
 		if (enumber > 0) {
-			if (enumber > eamount || enumber > user.getBlance()) {
-				enumber = eamount > user.getBlance() ? user.getBlance() : eamount;
+			if (enumber > eamount || enumber > (int)(user.getBlance()*100)) {
+				enumber = eamount > (int)(user.getBlance()*100) ? (int)(user.getBlance()*100) : eamount;
 			}
-			user.setBlance(user.getBlance() - enumber);
+			user.setBlance(((int)(user.getBlance()*100) - enumber)/100.0);
 			userMapper.updateByPrimaryKeySelective(user);
 		}
-		map.put("value", (value - enumber) + "");
+		map.put("value", (int)(value - enumber)/100.0 + "");
 		map.put("prevalue", prevalue + "");
 		map.put("orderNo", orderNo);
 		Order order = new Order();
-		order.setValue(value);
-		order.setPreValue(prevalue);
-		order.setPayEvalue(enumber);
+		order.setValue(value/100.0);
+		order.setPreValue(prevalue*1.0);
+		order.setPayEvalue(enumber/100.0);
 		orderMapper.updateByExampleSelective(order, example);
 		return map;
 	}

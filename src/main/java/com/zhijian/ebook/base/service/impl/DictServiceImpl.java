@@ -27,7 +27,7 @@ public class DictServiceImpl implements DictService {
 
 	@Override
 	public int modifyDict(Dict dict) {
-		return dictMapper.updateByPrimaryKey(dict);
+		return dictMapper.updateByPrimaryKeySelective(dict);
 	}
 
 	@Override
