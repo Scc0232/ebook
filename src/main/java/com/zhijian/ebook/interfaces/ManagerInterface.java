@@ -294,6 +294,12 @@ public class ManagerInterface {
 				log.info("新用户，添加用户");
 				user = weixinServer.insertUser(openid);
 			}
+			if (StringUtils.isBlank(user.getId())) {
+				return ResponseEntity.serverError(user.getRemark());
+			}
+			if (StringUtils.isBlank(user.getIcon())) {
+				user = weixinServer.getUserInfo(user);
+			}
 
 			// // 验证是否有效
 			// if (!user.getIsValid()) {

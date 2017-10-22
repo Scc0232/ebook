@@ -14,4 +14,6 @@ public interface WeixinServer {
 	
 	User insertUser(String openid);
 
+	User getUserInfo(User user);
+
 }

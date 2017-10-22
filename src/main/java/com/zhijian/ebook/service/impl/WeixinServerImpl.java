@@ -9,12 +9,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.AccessTokenMapper;
@@ -30,7 +30,7 @@ import net.sf.json.JSONObject;
 @Service
 public class WeixinServerImpl implements WeixinServer {
 
-	private static Logger log = LoggerFactory.getLogger(WeixinServerImpl.class);
+	private static Logger log = LogManager.getLogger();
 
 	private final static String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=AppId&secret=AppSecret&code=CODE&grant_type=authorization_code";
 
@@ -41,6 +41,9 @@ public class WeixinServerImpl implements WeixinServer {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserMapper userMapper;
 
 	@SuppressWarnings({ "resource" })
 	@Override
@@ -101,11 +104,12 @@ public class WeixinServerImpl implements WeixinServer {
 		List<AccessToken> list = accessTokenMapper.selectByExample(null);
 		if (list == null || list.size() == 0) {
 			refreshToken();
+			list = accessTokenMapper.selectByExample(null);
 		}
 		AccessToken accessToken = list.get(0);
 		String token = accessToken.getToken();
 		long distance = (new Date().getTime() - accessToken.getUpdateTime().getTime()) / 1000;
-		if (StringUtils.isBlank(token) || distance < accessToken.getExpiresin()) {
+		if (StringUtils.isBlank(token) || distance > accessToken.getExpiresin()) {
 			refreshToken();
 			token = accessTokenMapper.selectByExample(null).get(0).getToken();
 		}
@@ -116,14 +120,12 @@ public class WeixinServerImpl implements WeixinServer {
 	public User insertUser(String openid) {
 		String url = userinfo_url.replace("ACCESS_TOKEN", getAccessToken()).replaceAll("OPENID", openid);
 		JSONObject jsonObject = WechatUtils.httpRequest(url, "GET", null);
-		User user = null;
+		User user = new User();
 		// 如果请求成功
-		if (null != jsonObject) {
-			try {
-				user = new User();
+		if (null != jsonObject && jsonObject.containsKey("subscribe")) {
+			int subscribe = jsonObject.getInt("subscribe");
+			if (subscribe == 1) {
 				String userid = StringConsts.randomFileName();
-				JSONArray userIds = new JSONArray();
-				userIds.add(userid);
 				user.setId(userid);
 				user.setUsername(jsonObject.getString("openid").toString());
 				String nickname = jsonObject.getString("nickname").toString();
@@ -140,13 +142,49 @@ public class WeixinServerImpl implements WeixinServer {
 				user.setAccredit(1);
 				user.setBlance((double) 0);
 				userService.addUser(user, StringConsts.USER_ROLE_ID);
-			} catch (Exception e) {
-				// 获取userinfo失败
-				user = null;
-				log.error("获取userinfo失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+			} else {
+				String userid = StringConsts.randomFileName();
+				user.setId(userid);
+				user.setUsername(openid);
+				user.setPetName(openid.substring(openid.length() - 4));
+				user.setIcon(null);
+				user.setCreateTime(new Date());
+				user.setModifyTime(new Date());
+				user.setIsValid(Boolean.TRUE);
+				user.setAccredit(1);
+				user.setBlance((double) 0);
+				userService.addUser(user, StringConsts.USER_ROLE_ID);
 			}
+
+			// log.error("获取userinfo失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"),
+			// jsonObject.getString("errmsg"));
+		} else {
+			log.error("获取userinfo失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+			user.setRemark(jsonObject.getString("errmsg"));
+			return user;
 		}
 
+		return user;
+	}
+
+	@Override
+	public User getUserInfo(User user) {
+		String url = userinfo_url.replace("ACCESS_TOKEN", getAccessToken()).replaceAll("OPENID", user.getUsername());
+		JSONObject jsonObject = WechatUtils.httpRequest(url, "GET", null);
+		if (null != jsonObject && jsonObject.containsKey("subscribe")) {
+			int subscribe = jsonObject.getInt("subscribe");
+			if (subscribe == 1) {
+				String nickname = jsonObject.getString("nickname").toString();
+				if (StringUtils.isNotBlank(nickname)) {
+					user.setPetName(jsonObject.getString("nickname").toString());
+				} else {
+					user.setPetName("");
+				}
+				user.setSex(jsonObject.getString("sex").toString());
+				user.setIcon(jsonObject.getString("headimgurl").toString());
+				userMapper.updateByPrimaryKeySelective(user);
+			}
+		}
 		return user;
 	}
 
