@@ -1,5 +1,10 @@
 package com.zhijian.ebook.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.ResponseMsg;
 import com.zhijian.ebook.entity.Souvenir;
 import com.zhijian.ebook.service.SouvenirService;
+import com.zhijian.ebook.util.FileUpLoadUtils;
+import com.zhijian.ebook.util.StringConsts;
 
 
 
@@ -99,7 +109,7 @@ public class SouvenirController {
 	 */
 	@ResponseBody
 	@RequestMapping("addSouvenir")
-	public ResponseMsg addSouvenir(Souvenir souvenir) {
+	public ResponseMsg addSouvenir(Souvenir souvenir, HttpServletRequest request) {
 		try {
 			// if (Souvenir.getBindMobileCount() == null || Souvenir.getBindMobileCount() == 0) {
 			// String countStr =
@@ -107,7 +117,14 @@ public class SouvenirController {
 			// //设置手机可更换绑定次数(配置文件配置，如特殊需要修改，纪念品需联系管理员从管理平台修改)
 			// Souvenir.setBindMobileCount(StringUtils.isBlank(countStr)?0:Integer.valueOf(countStr));
 			// }
-			int row = souvenirService.addSouvenir(souvenir);
+			int row = 0;
+			String icon = uploadImg(request);
+			if (icon != null) {
+				souvenir.setIcon(icon);
+			} else {
+				souvenir.setIcon("img/test.jpg");
+			}
+			row = souvenirService.addSouvenir(souvenir);
 			if (row > 0) {
 				return ResponseMsg.success("添加纪念品成功！");
 			} else {
@@ -129,14 +146,19 @@ public class SouvenirController {
 	 */
 	@ResponseBody
 	@RequestMapping("modifySouvenir")
-	public ResponseMsg modifySouvenir(Souvenir souvenir) {
+	public ResponseMsg modifySouvenir(Souvenir souvenir, HttpServletRequest request) {
 		// SouvenirMap.setQq(qq);
 		// SouvenirMap.setCompanyName(companyName);
 		// SouvenirMap.setCompanyPhone(companyPhone);
 		// SouvenirMap.setCompanyAddr(companyAddr);
 		// SouvenirMap.setMyReferralCode(myReferralCode);
 		// SouvenirMap.setBindMobileCount(bindMobileCount);
-		int row = SouvenirService.modifySouvenir(souvenir);
+		int row = 0;
+		String icon = uploadImg(request);
+		if (icon != null) {
+			souvenir.setIcon(icon);
+		}
+		row = SouvenirService.modifySouvenir(souvenir);
 		if (row > 0) {
 			return ResponseMsg.success("修改纪念品成功！");
 		} else {
@@ -160,6 +182,50 @@ public class SouvenirController {
 		} else {
 			return ResponseMsg.fail("删除纪念品失败！");
 		}
+	}
+	
+	/**
+	 * 图片上传
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public String uploadImg(HttpServletRequest request) {
+		String uploadFilePath = null;
+		try {
+			List<String> imgSufferList = new ArrayList<String>();
+
+			imgSufferList.add("jpg");
+			imgSufferList.add("png");
+			imgSufferList.add("gif");
+			imgSufferList.add("bmp");
+			imgSufferList.add("jpeg");
+
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+					request.getSession().getServletContext());
+			if (multipartResolver.isMultipart(request)) {
+				Long newFileName = null;
+
+				MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+				MultipartFile headImg = multiRequest.getFile("icons");
+				String suffer = null;
+				if ((headImg != null) && (headImg.getSize() > 0L)) {
+					suffer = FileUpLoadUtils.getFileSuffix(headImg);
+					if (!imgSufferList.contains(suffer.toLowerCase())) {
+						throw new Exception();
+					}
+					newFileName = Long.valueOf(StringConsts.getUUID16Id());
+					uploadFilePath = FileUpLoadUtils.writeFile(headImg, "/var/ebook/image/" + StringConsts.TO_PATH_IMG,
+							newFileName.toString(), false);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (org.springframework.util.StringUtils.isEmpty(uploadFilePath)) {
+			return null;
+		}
+		return uploadFilePath;
 	}
 
 }

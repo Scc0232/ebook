@@ -2,7 +2,7 @@
 <script>
     $(function () {
         var saveBtn = $('#souvenir-saveBtn');
-        var form = $('#souvenirAdd-fm');
+        /* var form = $('#souvenirAdd-fm');
         $(saveBtn).bind('click', function () {
           
             var obj = toObject(form);
@@ -25,11 +25,38 @@
                     }
                 }
             });
-        });
+        }); */
+        
+        $("#souvenirAdd-fm").form({
+            onSubmit: function(){
+                    if(! $("#souvenirAdd-fm").form('validate')){
+                            layer.msg("请添加必填项!");
+                            return false;
+                    }
+                    loading();
+                    return true;
+            },
+            success: function(data){                                
+                    var map = $.parseJSON(data);
+                    if(map.flag == "success"){
+                            parent.$('#souvenir-add').dialog('close');
+                    }
+                    closeLoading();
+                    layer.msg(map.msg);
+                    if(map.flag == "success"){
+                            $("#souvenir-grid").datagrid('reload');
+                    }
+            }                       
+    });
+    
+$(saveBtn).bind('click', function () {
+    $("#souvenirAdd-fm").submit();
+}); 
+        
     });
     
 </script>
-<form id="souvenirAdd-fm" method="post" novalidate style="margin-top: 50px;">
+<form id="souvenirAdd-fm" method="post" enctype="multipart/form-data" action="${basePath}manager/souvenir/addSouvenir.do">
 		<div class="fitem" style="margin-top: 20px;">
 	   <label  align="right">类型 :</label>
     		<select  class="easyui-combobox" name="type" style="width:180px;" editable="false" panelHeight="auto">
@@ -47,7 +74,7 @@
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 	   <label  align="right">图片URL ：</label>
-		<input name="icon"  class="easyui-textbox" style="width: 180px; height: 26px;">
+		<input  name="icons"  class="easyui-filebox" style="width: 180px; height: 26px;">
 	</div>
 </form>
 <p align="center" style="margin-top: 50px;">

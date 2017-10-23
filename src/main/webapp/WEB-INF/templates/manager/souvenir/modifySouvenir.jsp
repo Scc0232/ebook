@@ -44,7 +44,7 @@ $(function(){
 
 </script>
 
-<form id="souvenir-fm" method="post" novalidate style="margin-top: 50px;">
+<form id="souvenir-fm" method="post" enctype="multipart/form-data" action="${basePath}manager/souvenir/modifySouvenir.do">
     <div>
         <input id="id" name="id" type="hidden" value="${souvenir.id}"/>
     </div>
@@ -65,7 +65,7 @@ $(function(){
 	</div>
 	<div class="fitem" style="margin-top: 20px;">
 	   <label  align="right">图片URL ：</label>
-		<input name="icon"  class="easyui-textbox" style="width: 180px; height: 26px;" value="${souvenir.icon}">
+		<input name="icons"  class="easyui-filebox" style="width: 180px; height: 26px;" value="${souvenir.icon}">
 	</div>
 </form>
 <p align="center">

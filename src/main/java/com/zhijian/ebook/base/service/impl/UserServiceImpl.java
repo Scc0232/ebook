@@ -185,10 +185,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public int modifyUserByUsername(User user) throws Exception {
-		User baseUser = new User();
-		baseUser.setName(user.getName());
-		baseUser.setPhone(user.getPhone());
-		baseUser.setEmail(user.getEmail());
+		User baseUser = user;
 //		baseUser.setQq(user.getQq());
 //		baseUser.setWechat(user.getWechat());
 //		baseUser.setToken(user.getToken());
@@ -199,7 +196,6 @@ public class UserServiceImpl implements UserService {
 //		baseUser.setCompanyPhone(user.getCompanyPhone());
 //		baseUser.setJob(user.getJob());
 		baseUser.setModifyTime(new Date());
-		baseUser.setRemark(user.getRemark());		
 		UserExample example = new UserExample();
 		UserExample.Criteria criteria = example.createCriteria();
 		criteria.andUsernameEqualTo(user.getUsername());
