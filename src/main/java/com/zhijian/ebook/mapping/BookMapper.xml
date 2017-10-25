@@ -116,6 +116,7 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+    limit 20
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
