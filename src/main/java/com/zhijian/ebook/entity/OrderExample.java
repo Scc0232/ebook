@@ -245,6 +245,76 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andPayNoIsNull() {
+            addCriterion("pay_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoIsNotNull() {
+            addCriterion("pay_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoEqualTo(String value) {
+            addCriterion("pay_no =", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoNotEqualTo(String value) {
+            addCriterion("pay_no <>", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoGreaterThan(String value) {
+            addCriterion("pay_no >", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoGreaterThanOrEqualTo(String value) {
+            addCriterion("pay_no >=", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoLessThan(String value) {
+            addCriterion("pay_no <", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoLessThanOrEqualTo(String value) {
+            addCriterion("pay_no <=", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoLike(String value) {
+            addCriterion("pay_no like", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoNotLike(String value) {
+            addCriterion("pay_no not like", value, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoIn(List<String> values) {
+            addCriterion("pay_no in", values, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoNotIn(List<String> values) {
+            addCriterion("pay_no not in", values, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoBetween(String value1, String value2) {
+            addCriterion("pay_no between", value1, value2, "payNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayNoNotBetween(String value1, String value2) {
+            addCriterion("pay_no not between", value1, value2, "payNo");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderStatusIsNull() {
             addCriterion("order_status is null");
             return (Criteria) this;

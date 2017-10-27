@@ -1,10 +1,13 @@
 package com.zhijian.ebook.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -22,10 +25,13 @@ import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.BookClassMapper;
 import com.zhijian.ebook.dao.BookMapper;
+import com.zhijian.ebook.dao.OrderMapper;
 import com.zhijian.ebook.entity.Book;
 import com.zhijian.ebook.entity.BookClass;
 import com.zhijian.ebook.entity.BookClassExample;
 import com.zhijian.ebook.entity.BookExample;
+import com.zhijian.ebook.entity.Order;
+import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.BookClassService;
 import com.zhijian.ebook.service.WeixinServer;
@@ -59,6 +65,9 @@ public class BookClassServiceImpl implements BookClassService {
 
 	@Autowired
 	private WeixinServer weixinServer;
+	
+	@Autowired
+	private OrderMapper orderMapper;
 
 	@Override
 	public Map<String, List<?>> selectAll() {
@@ -85,6 +94,16 @@ public class BookClassServiceImpl implements BookClassService {
 		return dictMapper.selectByExample(dictExample);
 	}
 
+	public static String getRandomPayNO() {
+		SimpleDateFormat simpleDateFormat;
+		simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = new Date();
+		String str = simpleDateFormat.format(date);
+		Random random = new Random();
+		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
+		return rannum + str;// 当前时间 }
+	}
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public Object prePay(String orderNo, String fee, String ip) {
@@ -94,6 +113,20 @@ public class BookClassServiceImpl implements BookClassService {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+		String payNo = getRandomPayNO();
+		Order order = new Order();
+		order.setPayNo(payNo);
+		OrderExample orderExample = new OrderExample();
+		OrderExample.Criteria criteria = orderExample.createCriteria();
+		criteria.andOrderNoEqualTo(orderNo);
+		criteria.andOrderStatusEqualTo(0);
+		criteria.andIsValidEqualTo(true);
+		int counts = orderMapper.countByExample(orderExample);
+		if (counts<1) {
+			return null;
+		}
+		orderMapper.updateByExampleSelective(order, orderExample);
+		
 		String openId = user.getUsername();
 		// OrderExample example = new OrderExample();
 		// OrderExample.Criteria criteria = example.createCriteria();
@@ -108,7 +141,7 @@ public class BookClassServiceImpl implements BookClassService {
 		paramMap.put("mch_id", WechatConfig.MCHID);
 		paramMap.put("nonce_str", UUIDGenerator.generator().toUpperCase());
 		paramMap.put("body", "订单支付");
-		paramMap.put("out_trade_no", String.valueOf(orderNo));
+		paramMap.put("out_trade_no", String.valueOf(payNo));
 		paramMap.put("fee_type", "CNY");
 		paramMap.put("total_fee", Math.round(Double.parseDouble(fee) * 100) + "");
 		paramMap.put("spbill_create_ip", ip);

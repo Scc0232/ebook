@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.zhijian.ebook.entity.Order" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="pay_no" property="payNo" jdbcType="VARCHAR" />
     <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
     <result column="product_id" property="productId" jdbcType="VARCHAR" />
     <result column="product_type" property="productType" jdbcType="TINYINT" />
@@ -81,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, order_no, order_status, product_id, product_type, dep_price, desposit, product_name, 
-    product_price, product_icon, userid, count, address_id, value, pre_value, pay_evalue, 
-    create_time, message, is_valid
+    id, order_no, pay_no, order_status, product_id, product_type, dep_price, desposit, 
+    product_name, product_price, product_icon, userid, count, address_id, value, pre_value, 
+    pay_evalue, create_time, message, is_valid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhijian.ebook.entity.OrderExample" >
     select
@@ -117,23 +118,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.zhijian.ebook.entity.Order" >
-      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">
         SELECT REPLACE(UUID(),'-','')
     </selectKey>
-    insert into e_order (id, order_no, order_status, 
-      product_id, product_type, dep_price, 
-      desposit, product_name, product_price, 
-      product_icon, userid, count, 
-      address_id, value, pre_value, 
-      pay_evalue, create_time, message, 
-      is_valid)
-    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, 
-      #{productId,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, #{depPrice,jdbcType=DOUBLE}, 
-      #{desposit,jdbcType=DOUBLE}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DOUBLE}, 
-      #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
-      #{addressId,jdbcType=VARCHAR}, #{value,jdbcType=DOUBLE}, #{preValue,jdbcType=DOUBLE}, 
-      #{payEvalue,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{message,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=BIT})
+    insert into e_order (id, order_no, pay_no, 
+      order_status, product_id, product_type, 
+      dep_price, desposit, product_name, 
+      product_price, product_icon, userid, 
+      count, address_id, value, 
+      pre_value, pay_evalue, create_time, 
+      message, is_valid)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{payNo,jdbcType=VARCHAR}, 
+      #{orderStatus,jdbcType=INTEGER}, #{productId,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, 
+      #{depPrice,jdbcType=DOUBLE}, #{desposit,jdbcType=DOUBLE}, #{productName,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DOUBLE}, #{productIcon,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{addressId,jdbcType=VARCHAR}, #{value,jdbcType=DOUBLE}, 
+      #{preValue,jdbcType=DOUBLE}, #{payEvalue,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{message,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zhijian.ebook.entity.Order" >
     insert into e_order
@@ -143,6 +144,9 @@
       </if>
       <if test="orderNo != null" >
         order_no,
+      </if>
+      <if test="payNo != null" >
+        pay_no,
       </if>
       <if test="orderStatus != null" >
         order_status,
@@ -202,6 +206,9 @@
       </if>
       <if test="orderNo != null" >
         #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        #{payNo,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null" >
         #{orderStatus,jdbcType=INTEGER},
@@ -271,6 +278,9 @@
       <if test="record.orderNo != null" >
         order_no = #{record.orderNo,jdbcType=VARCHAR},
       </if>
+      <if test="record.payNo != null" >
+        pay_no = #{record.payNo,jdbcType=VARCHAR},
+      </if>
       <if test="record.orderStatus != null" >
         order_status = #{record.orderStatus,jdbcType=INTEGER},
       </if>
@@ -331,6 +341,7 @@
     update e_order
     set id = #{record.id,jdbcType=VARCHAR},
       order_no = #{record.orderNo,jdbcType=VARCHAR},
+      pay_no = #{record.payNo,jdbcType=VARCHAR},
       order_status = #{record.orderStatus,jdbcType=INTEGER},
       product_id = #{record.productId,jdbcType=VARCHAR},
       product_type = #{record.productType,jdbcType=TINYINT},
@@ -357,6 +368,9 @@
     <set >
       <if test="orderNo != null" >
         order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        pay_no = #{payNo,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null" >
         order_status = #{orderStatus,jdbcType=INTEGER},
@@ -415,6 +429,7 @@
   <update id="updateByPrimaryKey" parameterType="com.zhijian.ebook.entity.Order" >
     update e_order
     set order_no = #{orderNo,jdbcType=VARCHAR},
+      pay_no = #{payNo,jdbcType=VARCHAR},
       order_status = #{orderStatus,jdbcType=INTEGER},
       product_id = #{productId,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=TINYINT},
@@ -434,7 +449,6 @@
       is_valid = #{isValid,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  
   <!-- 自定义 -->
   <select id="findPaginationList" resultMap="BaseResultMap">
 		select

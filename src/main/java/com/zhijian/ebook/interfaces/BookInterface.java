@@ -873,6 +873,9 @@ public class BookInterface {
 		try {
 			String ip = request.getLocalAddr();
 			obj = bookclassService.prePay(orderNo, fee, ip);
+			if (obj==null) {
+				return ResponseEntity.serverError("订单不存在");
+			}
 		} catch (Exception e) {
 			log.error("", e);
 			return ResponseEntity.serverError("操作失败");
@@ -922,7 +925,7 @@ public class BookInterface {
 							String id = paramMap.get("out_trade_no");
 							OrderExample orderExample = new OrderExample();
 							OrderExample.Criteria criteria = orderExample.createCriteria();
-							criteria.andOrderNoEqualTo(id);
+							criteria.andPayNoEqualTo(id);
 							int counts = orderMapper.countByExample(orderExample);
 							log.info("counts:" + counts);
 							List<Order> orders = orderMapper.selectByExample(orderExample);

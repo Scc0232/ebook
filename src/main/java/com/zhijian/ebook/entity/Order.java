@@ -6,6 +6,8 @@ public class Order {
     private String id;
 
     private String orderNo;
+    
+    private String payNo;
 
     private Integer orderStatus;
 
@@ -201,5 +203,13 @@ public class Order {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getPayNo() {
+		return payNo;
+	}
+
+	public void setPayNo(String payNo) {
+		this.payNo = payNo;
 	}
 }
