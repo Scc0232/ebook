@@ -87,12 +87,12 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	@Autowired
 	private MajorMapper majorMapper;
 
 	@Override
-	public List<Book> selectHotBook(String collegeName, String academyName, String professionName,String grade, String classid) {
+	public List<Book> selectHotBook(String collegeName, String academyName, String professionName, String grade, String classid) {
 		Calendar calendar = Calendar.getInstance();
 		// 获得当前时间的月份，月份从0开始所以结果要加1
 		int month = calendar.get(Calendar.MONTH) + 1;
@@ -474,7 +474,7 @@ public class BookServiceImpl implements BookService {
 			// user.setBlance(user.getBlance()+book.getePrice());
 			// userMapper.updateByPrimaryKeySelective(user);
 			return 1;
-		}else if (bookShelf != null && address != null) {
+		} else if (bookShelf != null && address != null) {
 			donation.setAuthor(bookShelf.getAuthor());
 			donation.setBookIcon(bookShelf.getIcon());
 			donation.setBookName(bookShelf.getTitle());
@@ -593,10 +593,10 @@ public class BookServiceImpl implements BookService {
 		int value = 0;
 		int prevalue = 0;
 		int eamount = 0;
-		int enumber = (int)Double.parseDouble(enumbers)*100;
+		int enumber = (int) Double.parseDouble(enumbers) * 100;
 		for (Order order : list) {
-			value += ((int)(order.getDepPrice()*100) + (int)(order.getDesposit()*100) + (int)(order.getProductPrice()*100)) * order.getCount();
-			eamount += (int)(order.getProductPrice()*100);
+			value += ((int) (order.getDepPrice() * 100) + (int) (order.getDesposit() * 100) + (int) (order.getProductPrice() * 100)) * order.getCount();
+			eamount += (int) (order.getProductPrice() * 100);
 			if (order.getProductType() == 1) {
 				prevalue += order.getDepPrice() * order.getCount();
 			} else {
@@ -604,19 +604,19 @@ public class BookServiceImpl implements BookService {
 			}
 		}
 		if (enumber > 0) {
-			if (enumber > eamount || enumber > (int)(user.getBlance()*100)) {
-				enumber = eamount > (int)(user.getBlance()*100) ? (int)(user.getBlance()*100) : eamount;
+			if (enumber > eamount || enumber > (int) (user.getBlance() * 100)) {
+				enumber = eamount > (int) (user.getBlance() * 100) ? (int) (user.getBlance() * 100) : eamount;
 			}
-			user.setBlance(((int)(user.getBlance()*100) - enumber)/100.0);
+			user.setBlance(((int) (user.getBlance() * 100) - enumber) / 100.0);
 			userMapper.updateByPrimaryKeySelective(user);
 		}
-		map.put("value", (int)(value - enumber)/100.0 + "");
+		map.put("value", (int) (value - enumber) / 100.0 + "");
 		map.put("prevalue", prevalue + "");
 		map.put("orderNo", orderNo);
 		Order order = new Order();
-		order.setValue(value/100.0);
-		order.setPreValue(prevalue*1.0);
-		order.setPayEvalue(enumber/100.0);
+		order.setValue(value / 100.0);
+		order.setPreValue(prevalue * 1.0);
+		order.setPayEvalue(enumber / 100.0);
 		orderMapper.updateByExampleSelective(order, example);
 		return map;
 	}
@@ -634,30 +634,30 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Map<String, String> preComputePrice(String productids) {
 		Map<String, String> map = new HashMap<>();
-		double zujin = 0;
-		double zhejiu = 0;
-		double yajin = 0;
+		int zujin = 0;
+		int zhejiu = 0;
+		int yajin = 0;
 		String[] product = productids.split(";");
 		for (String productidnum : product) {
 			String productid = StringUtils.substringBefore(productidnum, StringConsts.COMMA);
 			int nums = Integer.parseInt(StringUtils.substringAfter(productidnum, StringConsts.COMMA));
 			Book book = bookMapper.selectByPrimaryKey(productid);
 			if (book != null) {
-				zujin += book.getePrice() * nums;
-				zhejiu += book.getDepPrice() * nums;
-				yajin += book.getDeposit() * nums;
+				zujin += book.getePrice() * 100.0 * nums;
+				zhejiu += book.getDepPrice() * 100.0 * nums;
+				yajin += book.getDeposit() * 100.0 * nums;
 			} else {
 				Souvenir souvenir = souvenirMapper.selectByPrimaryKey(productid);
-				zujin += souvenir.getPrice() * nums;
+				zujin += souvenir.getPrice() * 100.0 * nums;
 			}
 
 			// dirSubmitOrder(productid, nums, addressid, orderNo);
 		}
 
-		map.put("zujin", (int)(zujin*100)/100 + "");
-		map.put("zhejiu", zhejiu + "");
-		map.put("yajin", yajin + "");
-		map.put("amount", (int)((zujin + zhejiu + yajin)*100)/100 + "" );
+		map.put("zujin", zujin / 100.0 + "");
+		map.put("zhejiu", zhejiu / 100.0 + "");
+		map.put("yajin", yajin / 100.0 + "");
+		map.put("amount", (zujin + zhejiu + yajin) / 100.0 + "");
 		return map;
 	}
 
