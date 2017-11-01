@@ -33,7 +33,7 @@ public class SMSUtils {
     /**
      *TODO 注册验证码短信模板ID
      */
-    private static String DEFAULT_TEMPLATE_ID = "210783";
+    private static String DEFAULT_TEMPLATE_ID = "213393";
     
    
 
