@@ -873,7 +873,7 @@ public class BookInterface {
 		try {
 			String ip = request.getLocalAddr();
 			obj = bookclassService.prePay(orderNo, fee, ip);
-			if (obj==null) {
+			if (obj == null) {
 				return ResponseEntity.serverError("订单不存在");
 			}
 		} catch (Exception e) {
@@ -1015,23 +1015,21 @@ public class BookInterface {
 			if (result == null) {
 				String captcha = CaptchaUtils.generate();
 				log.info("phoneNumber={},captcha={}", phoneNumber, captcha);
-				 Map<String, Object> smsResult = SMSUtils.sendCaptchaSMS(
-				 phoneNumber, captcha);
-				 log.info(smsResult);
-				 // 实例化SMSCaptcha, 并放入Session中
-				 SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
-				 captchaService.setSMSCaptchaToSession(sms, session);
-				 log.info("发送短信验证码完成！{}", sms);
-				 return ResponseEntity.ok();
+				Map<String, Object> smsResult = SMSUtils.sendCaptchaSMS(phoneNumber, captcha);
+				log.info(smsResult);
+				// 实例化SMSCaptcha, 并放入Session中
+				SMSCaptcha sms = new SMSCaptcha(phoneNumber, captcha);
+				captchaService.setSMSCaptchaToSession(sms, session);
+				log.info("发送短信验证码完成！{}", sms);
+				return ResponseEntity.ok();
 			} else {
 				return result;
 			}
-		}catch(
+		} catch (
 
-	Exception e)
-	{
-		return ResponseEntity.serverError();
-	}
+		Exception e) {
+			return ResponseEntity.serverError();
+		}
 
 	}
 
@@ -1158,7 +1156,7 @@ public class BookInterface {
 				}
 				fileImgMap.put("imgpaths", imglist);
 			}
-			log.info("图片上传成功,上传路径:", new Object[] { fileImgMap.toString() });
+			log.info("图片上传成功,上传路径:", fileImgMap.get("imgpaths").toString());
 			return ResponseEntity.ok(fileImgMap, "上传图片成功");
 		} catch (Exception e) {
 			log.error("上传图片异常!", e);
