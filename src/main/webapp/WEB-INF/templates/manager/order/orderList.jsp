@@ -23,13 +23,29 @@
 				title : '选择',
 				checkbox : true
 			}, {
+				field : 'orderNo',
+				title : '订单号',
+				width : '150px'
+			}, {
 				field : 'username',
 				title : '姓名',
-				width : '160px'
+				width : '120px'
+			}, {
+				field : 'cnname',
+				title : '联系人',
+				width : '80px'
+			}, {
+				field : 'phoneNo',
+				title : '联系电话',
+				width : '100px'
+			},{
+				field : 'address',
+				title : '收货地址',
+				width : '200px'
 			}, {
 				field : 'orderStatus',
 				title : '订单状态',
-				width : '120px',
+				width : '60px',
 				formatter : function(val) {
 					if (val == 0) {
 						return '未支付';
@@ -46,7 +62,7 @@
 			}, {
 				field : 'productType',
 				title : '商品类型',
-				width : '120px',
+				width : '60px',
 				formatter : function(val) {
 					if (val == 0) {
 						return '纪念品';
@@ -61,23 +77,23 @@
 			}, {
 				field : 'productPrice',
 				title : '商品价格',
-				width : '160px'
+				width : '60px'
 			},   {
 				field : 'value',
 				title : '订单总价格',
-				width : '160px'
+				width : '70px'
 			}, {
 				field : 'preValue',
 				title : '订单预订价格',
-				width : '160px'
+				width : '70px'
 			},  {
 				field : 'payEvalue',
 				title : '订单支付E币数量',
-				width : '160px'
+				width : '100px'
 			}, {
 				field : 'count',
 				title : '商品数量',
-				width : '160px'
+				width : '100px'
 			}, {
 				field : 'createTime',
 				title : '创建时间',
@@ -184,6 +200,8 @@
 
 <div id="order-tool">
 	<div id="order-search" style="padding-top: 10px;">
+		<label style="padding-left: 10px;">订单号:</label> <input
+			name="orderNo" class="easyui-textbox" style="height: 26px;">
 		<label style="padding-left: 10px;">商品名称:</label> <input
 			name="productName" class="easyui-textbox" style="height: 26px;">
 		<label style="padding-left: 10px;">订单状态: <select

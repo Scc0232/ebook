@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.bean.EasyuiPagination;
 import com.zhijian.ebook.bean.Page;
+import com.zhijian.ebook.dao.AddressMapper;
 import com.zhijian.ebook.dao.OrderMapper;
+import com.zhijian.ebook.entity.Address;
 import com.zhijian.ebook.entity.Order;
 import com.zhijian.ebook.entity.OrderExample;
 import com.zhijian.ebook.service.OrderService;
@@ -22,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private AddressMapper addressMapper;
 
 	@Override
 	public EasyuiPagination<Order> findOrderPagination(Order order, Integer page, Integer rows) {
@@ -36,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getOrderStatus() != null) {
 			criteria.andOrderStatusEqualTo(order.getOrderStatus());
 		}
+		if (order.getOrderNo() != null) {
+			criteria.andOrderNoLike("%"+order.getOrderNo()+"%");
+		}
 		criteria.andIsValidEqualTo(true);
 		orderExample.setOrderByClause(" create_time desc");
 		List<Order> list = orderMapper.findPaginationList(new Page(page, rows), orderExample);
@@ -43,6 +51,12 @@ public class OrderServiceImpl implements OrderService {
 			String username = userMapper.selectByPrimaryKey(sCart.getUserid()).getPetName();
 			if (StringUtils.isNotBlank(username)) {
 				sCart.setUsername(username);
+			}
+			Address address = addressMapper.selectByPrimaryKey(sCart.getAddressId());
+			if (address!=null) {
+				sCart.setAddress(address.getCollege()+address.getFlat()+address.getRoomNum());
+				sCart.setCnname(address.getUsername());
+				sCart.setPhoneNo(address.getPhone());
 			}
 		}
 		int counts = orderMapper.countByExample(orderExample);

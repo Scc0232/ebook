@@ -44,6 +44,12 @@ public class Order {
     private Boolean isValid;
     
     private String username;
+    
+    private String cnname;
+    
+    private String address;
+    
+    private String phoneNo;
 
     public String getId() {
         return id;
@@ -211,5 +217,29 @@ public class Order {
 
 	public void setPayNo(String payNo) {
 		this.payNo = payNo;
+	}
+
+	public String getCnname() {
+		return cnname;
+	}
+
+	public void setCnname(String cnname) {
+		this.cnname = cnname;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 }
