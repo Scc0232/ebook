@@ -708,7 +708,7 @@ public class BookInterface {
 	public ResponseEntity addAddress(Address address) {
 		try {
 			if (StringUtils.isBlank(address.getUsername()) || StringUtils.isBlank(address.getPhone())) {
-				return ResponseEntity.ok("请提供明确的收件人和手机号");
+				return ResponseEntity.illegalParam("请提供明确的收件人和手机号");
 			}
 			bookService.addAddress(address);
 		} catch (Exception e) {
