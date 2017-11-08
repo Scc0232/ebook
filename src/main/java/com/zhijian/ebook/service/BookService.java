@@ -24,7 +24,7 @@ public interface BookService {
 
 	List<Book> selectByAuthor(String content);
 
-	int updateHotValue(String bookid);
+	Book updateHotValue(String bookid);
 
 	int findIsCollection(String bookid) throws Exception;
 

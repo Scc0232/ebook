@@ -273,7 +273,7 @@ public class BookInterface {
 	@RequestMapping(value = "login/updateHotValue", method = RequestMethod.GET)
 	public ResponseEntity updateHotValue(String bookid) {
 		// String username = UserContextHelper.getUsername();
-		int flag = 0;
+		Book flag = null;
 		try {
 			if (StringUtils.isBlank(bookid)) {
 				return ResponseEntity.illegalParam("参数错误");

@@ -92,7 +92,8 @@ public class BookServiceImpl implements BookService {
 	private MajorMapper majorMapper;
 
 	@Override
-	public List<Book> selectHotBook(String collegeName, String academyName, String professionName, String grade, String classid) {
+	public List<Book> selectHotBook(String collegeName, String academyName, String professionName, String grade,
+			String classid) {
 		Calendar calendar = Calendar.getInstance();
 		// 获得当前时间的月份，月份从0开始所以结果要加1
 		int month = calendar.get(Calendar.MONTH) + 1;
@@ -162,12 +163,16 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public int updateHotValue(String bookid) {
+	public Book updateHotValue(String bookid) {
 		Book book = bookMapper.selectByPrimaryKey(bookid);
+		if (book == null) {
+			return null;
+		}
 		Book newbook = new Book();
 		newbook.setId(bookid);
 		newbook.setHotValue(book.getHotValue() + 1);
-		return bookMapper.updateByPrimaryKeySelective(newbook);
+		bookMapper.updateByPrimaryKeySelective(newbook);
+		return book;
 	}
 
 	@Override
@@ -595,7 +600,8 @@ public class BookServiceImpl implements BookService {
 		int eamount = 0;
 		int enumber = (int) Double.parseDouble(enumbers) * 100;
 		for (Order order : list) {
-			value += ((int) (order.getDepPrice() * 100) + (int) (order.getDesposit() * 100) + (int) (order.getProductPrice() * 100)) * order.getCount();
+			value += ((int) (order.getDepPrice() * 100) + (int) (order.getDesposit() * 100)
+					+ (int) (order.getProductPrice() * 100)) * order.getCount();
 			eamount += (int) (order.getProductPrice() * 100);
 			if (order.getProductType() == 1) {
 				prevalue += order.getDepPrice() * order.getCount();
