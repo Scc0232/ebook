@@ -336,6 +336,12 @@ public class BookServiceImpl implements BookService {
 			order.setProductType((byte) 1);
 			order.setDepPrice(book.getDepPrice());
 			order.setDesposit(book.getDeposit());
+
+			Book value = bookMapper.selectByPrimaryKey(productid);
+			Book newbook = new Book();
+			newbook.setId(productid);
+			newbook.setHotValue(5 * nums + value.getHotValue());
+			bookMapper.updateByPrimaryKeySelective(newbook);
 		}
 		order.setProductId(productid);
 		order.setAddressId(addressid);
