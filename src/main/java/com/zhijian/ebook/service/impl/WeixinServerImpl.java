@@ -50,7 +50,7 @@ public class WeixinServerImpl implements WeixinServer {
 	public String getOpenId(String code) {
 
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=AppId&secret=AppSecret&code=CODE&grant_type=authorization_code";
-		url = url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT).replace("CODE", code);
+		url = url.replace("AppId", WechatConfig.access().getAPPID()).replace("AppSecret", WechatConfig.access().getAPPSECRECT()).replace("CODE", code);
 		HttpGet get = new HttpGet(url);
 		HttpClient httpclient = new DefaultHttpClient();
 
@@ -71,7 +71,7 @@ public class WeixinServerImpl implements WeixinServer {
 	@Override
 	public String getOpenIds(String code) {
 
-		String url = openid_url.replace("AppId", WechatConfig.APPID).replace("AppSecret", WechatConfig.APPSECRECT).replace("CODE", code);
+		String url = openid_url.replace("AppId", WechatConfig.access().getAPPID()).replace("AppSecret", WechatConfig.access().getAPPSECRECT()).replace("CODE", code);
 		JSONObject jsonObject = WechatUtils.httpRequest(url, "GET", null);
 		String openid = null;
 		// 如果请求成功
@@ -94,7 +94,7 @@ public class WeixinServerImpl implements WeixinServer {
 		accessTokenMapper.deleteByExample(null);
 
 		AccessToken accessToken = null;
-		accessToken = WechatUtils.getAccessToken(WechatConfig.APPID, WechatConfig.APPSECRECT);
+		accessToken = WechatUtils.getAccessToken(WechatConfig.access().getAPPID(), WechatConfig.access().getAPPSECRECT());
 		accessToken.setUpdateTime(new Date());
 		accessTokenMapper.insert(accessToken);
 	}

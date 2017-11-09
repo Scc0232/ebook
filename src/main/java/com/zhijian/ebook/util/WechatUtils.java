@@ -206,7 +206,7 @@ public class WechatUtils {
 				sb.append(k + "=" + v + "&");
 			}
 		}
-		String key = WechatConfig.KEYSECRECT;
+		String key = WechatConfig.access().getKEYSECRECT();
 		sb.append("key=" + key);
 		String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
 		return sign;
@@ -306,10 +306,10 @@ public class WechatUtils {
 		
 //		String accessToken = weixinServer.getAccessToken();
 		String accessToken = "tFTw_H58-GBhq7x9aDEOAzuZM06ZhBH5TDZ1OKiUdp5rTUQhcABgqJvyHaBugeBtUA_aZL5Wml0kqy9nePDozm67tKlhAZlp6fu-FjIAKNjjJmYhT551rADwJc5SrtdlLYKcAIAVIU";
-		String appid = WechatConfig.APPID;
+		String appid = WechatConfig.access().getAPPID();
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("appid", WechatConfig.APPID);
-		params.put("secret", WechatConfig.APPSECRECT);
+		params.put("appid", WechatConfig.access().getAPPID());
+		params.put("secret", WechatConfig.access().getAPPSECRECT());
 		params.put("access_token", accessToken);
 		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 		Map<String, String> map = new HashMap<String, String>();

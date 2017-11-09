@@ -138,21 +138,21 @@ public class BookClassServiceImpl implements BookClassService {
 
 		Map<String, String> resultsMap = new HashMap<String, String>();
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("appid", WechatConfig.APPID);
-		paramMap.put("mch_id", WechatConfig.MCHID);
+		paramMap.put("appid", WechatConfig.access().getAPPID());
+		paramMap.put("mch_id", WechatConfig.access().getMCHID());
 		paramMap.put("nonce_str", UUIDGenerator.generator().toUpperCase());
 		paramMap.put("body", "订单支付");
 		paramMap.put("out_trade_no", String.valueOf(payNo));
 		paramMap.put("fee_type", "CNY");
 		paramMap.put("total_fee", Math.round(Double.parseDouble(fee) * 100) + "");
 		paramMap.put("spbill_create_ip", ip);
-		paramMap.put("notify_url", WechatConfig.NOTIFYURL);
+		paramMap.put("notify_url", WechatConfig.access().getNOTIFYURL());
 		paramMap.put("trade_type", "JSAPI");
 		paramMap.put("openid", openId);
 		paramMap.put("attach", "2");// 支付类型，1充值，2单个停车费，3补缴
 		paramMap = WechatCore.paraFilter(paramMap);
 		String result = WechatCore.createLinkString(paramMap);
-		result += "&key=" + WechatConfig.KEYSECRECT;
+		result += "&key=" + WechatConfig.access().getKEYSECRECT();
 		try {
 			result = MD5.getMessageDigest(result.getBytes("utf-8")).toUpperCase();
 		} catch (UnsupportedEncodingException e) {
@@ -163,7 +163,7 @@ public class BookClassServiceImpl implements BookClassService {
 		log.info("统一订单提交前参数:" + result);
 		PostMethod method = null;
 		try {
-			method = new PostMethod(WechatConfig.ORDERURL);
+			method = new PostMethod(WechatConfig.access().getORDERURL());
 			method.setRequestContentLength(result.length());
 			method.setRequestBody(result);
 			HttpClient httpClient = new HttpClient();
@@ -178,7 +178,7 @@ public class BookClassServiceImpl implements BookClassService {
 				String signData = paramMap.get("sign");
 				paramMap = WechatCore.paraFilter(paramMap);
 				result = WechatCore.createLinkString(paramMap);
-				result += "&key=" + WechatConfig.KEYSECRECT;
+				result += "&key=" + WechatConfig.access().getKEYSECRECT();
 				try {
 					result = MD5.getMessageDigest(result.getBytes("utf-8")).toUpperCase();
 				} catch (UnsupportedEncodingException e1) {
@@ -192,13 +192,13 @@ public class BookClassServiceImpl implements BookClassService {
 				if (return_code.equals("SUCCESS")) {
 					log.info("回复参数" + resultsMap.toString());
 					String prepay_id = paramMap.get("prepay_id");
-					resultsMap.put("appId", WechatConfig.APPID);
+					resultsMap.put("appId", WechatConfig.access().getAPPID());
 					resultsMap.put("package", "prepay_id=" + prepay_id);
 					resultsMap.put("nonceStr", UUIDGenerator.generator().toUpperCase());
 					resultsMap.put("signType", "MD5");
 					resultsMap.put("timeStamp", Long.toString(System.currentTimeMillis() / 1000));
 					resultsMap = WechatCore.paraFilter(resultsMap);
-					result = WechatCore.createLinkString(resultsMap) + "&key=" + WechatConfig.KEYSECRECT;
+					result = WechatCore.createLinkString(resultsMap) + "&key=" + WechatConfig.access().getKEYSECRECT();
 					result = MD5.getMD5ofStr(result).toUpperCase();
 					resultsMap.put("paySign", result);
 					resultsMap.put("payment_id", orderNo);
@@ -232,10 +232,10 @@ public class BookClassServiceImpl implements BookClassService {
 			log.info("targetUrl：" + targetUrl);
 		}
 		String accessToken = weixinServer.getAccessToken();
-		String appid = WechatConfig.APPID;
+		String appid = WechatConfig.access().getAPPID();
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("appid", WechatConfig.APPID);
-		params.put("secret", WechatConfig.APPSECRECT);
+		params.put("appid", WechatConfig.access().getAPPID());
+		params.put("secret", WechatConfig.access().getAPPSECRECT());
 		params.put("access_token", accessToken);
 		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 		Map<String, String> map = new HashMap<String, String>();
