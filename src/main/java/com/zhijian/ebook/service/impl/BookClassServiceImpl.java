@@ -65,7 +65,7 @@ public class BookClassServiceImpl implements BookClassService {
 
 	@Autowired
 	private WeixinServer weixinServer;
-	
+
 	@Autowired
 	private OrderMapper orderMapper;
 
@@ -80,6 +80,7 @@ public class BookClassServiceImpl implements BookClassService {
 		BookExample bookExample = new BookExample();
 		BookExample.Criteria criteria = bookExample.createCriteria();
 		criteria.andClassIdEqualTo(classlist.get(0).getId());
+		bookExample.setOrderByClause("hot_value desc, title asc");
 		List<Book> booklist = bookMapper.selectByExample(bookExample);
 		map.put("kaoyan", booklist);
 
@@ -122,11 +123,11 @@ public class BookClassServiceImpl implements BookClassService {
 		criteria.andOrderStatusEqualTo(0);
 		criteria.andIsValidEqualTo(true);
 		int counts = orderMapper.countByExample(orderExample);
-		if (counts<1) {
+		if (counts < 1) {
 			return null;
 		}
 		orderMapper.updateByExampleSelective(order, orderExample);
-		
+
 		String openId = user.getUsername();
 		// OrderExample example = new OrderExample();
 		// OrderExample.Criteria criteria = example.createCriteria();
