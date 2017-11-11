@@ -4,19 +4,22 @@ public class WechatConfig {
 
 	private static WechatConfig wConfig = new WechatConfig();
 
-	private  ReadPropertiesFileUtils readPropertiesFileUtils = ReadPropertiesFileUtils.getInstance();
+	private ReadPropertiesFileUtils readPropertiesFileUtils = ReadPropertiesFileUtils.getInstance();
 
-	private final String APPID = readPropertiesFileUtils.getPropValueByKey("APPID");
-	private final String APPSECRECT = readPropertiesFileUtils.getPropValueByKey("APPSECRECT");
-	private final String KEYSECRECT = readPropertiesFileUtils.getPropValueByKey("KEYSECRECT");
-	private final String MCHID = readPropertiesFileUtils.getPropValueByKey("MCHID");
-	private final String NOTIFYURL = readPropertiesFileUtils.getPropValueByKey("NOTIFYURL");
-	private final String ORDERURL = readPropertiesFileUtils.getPropValueByKey("ORDERURL");
-	private final String TOKEN = readPropertiesFileUtils.getPropValueByKey("TOKEN");
-	private final String EncodingAESKey = readPropertiesFileUtils.getPropValueByKey("EncodingAESKey");
+	private String APPID = readPropertiesFileUtils.getPropValueByKey("APPID");
+	private String APPSECRECT = readPropertiesFileUtils.getPropValueByKey("APPSECRECT");
+	private String KEYSECRECT = readPropertiesFileUtils.getPropValueByKey("KEYSECRECT");
+	private String MCHID = readPropertiesFileUtils.getPropValueByKey("MCHID");
+	private String NOTIFYURL = readPropertiesFileUtils.getPropValueByKey("NOTIFYURL");
+	private String ORDERURL = readPropertiesFileUtils.getPropValueByKey("ORDERURL");
+	private String TOKEN = readPropertiesFileUtils.getPropValueByKey("TOKEN");
+	private String EncodingAESKey = readPropertiesFileUtils.getPropValueByKey("EncodingAESKey");
 
 	public static WechatConfig access() {
 		return wConfig;
+	}
+
+	private WechatConfig() {
 	}
 
 	public String getAPPID() {
