@@ -27,9 +27,21 @@
 				title : '姓名',
 				width : '160px'
 			}, {
+				field : 'cnname',
+				title : '联系人',
+				width : '80px'
+			}, {
+				field : 'phoneNo',
+				title : '联系电话',
+				width : '100px'
+			},{
+				field : 'address',
+				title : '收货地址',
+				width : '200px'
+			}, {
 				field : 'status',
 				title : '捐赠状态',
-				width : '120px',
+				width : '60px',
 				formatter : function(val) {
 					if (val == '0') {
 						return '待确认';
@@ -52,11 +64,11 @@
 			}, {
 				field : 'eValue',
 				title : 'e币价格',
-				width : '120px'
+				width : '80px'
 			}, {
 				field : 'isNote',
 				title : '是否有笔记',
-				width : '120px',
+				width : '80px',
 				formatter : function(val) {
 					if (val == '1') {
 						return '有';
@@ -67,11 +79,11 @@
 			}, {
 				field : 'degree',
 				title : '新旧程度',
-				width : '120px'
+				width : '80px'
 			}, {
 				field : 'createTime',
 				title : '创建时间',
-				width : '150px',
+				width : '120px',
 				formatter : function(val) {
 					return formatDate(val);
 				}

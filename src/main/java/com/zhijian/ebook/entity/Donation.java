@@ -3,157 +3,163 @@ package com.zhijian.ebook.entity;
 import java.util.Date;
 
 public class Donation {
-    private String id;
+	private String id;
 
-    private String bookId;
+	private String bookId;
 
-    private String bookName;
+	private String bookName;
 
-    private Double eValue;
+	private Double eValue;
 
-    private String bookIcon;
+	private String bookIcon;
 
-    private String isbn;
+	private String isbn;
 
-    private String author;
+	private String author;
 
-    private String publisher;
+	private String publisher;
 
-    private Boolean isNote;
+	private Boolean isNote;
 
-    private String degree;
+	private String degree;
 
-    private String userid;
+	private String userid;
 
-    private String addressId;
+	private String addressId;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Integer status;
+	private Integer status;
 
-    private Boolean isValid;
-    
-    private String username;
+	private Boolean isValid;
 
-    public String getId() {
-        return id;
-    }
+	private String username;
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
+	private String cnname;
 
-    public String getBookId() {
-        return bookId;
-    }
+	private String address;
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId == null ? null : bookId.trim();
-    }
+	private String phoneNo;
 
-    public String getBookName() {
-        return bookName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName == null ? null : bookName.trim();
-    }
+	public void setId(String id) {
+		this.id = id == null ? null : id.trim();
+	}
 
-    public Double geteValue() {
-        return eValue;
-    }
+	public String getBookId() {
+		return bookId;
+	}
 
-    public void seteValue(Double eValue) {
-        this.eValue = eValue;
-    }
+	public void setBookId(String bookId) {
+		this.bookId = bookId == null ? null : bookId.trim();
+	}
 
-    public String getBookIcon() {
-        return bookIcon;
-    }
+	public String getBookName() {
+		return bookName;
+	}
 
-    public void setBookIcon(String bookIcon) {
-        this.bookIcon = bookIcon == null ? null : bookIcon.trim();
-    }
+	public void setBookName(String bookName) {
+		this.bookName = bookName == null ? null : bookName.trim();
+	}
 
-    public String getIsbn() {
-        return isbn;
-    }
+	public Double geteValue() {
+		return eValue;
+	}
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn == null ? null : isbn.trim();
-    }
+	public void seteValue(Double eValue) {
+		this.eValue = eValue;
+	}
 
-    public String getAuthor() {
-        return author;
-    }
+	public String getBookIcon() {
+		return bookIcon;
+	}
 
-    public void setAuthor(String author) {
-        this.author = author == null ? null : author.trim();
-    }
+	public void setBookIcon(String bookIcon) {
+		this.bookIcon = bookIcon == null ? null : bookIcon.trim();
+	}
 
-    public String getPublisher() {
-        return publisher;
-    }
+	public String getIsbn() {
+		return isbn;
+	}
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher == null ? null : publisher.trim();
-    }
+	public void setIsbn(String isbn) {
+		this.isbn = isbn == null ? null : isbn.trim();
+	}
 
-    public Boolean getIsNote() {
-        return isNote;
-    }
+	public String getAuthor() {
+		return author;
+	}
 
-    public void setIsNote(Boolean isNote) {
-        this.isNote = isNote;
-    }
+	public void setAuthor(String author) {
+		this.author = author == null ? null : author.trim();
+	}
 
-    public String getDegree() {
-        return degree;
-    }
+	public String getPublisher() {
+		return publisher;
+	}
 
-    public void setDegree(String degree) {
-        this.degree = degree == null ? null : degree.trim();
-    }
+	public void setPublisher(String publisher) {
+		this.publisher = publisher == null ? null : publisher.trim();
+	}
 
-    public String getUserid() {
-        return userid;
-    }
+	public Boolean getIsNote() {
+		return isNote;
+	}
 
-    public void setUserid(String userid) {
-        this.userid = userid == null ? null : userid.trim();
-    }
+	public void setIsNote(Boolean isNote) {
+		this.isNote = isNote;
+	}
 
-    public String getAddressId() {
-        return addressId;
-    }
+	public String getDegree() {
+		return degree;
+	}
 
-    public void setAddressId(String addressId) {
-        this.addressId = addressId == null ? null : addressId.trim();
-    }
+	public void setDegree(String degree) {
+		this.degree = degree == null ? null : degree.trim();
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getUserid() {
+		return userid;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setUserid(String userid) {
+		this.userid = userid == null ? null : userid.trim();
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public String getAddressId() {
+		return addressId;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public void setAddressId(String addressId) {
+		this.addressId = addressId == null ? null : addressId.trim();
+	}
 
-    public Boolean getIsValid() {
-        return isValid;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Boolean getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Boolean isValid) {
+		this.isValid = isValid;
+	}
 
 	public String getUsername() {
 		return username;
@@ -161,5 +167,29 @@ public class Donation {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getCnname() {
+		return cnname;
+	}
+
+	public void setCnname(String cnname) {
+		this.cnname = cnname;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 }
