@@ -3,198 +3,198 @@ package com.zhijian.ebook.base.entity;
 import java.util.Date;
 
 public class User {
-    private String id;
+	private String id;
 
-    private String username;
+	private String username;
 
-    private String password;
+	private String password;
 
-    private String name;
+	private String name;
 
-    private String phone;
+	private String phone;
 
-    private String email;
+	private String email;
 
-    private String icon;
+	private String icon;
 
-    private String userType;
+	private String userType;
 
-    private Boolean isValid;
+	private Boolean isValid;
 
-    private String createPersonId;
+	private String createPersonId;
 
-    private Date createTime;
+	private Date createTime;
 
-    private String modifyPersonId;
+	private String modifyPersonId;
 
-    private Date modifyTime;
+	private Date modifyTime;
 
-    private String remark;
+	private String remark;
 
-    private Integer accredit;
+	private Integer accredit;
 
-    private String sex;
+	private String sex;
 
-    private String address;
+	private String address;
 
-    private String petName;
-    
-    private Double blance;
-    
-    private String college;
+	private String petName;
 
-    private String academy;
+	private Double blance;
 
-    private String profession;
+	private String college;
 
-    private String grade;
+	private String academy;
 
-    public String getId() {
-        return id;
-    }
+	private String profession;
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
+	private String grade;
 
-    public String getUsername() {
-        return username;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
+	public void setId(String id) {
+		this.id = id == null ? null : id.trim();
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
+	public void setUsername(String username) {
+		this.username = username == null ? null : username.trim();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+	public void setPassword(String password) {
+		this.password = password == null ? null : password.trim();
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
+	public void setPhone(String phone) {
+		this.phone = phone == null ? null : phone.trim();
+	}
 
-    public String getIcon() {
-        return icon;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
+	public void setEmail(String email) {
+		this.email = email == null ? null : email.trim();
+	}
 
-    public String getUserType() {
-        return userType;
-    }
+	public String getIcon() {
+		return icon;
+	}
 
-    public void setUserType(String userType) {
-        this.userType = userType == null ? null : userType.trim();
-    }
+	public void setIcon(String icon) {
+		this.icon = icon == null ? null : icon.trim();
+	}
 
-    public Boolean getIsValid() {
-        return isValid;
-    }
+	public String getUserType() {
+		return userType;
+	}
 
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
+	public void setUserType(String userType) {
+		this.userType = userType == null ? null : userType.trim();
+	}
 
-    public String getCreatePersonId() {
-        return createPersonId;
-    }
+	public Boolean getIsValid() {
+		return isValid;
+	}
 
-    public void setCreatePersonId(String createPersonId) {
-        this.createPersonId = createPersonId == null ? null : createPersonId.trim();
-    }
+	public void setIsValid(Boolean isValid) {
+		this.isValid = isValid;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getCreatePersonId() {
+		return createPersonId;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreatePersonId(String createPersonId) {
+		this.createPersonId = createPersonId == null ? null : createPersonId.trim();
+	}
 
-    public String getModifyPersonId() {
-        return modifyPersonId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setModifyPersonId(String modifyPersonId) {
-        this.modifyPersonId = modifyPersonId == null ? null : modifyPersonId.trim();
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public Date getModifyTime() {
-        return modifyTime;
-    }
+	public String getModifyPersonId() {
+		return modifyPersonId;
+	}
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
+	public void setModifyPersonId(String modifyPersonId) {
+		this.modifyPersonId = modifyPersonId == null ? null : modifyPersonId.trim();
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public Date getModifyTime() {
+		return modifyTime;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 
-    public Integer getAccredit() {
-        return accredit;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setAccredit(Integer accredit) {
-        this.accredit = accredit;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark == null ? null : remark.trim();
+	}
 
-    public String getSex() {
-        return sex;
-    }
+	public Integer getAccredit() {
+		return accredit;
+	}
 
-    public void setSex(String sex) {
-        this.sex = sex == null ? null : sex.trim();
-    }
+	public void setAccredit(Integer accredit) {
+		this.accredit = accredit;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getSex() {
+		return sex;
+	}
 
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
+	public void setSex(String sex) {
+		this.sex = sex == null ? null : sex.trim();
+	}
 
-    public String getPetName() {
-        return petName;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setPetName(String petName) {
-        this.petName = petName == null ? null : petName.trim();
-    }
+	public void setAddress(String address) {
+		this.address = address == null ? null : address.trim();
+	}
+
+	public String getPetName() {
+		return petName;
+	}
+
+	public void setPetName(String petName) {
+		this.petName = petName == null ? null : petName.trim();
+	}
 
 	public Double getBlance() {
-		return blance;
+		return (blance * 100) / 100.0;
 	}
 
 	public void setBlance(Double blance) {

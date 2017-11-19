@@ -126,6 +126,9 @@ public class DonationController {
 	@ResponseBody
 	@RequestMapping("modifyDonation")
 	public ResponseMsg modifyDonation(Donation donation) {
+		if (donation.getStatus()==0) {
+			return ResponseMsg.success("未修改！");
+		}
 		int row = donationService.modifyDonation(donation);
 		if (row > 0) {
 			return ResponseMsg.success("修改订单成功！");

@@ -618,8 +618,8 @@ public class BookServiceImpl implements BookService {
 			if (enumber > eamount || enumber > (int) (user.getBlance() * 100)) {
 				enumber = eamount > (int) (user.getBlance() * 100) ? (int) (user.getBlance() * 100) : eamount;
 			}
-			user.setBlance(((int) (user.getBlance() * 100) - enumber) / 100.0);
-			userMapper.updateByPrimaryKeySelective(user);
+//			user.setBlance(((int) (user.getBlance() * 100) - enumber) / 100.0);
+//			userMapper.updateByPrimaryKeySelective(user);
 		}
 		map.put("value", (int) (value - enumber) / 100.0 + "");
 		map.put("prevalue", prevalue + "");

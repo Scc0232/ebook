@@ -26,7 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.Dict;
+import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.CaptchaService;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.bean.EasyuiPagination;
@@ -83,6 +85,9 @@ public class BookInterface {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Autowired
 	private OrderMapper orderMapper;
@@ -169,10 +174,12 @@ public class BookInterface {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "login/selectMajorBook", method = RequestMethod.GET)
-	public ResponseEntity selectMajorBook(String collegeName, String academyName, String professionName, String grade, String classid) {
+	public ResponseEntity selectMajorBook(String collegeName, String academyName, String professionName, String grade,
+			String classid) {
 		List<Book> list = null;
 		try {
-			if (StringUtils.isBlank(collegeName) || StringUtils.isBlank(academyName) || StringUtils.isBlank(professionName)) {
+			if (StringUtils.isBlank(collegeName) || StringUtils.isBlank(academyName)
+					|| StringUtils.isBlank(professionName)) {
 				return ResponseEntity.illegalParam("参数为空!");
 			} else {
 				list = bookService.selectHotBook(collegeName, academyName, professionName, grade, classid);
@@ -316,7 +323,8 @@ public class BookInterface {
 		// String username = UserContextHelper.getUsername();
 		int flag = 0;
 		try {
-			if ((StringUtils.isNotBlank(diary.getTitle())) && (StringUtils.isNotBlank(diary.getContent()) || StringUtils.isNotBlank(diary.getIcon()))) {
+			if ((StringUtils.isNotBlank(diary.getTitle()))
+					&& (StringUtils.isNotBlank(diary.getContent()) || StringUtils.isNotBlank(diary.getIcon()))) {
 				flag = souvenirService.addNewDiary(diary);
 				return ResponseEntity.ok(flag);
 			} else {
@@ -950,6 +958,9 @@ public class BookInterface {
 									Order order2 = new Order();
 									order2.setOrderStatus(1);
 									orderMapper.updateByExampleSelective(order2, orderExample);
+									User user = userService.findUserById(order.getUserid());
+									user.setBlance(((int) (user.getBlance() * 100) - order.getPayEvalue() * 100) / 100.0);
+									userMapper.updateByPrimaryKeySelective(user);
 								} else if (total == (int) Math.round(order.getPreValue() * 100)) {
 									Order order2 = new Order();
 									order2.setOrderStatus(3);
@@ -1118,7 +1129,8 @@ public class BookInterface {
 			sufferList.add("gif");
 			sufferList.add("bmp");
 			sufferList.add("jpeg");
-			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+					request.getSession().getServletContext());
 			Map<String, List<String>> fileImgMap = new HashMap<>();
 			List<MultipartFile> valueList = new ArrayList<>();
 			int vainIndex = 0;
