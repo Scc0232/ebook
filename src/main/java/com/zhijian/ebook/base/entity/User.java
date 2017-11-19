@@ -198,7 +198,7 @@ public class User {
 	}
 
 	public void setBlance(Double blance) {
-		this.blance = blance;
+		this.blance = (blance * 100) / 100.0;
 	}
 
 	public String getCollege() {
