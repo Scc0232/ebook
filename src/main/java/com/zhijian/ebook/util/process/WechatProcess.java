@@ -23,6 +23,13 @@ public class WechatProcess {
 		if("text".endsWith(xmlEntity.getMsgType())){
 			result = new TulingApiProcess().getTulingResult(xmlEntity.getContent());
 		}
+		if("event".endsWith(xmlEntity.getMsgType())){
+			if (xmlEntity.getEventKey().contains("_")) {
+				result = new TulingApiProcess().getTulingResult("未关注");
+			}else {
+				result = new TulingApiProcess().getTulingResult("已关注");
+			}
+		}
 		
 		/** 此时，如果用户输入的是“你好”，在经过上面的过程之后，result为“你也好”类似的内容 
 		 *  因为最终回复给微信的也是xml格式的数据，所有需要将其封装为文本类型返回消息

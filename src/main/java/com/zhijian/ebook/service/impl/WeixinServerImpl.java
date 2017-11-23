@@ -106,16 +106,20 @@ public class WeixinServerImpl implements WeixinServer {
 		JSONObject scene = new JSONObject();
 		scene.put("scene_str", UserContextHelper.getUsername());
 		JSONObject paramMap = new JSONObject();
-		paramMap.put("action_name", "QR_LIMIT_SCENE");
+		paramMap.put("action_name", "QR_SCENE");
+		paramMap.put("expire_seconds", 2592000);
 		paramMap.put("scene", scene.toString());
 
 
 		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", paramMap.toString());
 		if (jsonObject.containsKey("ticket")) {
 			url = GET_QR_URL.replace("TICKET", jsonObject.getString("ticket"));
+			String param = "{\"action\":\"long2short\",\"long_url\":"+"\""+url+"\""+"}" ;
+			JSONObject shortjson = WechatUtils.httpRequest(LONG2SHORT.replace("ACCESS_TOKEN", getAccessToken()), "POST", param);
 			
-			
-//			JSONObject jsonObject = WechatUtils.httpRequest(LONG2SHORT.replace(ACCESS_TOKEN, getAccessToken()), "POST", paramMap.toString());
+			if (shortjson.containsKey("short_url")) {
+				url = shortjson.getString("short_url");
+			}
 		}
 		return url;
 	}
