@@ -16,4 +16,6 @@ public interface WeixinServer {
 
 	User getUserInfo(User user);
 
+	String createQRcode();
+
 }

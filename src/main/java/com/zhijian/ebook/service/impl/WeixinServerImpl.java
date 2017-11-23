@@ -1,7 +1,9 @@
 package com.zhijian.ebook.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -19,6 +21,7 @@ import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
 import com.zhijian.ebook.dao.AccessTokenMapper;
 import com.zhijian.ebook.entity.AccessToken;
+import com.zhijian.ebook.security.UserContextHelper;
 import com.zhijian.ebook.service.WeixinServer;
 import com.zhijian.ebook.util.StringConsts;
 import com.zhijian.ebook.util.WechatConfig;
@@ -36,12 +39,19 @@ public class WeixinServerImpl implements WeixinServer {
 
 	private final static String userinfo_url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 
+	private final static String QR_URL = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=ACCESS_TOKEN";
+
+	private final static String GET_QR_URL = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
+	
+	private final static String LONG2SHORT = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token=ACCESS_TOKEN";
+	
+
 	@Autowired
 	private AccessTokenMapper accessTokenMapper;
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserMapper userMapper;
 
@@ -86,6 +96,25 @@ public class WeixinServerImpl implements WeixinServer {
 		}
 
 		return openid;
+	}
+
+	@Override
+	public String createQRcode() {
+
+		String url = QR_URL.replace("ACCESS_TOKEN", getAccessToken());
+		Map<String, String> scene = new HashMap<String, String>();
+		scene.put("scene_str", UserContextHelper.getUsername());
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("action_name", "QR_LIMIT_SCENE");
+		paramMap.put("scene", scene.toString());
+		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", paramMap.toString());
+		if (jsonObject.containsKey("ticket")) {
+			url = GET_QR_URL.replace("TICKET", jsonObject.getString("ticket"));
+			
+			
+//			JSONObject jsonObject = WechatUtils.httpRequest(LONG2SHORT.replace(ACCESS_TOKEN, getAccessToken()), "POST", paramMap.toString());
+		}
+		return url;
 	}
 
 	@Override

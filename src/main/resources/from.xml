@@ -1,0 +1,35 @@
+<xml>
+	<URL><![CDATA[http://www.ebenshu.cn/ebook/weixin/unlogin/link.do]]></URL>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511416412</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[subscribe]]></Event>
+	<Latitude></Latitude>
+	<Longitude></Longitude>
+	<Precision></Precision>
+	<MsgId>123456789</MsgId>
+</xml>
+取消关注
+>>>>>>>>>>>
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511418229</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[unsubscribe]]></Event>
+	<EventKey><![CDATA[]]>
+	</EventKey>
+</xml>
+<<<<<<<<<<<<<<<<<<<<<<<<
+关注
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511418303</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[subscribe]]></Event>
+	<EventKey><![CDATA[]]>
+	</EventKey>
+</xml>
+
