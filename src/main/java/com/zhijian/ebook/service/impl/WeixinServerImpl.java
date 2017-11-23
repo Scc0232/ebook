@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonObject;
 import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
@@ -102,11 +103,13 @@ public class WeixinServerImpl implements WeixinServer {
 	public String createQRcode() {
 
 		String url = QR_URL.replace("ACCESS_TOKEN", getAccessToken());
-		Map<String, String> scene = new HashMap<String, String>();
+		JSONObject scene = new JSONObject();
 		scene.put("scene_str", UserContextHelper.getUsername());
-		Map<String, String> paramMap = new HashMap<String, String>();
+		JSONObject paramMap = new JSONObject();
 		paramMap.put("action_name", "QR_LIMIT_SCENE");
 		paramMap.put("scene", scene.toString());
+
+
 		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", paramMap.toString());
 		if (jsonObject.containsKey("ticket")) {
 			url = GET_QR_URL.replace("TICKET", jsonObject.getString("ticket"));
