@@ -18,4 +18,6 @@ public interface WeixinServer {
 
 	String createQRcode();
 
+	String subScribe();
+
 }

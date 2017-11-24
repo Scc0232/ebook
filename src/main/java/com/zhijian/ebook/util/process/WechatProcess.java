@@ -24,6 +24,7 @@ public class WechatProcess {
 			result = new TulingApiProcess().getTulingResult(xmlEntity.getContent());
 		}
 		if("event".endsWith(xmlEntity.getMsgType())){
+			System.err.println(xmlEntity.toString());
 			if (xmlEntity.getEventKey().contains("_")) {
 				result = new TulingApiProcess().getTulingResult("未关注");
 			}else {

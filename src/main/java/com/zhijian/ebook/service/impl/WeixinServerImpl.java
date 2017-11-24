@@ -1,9 +1,7 @@
 package com.zhijian.ebook.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -16,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonObject;
 import com.zhijian.ebook.base.dao.UserMapper;
 import com.zhijian.ebook.base.entity.User;
 import com.zhijian.ebook.base.service.UserService;
@@ -46,6 +43,8 @@ public class WeixinServerImpl implements WeixinServer {
 	
 	private final static String LONG2SHORT = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token=ACCESS_TOKEN";
 	
+	private final static String SUBSCRIBE_URL = "https://mp.weixin.qq.com/mp/profile_ext?__biz=MzIzOTk2MzQ3Nw";
+
 
 	@Autowired
 	private AccessTokenMapper accessTokenMapper;
@@ -103,15 +102,16 @@ public class WeixinServerImpl implements WeixinServer {
 	public String createQRcode() {
 
 		String url = QR_URL.replace("ACCESS_TOKEN", getAccessToken());
-		JSONObject scene = new JSONObject();
-		scene.put("scene_str", UserContextHelper.getUsername());
-		JSONObject paramMap = new JSONObject();
-		paramMap.put("action_name", "QR_SCENE");
-		paramMap.put("expire_seconds", 2592000);
-		paramMap.put("scene", scene.toString());
+//		JSONObject scene = new JSONObject();
+//		scene.put("scene_id", 1111);
+//		JSONObject paramMap = new JSONObject();
+//		paramMap.put("action_name", "QR_SCENE");
+//		paramMap.put("expire_seconds", 2592000);
+//		paramMap.put("scene", scene.toString());
 
-
-		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", paramMap.toString());
+		String parammap = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": "+"\""+UserContextHelper.getUsername()+"\""+"}}";
+		
+		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", parammap);
 		if (jsonObject.containsKey("ticket")) {
 			url = GET_QR_URL.replace("TICKET", jsonObject.getString("ticket"));
 			String param = "{\"action\":\"long2short\",\"long_url\":"+"\""+url+"\""+"}" ;
@@ -124,6 +124,32 @@ public class WeixinServerImpl implements WeixinServer {
 		return url;
 	}
 
+	@Override
+	public String subScribe() {
+
+		String url = SUBSCRIBE_URL;
+//		JSONObject scene = new JSONObject();
+//		scene.put("scene_id", 1111);
+//		JSONObject paramMap = new JSONObject();
+//		paramMap.put("action_name", "QR_SCENE");
+//		paramMap.put("expire_seconds", 2592000);
+//		paramMap.put("scene", scene.toString());
+
+		String parammap = "{\"action\": \"home\", \"action_info\": {\"scene\": {\"scene_str\": "+"\""+UserContextHelper.getUsername()+"\""+"}}";
+		
+		JSONObject jsonObject = WechatUtils.httpRequest(url, "POST", parammap);
+		if (jsonObject.containsKey("ticket")) {
+			url = GET_QR_URL.replace("TICKET", jsonObject.getString("ticket"));
+			String param = "{\"action\":\"long2short\",\"long_url\":"+"\""+url+"\""+"}" ;
+			JSONObject shortjson = WechatUtils.httpRequest(LONG2SHORT.replace("ACCESS_TOKEN", getAccessToken()), "POST", param);
+			
+			if (shortjson.containsKey("short_url")) {
+				url = shortjson.getString("short_url");
+			}
+		}
+		return url;
+	}
+	
 	@Override
 	public void refreshToken() {
 		// 清空AccessToken表

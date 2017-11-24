@@ -32,4 +32,44 @@
 	<EventKey><![CDATA[]]>
 	</EventKey>
 </xml>
+扫码已关注
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511490479</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[SCAN]]></Event>
+	<EventKey><![CDATA[0]]></EventKey>
+	<Ticket><![CDATA[gQES8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRTBrTFFLbEhjdDExMWNnXzFxMUEAAgRMgxdaAwQAjScA]]></Ticket>
+</xml>
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511493297</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[SCAN]]></Event>
+	<EventKey><![CDATA[0]]></EventKey>
+	<Ticket><![CDATA[gQEf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNXNLLVJobEhjdDExZUU4dzFxMS0AAgQojhdaAwSAOgkA]]></Ticket>
+</xml>
+扫码未关注
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511493197</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[subscribe]]></Event>
+	<EventKey><![CDATA[qrscene_0]]></EventKey>
+	<Ticket><![CDATA[gQEf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNXNLLVJobEhjdDExZUU4dzFxMS0AAgQojhdaAwSAOgkA]]></Ticket>
+</xml>
+
+
+<xml>
+	<ToUserName><![CDATA[gh_fddc28587953]]></ToUserName>
+	<FromUserName><![CDATA[oVesdwYzssk8qrUO_j-9WOSu9T1g]]></FromUserName>
+	<CreateTime>1511505054</CreateTime>
+	<MsgType><![CDATA[event]]></MsgType>
+	<Event><![CDATA[subscribe]]></Event>
+	<EventKey><![CDATA[]]>
+	</EventKey>
+</xml>
 

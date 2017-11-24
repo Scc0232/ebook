@@ -122,4 +122,15 @@ public class WeixinInterface {
 		return url;
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "login/subScribe", method = RequestMethod.GET)
+	public String subScribe() {
+		String url = null;
+		try {
+			url = weixinServer.subScribe();
+		} catch (Exception e) {
+		}
+		return url;
+	}
 }

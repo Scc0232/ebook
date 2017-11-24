@@ -85,6 +85,7 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	private BookShelfMapper bookShelfMapper;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private UserMapper userMapper;
 
